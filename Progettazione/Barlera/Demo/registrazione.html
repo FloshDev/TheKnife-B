@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TheKnife — Registrati</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #FEF3E2;
+      --berry:     #FAB12F;
+      --plum:      #FA812F;
+      --charcoal:  #2C2C2C;
+      --white:     #ffffff;
+      --muted:     #b07840;
+      --border:    #f0d0a0;
+      --hover-btn: #e09928;
+      --surface:   #fff5e8;
+      --error:     #DD0303;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 10%, rgba(250,177,47,0.10) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 60% at 15% 90%, rgba(250,129,47,0.08) 0%, transparent 55%);
+      pointer-events: none;
+    }
+
+    .card {
+      position: relative;
+      background: var(--white);
+      border-radius: 24px;
+      padding: 36px 40px 32px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow:
+        0 1px 2px rgba(250,129,47,0.06),
+        0 4px 16px rgba(250,129,47,0.10),
+        0 16px 48px rgba(44,44,44,0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ── Brand ── */
+    .brand-icon { margin-bottom: 12px; }
+
+    .brand-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--plum);
+      letter-spacing: -0.03em;
+      margin-bottom: 2px;
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.01em;
+    }
+
+    /* ── Step indicator ── */
+    .steps {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin: 22px 0 24px;
+      width: 100%;
+    }
+
+    .step-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+      transition: background 0.3s, color 0.3s, border-color 0.3s;
+      border: 2px solid var(--border);
+      color: var(--muted);
+      background: var(--white);
+    }
+
+    .step-dot.active {
+      background: var(--berry);
+      border-color: var(--berry);
+      color: var(--white);
+    }
+
+    .step-dot.done {
+      background: var(--surface);
+      border-color: var(--berry);
+      color: var(--berry);
+    }
+
+    .step-line {
+      flex: 1;
+      height: 2px;
+      background: var(--border);
+      transition: background 0.3s;
+    }
+
+    .step-line.done { background: var(--berry); }
+
+    .step-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 4px;
+      transition: color 0.3s;
+    }
+    .step-label.active { color: var(--berry); }
+
+    .steps-wrap {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      margin: 22px 0 24px;
+    }
+
+    .steps-row {
+      display: flex;
+      align-items: center;
+    }
+
+    .steps-labels {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 0px;
+      margin-top: 6px;
+    }
+
+    .steps-labels span {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--muted);
+      transition: color 0.3s;
+      text-align: center;
+      width: 28px;
+    }
+    .steps-labels span.active { color: var(--berry); }
+
+    /* ── Form steps ── */
+    .step-panel { display: none; width: 100%; }
+    .step-panel.active { display: flex; flex-direction: column; gap: 12px; }
+
+    /* ── Fields ── */
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .field { position: relative; }
+
+    .field-label {
+      display: block;
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+      padding-left: 2px;
+    }
+
+    .optional { color: var(--border); font-weight: 500; text-transform: none; letter-spacing: 0; margin-left: 5px; font-size: 10px; }
+
+    input {
+      width: 100%;
+      height: 46px;
+      padding: 0 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: var(--charcoal);
+      background: var(--white);
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    input::placeholder { color: var(--muted); opacity: 0.8; }
+
+    input:focus {
+      border-color: var(--berry);
+      box-shadow: 0 0 0 3px rgba(250,177,47,0.18);
+    }
+
+    input[type="date"]:not(:focus):not(:valid) { color: rgba(176,120,64,0.8); }
+
+    .has-eye { padding-right: 42px; }
+
+    .eye-btn {
+      position: absolute;
+      right: 12px;
+      bottom: 13px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      transition: color 0.15s;
+      padding: 2px;
+    }
+    .eye-btn:hover { color: var(--berry); }
+
+    /* ── Role toggle ── */
+    .role-toggle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      height: 46px;
+    }
+
+    .role-toggle input[type="radio"] { display: none; }
+
+    .role-toggle label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      height: 100%;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      background: var(--white);
+      transition: background 0.2s, color 0.2s;
+      user-select: none;
+    }
+
+    .role-toggle label:first-of-type { border-right: 1.5px solid var(--border); }
+
+    .role-toggle input[type="radio"]:checked + label {
+      background: var(--berry);
+      color: var(--white);
+    }
+
+    /* ── Buttons ── */
+    .btn-primary {
+      width: 100%;
+      height: 50px;
+      background: var(--berry);
+      color: var(--white);
+      border: none;
+      border-radius: 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
+      box-shadow: 0 4px 14px rgba(250,177,47,0.40);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-primary:hover { background: var(--hover-btn); box-shadow: 0 6px 20px rgba(250,177,47,0.50); }
+    .btn-primary:active { transform: scale(0.98); }
+
+    .btn-back {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 0;
+      transition: color 0.15s;
+      align-self: flex-start;
+    }
+    .btn-back:hover { color: var(--berry); }
+
+    /* ── Footer ── */
+    .login-link {
+      margin-top: 20px;
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+    .login-link a {
+      color: var(--berry);
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .login-link a:hover { color: var(--plum); text-decoration: underline; }
+
+    /* ── Slide animation ── */
+    @keyframes slideIn  { from { opacity: 0; transform: translateX(24px);  } to { opacity: 1; transform: translateX(0); } }
+    @keyframes slideOut { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: translateX(0); } }
+    .step-panel.enter-right { animation: slideIn  0.22s ease; }
+    .step-panel.enter-left  { animation: slideOut 0.22s ease; }
+  </style>
+</head>
+<body>
+<main>
+  <section class="card">
+
+    <div class="brand-icon">
+      <svg width="72" height="72" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="100" cy="100" r="100" fill="#FAB12F"/>
+        <g transform="rotate(-45, 100, 100)">
+          <path d="M162,97 L60,89 L52,86 L52,116 L60,113 C95,122 138,111 162,97 Z" fill="white"/>
+          <path d="M52,91 L15,94 L15,110 L52,113 Z" fill="white"/>
+          <circle cx="24" cy="102" r="3" fill="#FA812F"/>
+          <circle cx="34" cy="102" r="3" fill="#FA812F"/>
+          <circle cx="44" cy="102" r="3" fill="#FA812F"/>
+        </g>
+      </svg>
+    </div>
+
+    <h1 class="brand-title">TheKnife</h1>
+    <p class="brand-sub">Crea il tuo account</p>
+
+    <!-- Step indicator -->
+    <div class="steps-wrap">
+      <div class="steps-row">
+        <div class="step-dot active" id="dot1">1</div>
+        <div class="step-line" id="line1"></div>
+        <div class="step-dot" id="dot2">2</div>
+      </div>
+      <div class="steps-labels">
+        <span class="active" id="lbl1">Anagrafica</span>
+        <span id="lbl2">Credenziali</span>
+      </div>
+    </div>
+
+    <!-- Step 1: Anagrafica -->
+    <div class="step-panel active" id="step1">
+
+      <div class="row">
+        <div class="field">
+          <label class="field-label">Nome</label>
+          <input id="nome" type="text" placeholder="Mario" autocomplete="given-name" required/>
+        </div>
+        <div class="field">
+          <label class="field-label">Cognome</label>
+          <input id="cognome" type="text" placeholder="Rossi" autocomplete="family-name" required/>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label class="field-label">Data di nascita <span class="optional">facolt.</span></label>
+          <input id="dob" type="date" autocomplete="bday"/>
+        </div>
+        <div class="field">
+          <label class="field-label">Domicilio</label>
+          <input id="luogo" type="text" placeholder="es. Milano" autocomplete="address-level2" required/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Email</label>
+        <input id="email" type="email" placeholder="mario.rossi@email.com" autocomplete="email" required/>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Telefono <span class="optional">facolt.</span></label>
+        <input id="tel" type="tel" placeholder="+39 333 123 4567" autocomplete="tel"/>
+      </div>
+
+      <button class="btn-primary" type="button" onclick="goStep2()">
+        Prosegui
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.5"
+             stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </button>
+
+    </div>
+
+    <!-- Step 2: Credenziali -->
+    <div class="step-panel" id="step2">
+
+      <button class="btn-back" type="button" onclick="goStep1()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.5"
+             stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"/>
+          <polyline points="12 19 5 12 12 5"/>
+        </svg>
+        Indietro
+      </button>
+
+      <div class="field">
+        <label class="field-label">Username</label>
+        <input id="username" type="text" placeholder="mario_rossi" autocomplete="username" required/>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Password</label>
+        <input id="pwd" type="password" placeholder="Almeno 8 caratteri" class="has-eye" autocomplete="new-password" required/>
+        <button class="eye-btn" type="button" onclick="togglePwd('pwd',this)" aria-label="Mostra password">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Conferma password</label>
+        <input id="pwd2" type="password" placeholder="Ripeti la password" class="has-eye" autocomplete="new-password" required/>
+        <button class="eye-btn" type="button" onclick="togglePwd('pwd2',this)" aria-label="Mostra conferma">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Tipo di account</label>
+        <div class="role-toggle">
+          <input type="radio" name="ruolo" id="role-cliente" value="cliente" checked/>
+          <label for="role-cliente">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2.2"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            Cliente
+          </label>
+          <input type="radio" name="ruolo" id="role-gestore" value="gestore"/>
+          <label for="role-gestore">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2.2"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            Gestore
+          </label>
+        </div>
+      </div>
+
+      <button class="btn-primary" type="button" onclick="submitForm()">
+        Crea account
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.5"
+             stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </button>
+
+    </div>
+
+    <p class="login-link">Hai già un account? <a href="login.html">Accedi</a></p>
+
+  </section>
+</main>
+
+<script>
+  function goStep2() {
+    const nome  = document.getElementById('nome');
+    const email = document.getElementById('email');
+    const luogo = document.getElementById('luogo');
+    if (!nome.value.trim() || !email.value.trim() || !luogo.value.trim()) {
+      [nome, email, luogo].forEach(f => {
+        if (!f.value.trim()) { f.focus(); f.style.borderColor = 'var(--error)'; }
+      });
+      return;
+    }
+    const s1 = document.getElementById('step1');
+    const s2 = document.getElementById('step2');
+    s1.classList.remove('active');
+    s2.classList.add('active', 'enter-right');
+    s2.addEventListener('animationend', () => s2.classList.remove('enter-right'), { once: true });
+    setStep(2);
+  }
+
+  function goStep1() {
+    const s1 = document.getElementById('step1');
+    const s2 = document.getElementById('step2');
+    s2.classList.remove('active');
+    s1.classList.add('active', 'enter-left');
+    s1.addEventListener('animationend', () => s1.classList.remove('enter-left'), { once: true });
+    setStep(1);
+  }
+
+  function setStep(n) {
+    const dot1  = document.getElementById('dot1');
+    const dot2  = document.getElementById('dot2');
+    const line1 = document.getElementById('line1');
+    const lbl1  = document.getElementById('lbl1');
+    const lbl2  = document.getElementById('lbl2');
+    if (n === 2) {
+      dot1.classList.remove('active'); dot1.classList.add('done');
+      dot1.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+      dot2.classList.add('active');
+      line1.classList.add('done');
+      lbl1.classList.remove('active');
+      lbl2.classList.add('active');
+    } else {
+      dot1.classList.add('active'); dot1.classList.remove('done');
+      dot1.innerHTML = '1';
+      dot2.classList.remove('active');
+      line1.classList.remove('done');
+      lbl1.classList.add('active');
+      lbl2.classList.remove('active');
+    }
+  }
+
+  function submitForm() {
+    const u = document.getElementById('username');
+    const p = document.getElementById('pwd');
+    const p2 = document.getElementById('pwd2');
+    if (!u.value.trim() || !p.value || !p2.value) return;
+    if (p.value !== p2.value) {
+      p2.style.borderColor = 'var(--error)';
+      p2.focus();
+      return;
+    }
+    alert('Account creato! (demo)');
+  }
+
+  function togglePwd(id, btn) {
+    const input = document.getElementById(id);
+    const showing = input.type === 'text';
+    input.type = showing ? 'password' : 'text';
+    btn.querySelector('svg').innerHTML = showing
+      ? '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>'
+      : '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
+  }
+</script>
+</body>
+</html>
