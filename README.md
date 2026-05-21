@@ -39,10 +39,10 @@ git push
 
 | Cognome   | Cartella                     |
 |-----------|------------------------------|
-| Barlera   | `Progettazione/Barlera/`     |
-| Ciani     | `Progettazione/Ciani/`       |
-| Gasparini | `Progettazione/Gasparini/`   |
-| Scolaro   | `Progettazione/Scolaro/`     |
+| Barlera Marco  | `Progettazione/Barlera/`     |
+| Ciani Flavio Angelo  | `Progettazione/Ciani/`       |
+| Gasparini Lorenzo| `Progettazione/Gasparini/`   |
+| Scolaro Gabriele  | `Progettazione/Scolaro/`     |
 
 ## Licenza
 
