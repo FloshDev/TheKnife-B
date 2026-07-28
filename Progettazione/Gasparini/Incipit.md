@@ -2,7 +2,7 @@
 
 Voglio partire dal ragionamento architetturale, non dal codice.
 
-Quando il client invia qualcosa al server, state modellando:
+Quando il client invia qualcosa al server, stiamo modellando:
 
 > “una richiesta di operazione”
 
@@ -18,9 +18,7 @@ Queste tre cose sono il cuore del protocollo.
 
 # 2️⃣ Ragioniamo sull’enum CommandType
 
-La vostra scelta di usare un enum è ottima.
-
-Perché?
+La scelta di usare un enum è ottima.
 
 Perché:
 
@@ -29,38 +27,26 @@ Perché:
 - rende semplice lo `switch` lato server
 - evita errori tipo `"login"` vs `"LOGIN"`
 
-Ora però c’è una decisione importante.
-
-## Domanda progettuale:
-
-Volete un enum:
-
-- MOLTO granulare
-- oppure più “macro”?
-
-Esempio.
 
 ### Approccio granulare
 
 ```
-ADD_REVIEWDELETE_REVIEWUPDATE_REVIEW
+AGGIUNGI_RECENSIONE, MODIFICA_RECENSIONE, ELIMINA_RECENSIONE
 ```
 
 ### Approccio macro
 
 ```
-REVIEW_OPERATION
+OPERAZIONE_RECENSIONE
 ```
 
 con payload che specifica il tipo.
 
 ---
 
-## Quale vi conviene?
+## Quale conviene?
 
-Nel vostro caso io vi spingerei verso:
-
-# ✅ enum GRANULARE
+# enum GRANULARE
 
 Perché:
 
@@ -75,18 +61,18 @@ Perché:
 
 Le specifiche separano chiaramente:
 
-- guest
+- guest (ospite)
 - cliente
 - ristoratore
 
-Quindi il vostro enum dovrebbe riflettere questa divisione logica.
+Quindi l'enum dovrebbe riflettere questa divisione logica.
 
 NON necessariamente con enum separati.
 
 Meglio:
 
 ```
-public enum CommandType {    // GUEST    LOGIN,    REGISTER,    SEARCH_RESTAURANTS,    GET_RESTAURANT_DETAILS,    GET_REVIEWS,    // CLIENTE    ADD_FAVORITE,    REMOVE_FAVORITE,    GET_FAVORITES,    ADD_REVIEW,    UPDATE_REVIEW,    DELETE_REVIEW,    // RISTORATORE    ADD_RESTAURANT,    GET_OWNER_RESTAURANTS,    GET_OWNER_REVIEWS,    REPLY_TO_REVIEW}
+public enum CommandType {    // GUEST    ACCEDI,    REGISTRATI,    CERCA_RISTORANTI,    OTTIENI_DETTAGLI_RISTORANTE,    LEGGI_RECENSIONI,    // CLIENTE    AGGIUNGI_PREFERITO,    RIMUOVI_PREFERITO,    VEDI_PREFERITI,    AGGIUNGI_RECENSIONE,    MODIFICA_RECENSIONE,    ELIMINA_RECENSIONE,  CERCA_VICINO,  ESCI, // RISTORATORE    AGGIUNGI_RISTORANTE,    VEDI_RISTORANTI_GESTITI,    LEGGI_RECENSIONI_RISTORANTI_GESTITI,    RISPONDI_RECENSIONE,  ASSOCIA_RISTORANTE}
 ```
 
 ---
@@ -105,11 +91,11 @@ Il client nasconde i pulsanti.
 
 Il server verifica il ruolo.
 
-Quale scegliete?
+## Quindi
 
-👉 La risposta corretta architetturalmente è:
+La risposta corretta architetturalmente è:
 
-# ✅ SEMPRE il server
+# SEMPRE il server
 
 Perché il client non è affidabile.
 
@@ -131,11 +117,10 @@ La Request deve contenere:
 - sessionId?
 - User object completo?
 
-Qui bisogna stare attenti.
 
 ## Cosa NON fare
 
-❌ inviare l’utente completo ad ogni richiesta
+Inviare l’utente completo ad ogni richiesta
 
 Perché:
 
@@ -145,7 +130,7 @@ Perché:
 
 ---
 
-# 6️⃣ Soluzione consigliata: session token
+# 6️⃣ Soluzione: session token
 
 Dopo il login:
 
@@ -173,9 +158,8 @@ String sessionToken;
 
 # 7️⃣ Ora la domanda più importante della Request:
 
-come gestire il payload variabile?
-
-Qui avete diverse possibilità.
+Come gestire il payload variabile?
+Ci sono diverse possibilità.
 
 ---
 
@@ -227,9 +211,7 @@ Ma:
 
 # 8️⃣ Quale scegliere per TheKnife?
 
-Per un progetto universitario Java distribuito:
-
-# ✅ io vi consiglierei:
+Per un progetto universitario Java distribuito, sarebbe ideale:
 
 ## Request con payload Object
 
@@ -238,7 +220,7 @@ MA con DTO dedicati.
 Esempio:
 
 ```
-Request(    CommandType.ADD_REVIEW,    token,    new AddReviewDTO(...))
+Request(    CommandType.AGGIUNGI_RECENSIONE,    token,    new AddReviewDTO(...))
 ```
 
 Quindi:
@@ -266,15 +248,14 @@ Questa è una motivazione MOLTO forte all’orale.
 
 # 🔟 Struttura minima della Request
 
-Io ragionerei su:
 
 ```
 class Request implements Serializable {    private CommandType command;    private String sessionToken;    private Object payload;}
 ```
 
-Ora però arriva la parte più importante di tutto il protocollo.
+La parte più importante di tutto il protocollo:
 
-# ⚠️ La Response
+# La Response
 
 Qui si decidono:
 
@@ -290,11 +271,11 @@ Qui si decidono:
 
 Come rappresentare successo/errore?
 
-## Opzione A
+## Opzione A (sconsigliata)
 
 Eccezioni serializzate
 
-❌ Sconsigliato.
+Sconsigliato.
 
 Perché:
 
@@ -304,11 +285,11 @@ Perché:
 
 ---
 
-## Opzione B
+## Opzione B (consigliata)
 
 Campo esplicito nella Response
 
-✅ Molto meglio.
+Molto meglio.
 
 Tipo:
 
@@ -324,11 +305,11 @@ ResponseStatus status;
 
 ---
 
-# 1️⃣2️⃣ Io vi consiglierei fortemente:
+# 1️⃣2️⃣ Implementazione migliore:
 
 ## enum ResponseStatus
 
-Perché è estendibile.
+E' estendibile.
 
 Esempio:
 
@@ -340,15 +321,9 @@ SUCCESSERRORUNAUTHORIZEDNOT_FOUNDVALIDATION_ERRORSERVER_ERROR
 
 # 1️⃣3️⃣ Domanda cruciale:
 
-Dove mettete il messaggio d’errore?
+Dove mettere il messaggio d’errore?
 
-Serve sempre?
-
-Secondo me:
-
-# ✅ sì
-
-Perché:
+Serve sempre, perché:
 
 - utile per GUI
 - utile per debugging
@@ -357,7 +332,7 @@ Perché:
 Quindi:
 
 ```
-String message;
+String messaggio;
 ```
 
 ---
@@ -386,21 +361,20 @@ con DTO specifici.
 
 # 1️⃣5️⃣ Struttura robusta della Response
 
-Io la immaginerei così:
 
 ```
-class Response implements Serializable {    private ResponseStatus status;    private String message;    private Object payload;}
+class Response implements Serializable {    private ResponseStatus status;    private String messaggio;    private Object payload;}
 ```
 
 ---
 
-# 1️⃣6️⃣ Adesso ragioniamo sui casi reali
+# 1️⃣6️⃣ Esempi concreti
 
 ## Caso:
 
-`SEARCH_RESTAURANTS`
+`CERCA_RISTORANTI`
 
-Cosa ritorna?
+Ritorna:
 
 ```
 payload = List<RestaurantPreviewDTO>
@@ -408,51 +382,40 @@ payload = List<RestaurantPreviewDTO>
 
 NON il Restaurant completo.
 
-Perché?
-
-Domanda per voi:
-
-- vi serve davvero inviare:
+Non serve inviare:
     - recensioni
     - dettagli completi
     - statistiche
     - ownerId
 
-durante una ricerca?
-
-Probabilmente no.
+durante una ricerca.
 
 Quindi:
 
 # DTO diversi per schermate diverse
 
-Questo è design serio.
-
 ---
 
-# 1️⃣7️⃣ Gestione errori: decisione critica
+# 1️⃣7️⃣ Gestione errori
 
-Immagina:
+Ad esempio, avendo:
 
 ```
 utente non autorizzato
 ```
 
-Cosa fate?
 
-## Opzione cattiva
+## Opzione sbagliata
 
 ```
 status = ERRORmessage = "errore"
 ```
 
-## Opzione migliore
+## Opzione corretta
 
 ```
 status = UNAUTHORIZEDmessage = "Solo i ristoratori possono eseguire questa operazione"
 ```
-
-Perché?
 
 Perché il client GUI può reagire diversamente:
 
@@ -463,9 +426,9 @@ Perché il client GUI può reagire diversamente:
 
 ---
 
-# 1️⃣8️⃣ Ultima domanda architetturale importante
+# 1️⃣8️⃣ Aspetto architetturale
 
-Cosa succede se arriva:
+Se arriva:
 
 ```
 CommandType = null
@@ -481,12 +444,13 @@ Il server NON deve crashare.
 
 Quindi:
 
-- validate Request
+- validare Request
 - switch default
 - Response con:
 
 ```
-status = ERRORmessage = "Unsupported command"
+status = ERROR
+messaggio = "Unsupported command"
 ```
 
 ---
@@ -495,27 +459,23 @@ status = ERRORmessage = "Unsupported command"
 
 Response sempre valida?
 
-Io direi:
-
-# ✅ sì
-
-Anche in caso di errore.
+Sì, anche in caso di errore.
 
 Cioè:
 
 - il server cerca SEMPRE di restituire una Response
 - evita di chiudere brutalmente la socket
 
-Questa è una scelta molto professionale.
+Questa è la scelta migliore.
 
 ---
 
 # 2️⃣0️⃣ Punto finale: protocollo coerente
 
-Il vostro obiettivo dovrebbe essere:
+Obiettivo:
 
 ```
-Request:- command- sessionToken- payloadResponse:- status- message- payload
+Request:- command- sessionToken- payloadResponse:- status- messaggio- payload
 ```
 
 con:
@@ -529,7 +489,6 @@ Questa architettura è:
 
 - semplice
 - estendibile
-- difendibile all’esame
 - molto Java-oriented
 - perfetta per socket + serialization.
 
@@ -541,15 +500,15 @@ Le specifiche insistono molto su:
 - controllo errori,
 - qualità progettuale
 
-e il protocollo che state costruendo va proprio in quella direzione.
+e il protocollo che stiamo costruendo va proprio in quella direzione.
 
-Ora facciamo un passo avanti: consolidiamo le vostre scelte e individuiamo i punti delicati.
+Ora consolidiamo le scelte e individuiamo i punti delicati.
 
 ---
 
-# 1️⃣ La vostra architettura attuale: valutazione
+# 1️⃣ Archietttura attuale: valutazione
 
-## ✅ Enum granulare
+## Enum granulare
 
 Ottima scelta.
 
@@ -564,13 +523,13 @@ Vantaggi:
 Esempio:
 
 ```
-ADD_REVIEWDELETE_REVIEWLOGINSEARCH_RESTAURANTS
+AGGIUNGI_RECENSIONE, MODIFICA_RECENSIONE, ELIMINA_RECENSIONE
 ```
 
 molto meglio di:
 
 ```
-REVIEW_OPERATION
+OPERAZIONE_RECENSIONE
 ```
 
 ---
@@ -594,13 +553,11 @@ Questa è una cosa molto importante da dire all’orale.
 
 # 3️⃣ Request con Object payload + DTO specifici
 
-Questa è probabilmente la scelta più importante che avete fatto.
-
-Qui però bisogna capire bene COSA state facendo davvero.
+Questa è probabilmente la decisione più importante presa finora.
 
 ---
 
-# 4️⃣ Che cos’è un DTO nel vostro caso?
+# 4️⃣ Che cos’è un DTO in questo caso?
 
 DTO = Data Transfer Object
 
@@ -652,7 +609,6 @@ Questo è un principio architetturale molto forte.
 
 # 6️⃣ Flusso corretto lato server
 
-Immaginate:
 
 ```
 client GUI    ↓Request    ↓DTO    ↓Service layer    ↓DAO    ↓PostgreSQL
@@ -662,7 +618,7 @@ Questa separazione è ottima.
 
 ---
 
-# 7️⃣ Attenzione IMPORTANTISSIMA
+# 7️⃣ Attenzione
 
 Mai serializzare direttamente:
 
@@ -685,7 +641,7 @@ Con:
 Object payload;
 ```
 
-prima o poi farete:
+prima o poi sarà necessario:
 
 ```
 AddReviewDTO dto = (AddReviewDTO) request.getPayload();
@@ -697,14 +653,12 @@ Questa è la parte fragile.
 
 # 9️⃣ Come evitare problemi?
 
-Qui serve disciplina progettuale.
-
 Lo switch sul `CommandType` deve essere coerente col DTO atteso.
 
 Esempio:
 
 ```
-case ADD_REVIEW -> {    AddReviewDTO dto =        (AddReviewDTO) request.getPayload();}
+case AGGIUNGI_RECENSIONE -> {    AddReviewDTO dto =        (AddReviewDTO) request.getPayload();}
 ```
 
 NON:
@@ -722,22 +676,19 @@ Cosa succede se il payload è sbagliato?
 Esempio:
 
 ```
-command = ADD_REVIEWpayload = LoginDTO
+command = AGGIUNGI_RECENSIONE
+payload = LoginDTO
 ```
 
-Qui avete due possibilità:
+Ci sono due possibilità:
 
 ---
 
-## Opzione 1 — crash
-
-Brutta.
+## Opzione 1 — crash (errata)
 
 ---
 
 ## Opzione 2 — validazione server
-
-Molto meglio.
 
 Esempio:
 
@@ -745,7 +696,7 @@ Esempio:
 if (!(payload instanceof AddReviewDTO))
 ```
 
-e restituite:
+e restituiamo:
 
 ```
 ResponseStatus.VALIDATION_ERROR
@@ -780,7 +731,7 @@ Anche:
 
 ---
 
-# 1️⃣2️⃣ Qui c’è una decisione molto importante:
+# 1️⃣2️⃣ Decisione importante:
 
 Errori tecnici o errori utente?
 
@@ -798,11 +749,7 @@ password errata
 SQLException
 ```
 
-Secondo voi:
-
-- il client deve vedere il messaggio SQL reale?
-
-👉 Assolutamente no.
+Il client NON deve vedere il messaggio SQL reale.
 
 Quindi:
 
@@ -815,13 +762,11 @@ Esempio:
 SERVER_ERROR"Errore interno del server"
 ```
 
-Questo è molto professionale.
-
 ---
 
 # 1️⃣3️⃣ Grande attenzione al versioning
 
-Dato che usate:
+Usando:
 
 ```
 ObjectInputStream/ObjectOutputStream
@@ -839,7 +784,7 @@ tutti devono sincronizzare bene GitHub.
 
 # 1️⃣4️⃣ Consiglio IMPORTANTISSIMO per Maven
 
-Create un modulo condiviso tipo:
+Creare un modulo condiviso tipo:
 
 ```
 theknife-common
@@ -871,9 +816,8 @@ Altrimenti:
 
 # 1️⃣5️⃣ ATTENZIONE ai serialVersionUID
 
-Dato che usate serializzazione Java:
+Usando la serializzazione Java, va messo SEMPRE.
 
-# mettetelo SEMPRE.
 
 Esempio:
 
@@ -913,10 +857,8 @@ Specialmente:
 
 # 1️⃣7️⃣ ATTENZIONE alla sessione
 
-Domanda importante:  
-dove memorizzate i token?
+Per quanto riguarda dove memorizzare i token, probabilmente:
 
-Probabilmente:
 
 ```
 ConcurrentHashMap<String, SessionData>
@@ -930,13 +872,13 @@ Questa è una scelta buona.
 
 # 1️⃣8️⃣ Scaletta consigliata (IMPORTANTISSIMA)
 
-Vi conviene seguire QUESTO ordine.
+Seguire QUESTO ordine.
 
 ---
 
 # FASE 1 — common module
 
-Create:
+Creare:
 
 - enum CommandType
 - enum ResponseStatus
@@ -953,7 +895,7 @@ Solo protocollo.
 
 # FASE 2 — networking minimo
 
-Implementate:
+Implementare:
 
 - server socket
 - accept()
@@ -972,10 +914,10 @@ Prima di tutto.
 
 # FASE 3 — autenticazione
 
-Implementate:
+Implementare:
 
-- LOGIN
-- REGISTER
+- ACCEDI
+- REGISTRATI
 - token sessione
 
 e:
@@ -987,13 +929,13 @@ e:
 
 # FASE 4 — service layer
 
-Create:
+Creare:
 
 - RestaurantService
 - ReviewService
 - AuthService
 
-Qui mettete logica applicativa.
+Qui va messa la logica applicativa.
 
 ---
 
@@ -1005,7 +947,7 @@ Solo ora:
 - query SQL
 - PostgreSQL
 
-Separate bene:
+Separare bene:
 
 ```
 Service ≠ DAO
@@ -1015,7 +957,7 @@ Service ≠ DAO
 
 # FASE 6 — comandi guest
 
-Implementate:
+Implementare:
 
 - ricerca ristoranti
 - dettagli
@@ -1025,7 +967,7 @@ Implementate:
 
 # FASE 7 — comandi cliente
 
-Implementate:
+Implementare:
 
 - preferiti
 - recensioni
@@ -1034,7 +976,7 @@ Implementate:
 
 # FASE 8 — comandi ristoratore
 
-Implementate:
+Implementare:
 
 - aggiunta ristorante
 - risposta recensioni
@@ -1044,7 +986,7 @@ Implementate:
 
 # FASE 9 — gestione errori seria
 
-Aggiungete:
+Aggiungere:
 
 - logging
 - validazione
@@ -1052,18 +994,3 @@ Aggiungete:
 - gestione socket chiuse
 
 ---
-
-# 2️⃣0️⃣ Ultimo consiglio davvero importante
-
-NON cercate subito:
-
-- perfezione,
-- genericità estrema,
-- reflection,
-- framework complessi.
-
-Per un progetto universitario:
-
-# semplicità + coerenza architetturale
-
-vince SEMPRE.
