@@ -21,6 +21,41 @@ docente, non si aggira.
 - Protocollo: pattern Request/Response con enum `CommandType`
 - **Il client non accede mai al database.** Tutto passa dal server.
 
+## Struttura progetto e consegna
+
+Radice dei package, jar prodotti, layout di consegna. **Deciso qui prima dello
+scaffold (PHASE 0):** cambiarlo dopo significa rifare `pom.xml` e rinominare i
+package.
+
+### Package — radice `theknife.`
+
+DIRETTIVE §3.3: il package `theknife` deve esistere e contenere le classi. Ogni
+package del progetto sta sotto la radice `theknife.`:
+
+- `theknife.common` — `.dto`, `.protocol` (`Request`, `Response`, `CommandType`,
+  `ResponseStatus`), interfaccia `Command`
+- `theknife.server` — `.network`, `.handler`, `.service`, `.dao`, `.external`
+- `theknife.client` — `.app`, `.service`, `.network`, `.ui`
+
+I nomi dei **moduli Maven** (`theknife-common` ecc.) sono indipendenti dai package
+e restano invariati: il vincolo del docente è sui **package** (`theknife.*`) e sui
+**2 jar**. Nei doc conclusi i package sono citati in forma breve (`server.dao`):
+la radice `theknife.` è sottintesa.
+
+### Jar — 2 eseguibili self-contained
+
+3 moduli Maven, **2 jar** in output (§4): `serverTK.jar` (da `theknife-server`) e
+`clientTK.jar` (da `theknife-client`). Ciascuno impacchetta `theknife-common` al
+suo interno via `maven-shade` (o `maven-assembly`). `theknife-common` è libreria
+interna, non produce jar eseguibile.
+
+### Layout consegna
+
+Sviluppo in layout Maven standard (`src/main/java`, `target/`). **Consegna
+separata dallo sviluppo:** a fine progetto un profilo/script produce il bundle §4
+in radice — `doc/ bin/ src/ lib/`, `pom.xml`, `autori.txt`, `README.txt`. Non si
+sviluppa dentro il layout di consegna.
+
 ## Decisioni architetturali chiuse
 
 Elenco secco. Motivazioni per esteso in

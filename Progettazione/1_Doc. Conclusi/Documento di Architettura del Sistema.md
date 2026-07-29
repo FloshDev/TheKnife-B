@@ -24,6 +24,15 @@ dipende da `theknife-server` e non contiene mai codice di accesso al
 database — separazione architetturalmente obbligatoria: il client non
 deve poter accedere al DB né direttamente né indirettamente.
 
+## Convenzione dei package
+
+Tutti i package del progetto hanno radice `theknife.` (obbligo DIRETTIVE §3.3: il
+package `theknife` deve esistere e contenere le classi). Nel seguito i layer sono
+citati in forma breve (`server.network`, `client.app`, …) sottintendendo il
+prefisso: il package reale è `theknife.server.network`, `theknife.client.app`,
+ecc. I nomi dei moduli Maven (`theknife-common` ecc.) sono indipendenti dai
+package.
+
 ## Contenuto del modulo common
 
 Il modulo `theknife-common` contiene esclusivamente le classi condivise
