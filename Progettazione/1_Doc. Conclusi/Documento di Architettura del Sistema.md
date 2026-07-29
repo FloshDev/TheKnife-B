@@ -33,7 +33,7 @@ sul socket tramite `ObjectOutputStream`/`ObjectInputStream`.
 ### Protocollo di comunicazione
 
 - `CommandType` — enum che elenca tutte le operazioni disponibili nel
-  sistema (es. `LOGIN`, `CERCA_RISTORANTI`, `AGGIUNGI_RECENSIONE`)
+  sistema (es. `ACCEDI`, `CERCA_RISTORANTI`, `AGGIUNGI_RECENSIONE`)
 - `Request` — incapsula una richiesta del client: contiene un
   `CommandType`, un `Object payload` con i parametri dell'operazione, e
   un `String sessionToken` che il client include in ogni richiesta
@@ -116,7 +116,7 @@ sa nulla del database né dei servizi esterni: delega ai layer sottostanti.
 
 Ogni operazione di scrittura che coinvolge più entità viene eseguita in
 una singola transazione JDBC: il `service` ottiene la connessione,
-imposta `setAutoCommit(false)`, esegue le operazioni sui repository, e
+imposta `setAutoCommit(false)`, esegue le operazioni sui DAO, e
 invoca `commit()` al termine. In caso di eccezione viene eseguito il
 `rollback()`, garantendo che il database non rimanga in uno stato
 inconsistente.
@@ -128,21 +128,21 @@ una seconda recensione sullo stesso ristorante, che viola il constraint
 trasforma in una `Response` con `status = ERROR` e un messaggio
 leggibile, senza propagare l'eccezione al layer superiore.
 
-### `server.repository`
+### `server.dao`
 
 Parla con PostgreSQL tramite JDBC. Contiene esclusivamente query SQL e
 nessuna logica di business. Ogni entità ha il suo repository:
-`UtenteRepository`, `RistoranteRepository`, `RecensioneRepository`,
-`ServizioRepository`.
+`UtenteDAO`, `RistoranteDAO`, `RecensioneDAO`,
+`ServizioDAO`.
 
-I repository utilizzano direttamente i DTO definiti in `theknife-common`
+I DAO utilizzano direttamente i DTO definiti in `theknife-common`
 come struttura dati di ritorno, senza introdurre classi entity separate.
 Questo evita duplicazione e strati di conversione superflui — una scelta
 coerente con l'assenza di un ORM: i DTO vengono popolati direttamente
 dal `ResultSet` JDBC e restituiti al `service`. Eventuali campi non
 serializzati necessari solo lato server sono marcati `transient`.
 
-`RistoranteRepository` esegue query aggregate (`AVG(stelle)`,
+`RistoranteDAO` esegue query aggregate (`AVG(stelle)`,
 `COUNT(*)`) per calcolare media e numero di recensioni al momento della
 lettura, popolando i campi corrispondenti nel `RistoranteDTO` prima di
 restituirlo.
@@ -157,25 +157,36 @@ dal `server.service`.
 
 ## Layer del client
 
-Il client JavaFX è organizzato in tre layer.
+Il client JavaFX è organizzato in quattro layer.
 
 ### `client.app`
 
-Punto di ingresso dell'applicazione JavaFX. Inizializza il `ServerService`
-una volta sola all'avvio e lo rende disponibile a tutti i controller per
-tutta la durata della sessione.
+Punto di ingresso dell'applicazione JavaFX. Inizializza il `ServerConnection`
+una volta sola all'avvio; i controller accedono al server tramite i service
+in `client.service` per tutta la durata della sessione.
 
 ### `client.service`
 
-Contiene il `ServerService`, classe Singleton che centralizza tutta la
-comunicazione col server. Espone metodi ad alto livello che i controller
-chiamano direttamente — `cercaRistoranti(...)`, `login(...)`,
-`aggiungiRecensione(...)` — e gestisce internamente la costruzione della
-`Request`, la serializzazione, l'invio sul socket, la ricezione e la
-deserializzazione della `Response`. I controller non conoscono l'esistenza
-del socket.
+Contiene tre service di dominio — `AuthService`, `RistoranteService`,
+`RecensioneService` — che espongono ai controller metodi ad alto livello
+raggruppati per area funzionale: `AuthService` per login e registrazione,
+`RistoranteService` per ricerca e dettaglio, `RecensioneService` per la
+gestione delle recensioni. Ogni service traduce la chiamata del controller
+in una `Request` e delega l'invio al `ServerConnection` in `client.network`,
+restituendo al controller il payload deserializzato dalla `Response`.
 
-Il `ServerService` conserva il `sessionToken` restituito dal server al
+I service non conoscono i dettagli del socket: si limitano a costruire la
+`Request` di dominio e a interpretare la `Response`.
+
+### `client.network`
+
+Contiene il `ServerConnection`, classe Singleton che centralizza tutta la
+comunicazione col server. Gestisce la costruzione finale della `Request`,
+la serializzazione, l'invio sul socket, la ricezione e la deserializzazione
+della `Response`. I service — e quindi i controller — non conoscono
+l'esistenza del socket.
+
+Il `ServerConnection` conserva il `sessionToken` restituito dal server al
 login e lo include automaticamente in ogni `Request` successiva.
 
 Le chiamate al server avvengono su thread separati rispetto al JavaFX
@@ -185,7 +196,8 @@ della risposta.
 ### `client.ui`
 
 Contiene i controller JavaFX, uno per schermata. Ogni controller chiama
-i metodi del `ServerService` e aggiorna la GUI con i dati ricevuti.
+i metodi dei service (`AuthService`, `RistoranteService`,
+`RecensioneService`) e aggiorna la GUI con i dati ricevuti.
 Non contiene logica di comunicazione né logica di business.
 
 ## Design pattern adottati
@@ -202,43 +214,43 @@ con UML e difficile da estendere.
 
 Il pattern Command risolve il problema rappresentando ogni operazione
 come un oggetto autonomo. Ogni `CommandType` corrisponde a una classe
-handler dedicata che implementa un'interfaccia comune — ad esempio
-`CommandHandler` con un metodo `execute(Request, UtenteDTO): Response`.
+handler dedicata che implementa un'interfaccia comune — l'interfaccia
+`Command` con un metodo `execute(Request, UtenteDTO): Response`.
 Il dispatcher legge il `CommandType`, istanzia l'handler corretto e
 lo esegue. Aggiungere una nuova operazione significa aggiungere una
 nuova classe, senza toccare il codice esistente.
 
 ### Singleton
 
-**Dove si applica:** `client.service` — classe `ServerService`
+**Dove si applica:** `client.network` — classe `ServerConnection`
 
-Il `ServerService` gestisce la connessione socket verso il server.
+Il `ServerConnection` gestisce la connessione socket verso il server.
 Aprire una connessione per ogni schermata significherebbe avere
 connessioni multiple aperte simultaneamente verso lo stesso server,
 con overhead inutile e rischio di inconsistenza dello stato di sessione.
 
 Il pattern Singleton garantisce che esista una sola istanza di
-`ServerService` per tutta la durata dell'applicazione client.
+`ServerConnection` per tutta la durata dell'applicazione client.
 Viene inizializzata una volta sola in `client.app` all'avvio e
-condivisa da tutti i controller tramite un metodo statico
-`ServerService.getInstance()`.
+condivisa da tutti i service tramite un metodo statico
+`ServerConnection.getInstance()`.
 
 ### Facade
 
-**Dove si applica:** `client.service` — classe `ServerService`
+**Dove si applica:** `client.network` — classe `ServerConnection`
 
-I controller JavaFX non devono conoscere i dettagli della comunicazione
-di rete: apertura del socket, costruzione della `Request`,
-serializzazione, attesa della risposta, deserializzazione, gestione
-degli errori di rete. Distribuire questa logica in ogni controller
-significherebbe duplicazione e accoppiamento forte con il protocollo.
+I controller JavaFX e i service non devono conoscere i dettagli della
+comunicazione di rete: apertura del socket, serializzazione, attesa della
+risposta, deserializzazione, gestione degli errori di rete. Distribuire
+questa logica significherebbe duplicazione e accoppiamento forte con il
+protocollo.
 
 Il pattern Facade risolve il problema esponendo un'interfaccia
-semplificata verso questo sottosistema complesso. Il `ServerService`
-offre metodi ad alto livello — `cercaRistoranti(...)`, `login(...)`,
-`aggiungiRecensione(...)` — che nascondono interamente i dettagli
-implementativi. I controller dipendono solo dall'interfaccia del
-`ServerService`, non dal protocollo sottostante.
+semplificata verso questo sottosistema complesso. Il `ServerConnection`
+offre un punto d'accesso unico per inviare una `Request` e ottenere la
+`Response`, nascondendo interamente i dettagli implementativi. I service
+dipendono solo dall'interfaccia del `ServerConnection`, non dal protocollo
+sottostante.
 
 ### Observer
 
