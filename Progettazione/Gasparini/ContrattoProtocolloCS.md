@@ -11,21 +11,21 @@
 | REGISTRATI                          | RegistratiDTO          | R. senza payload/DTO conferma |no
 | AGGIUNGI_RECENSIONE                 | AggiungiRecensioneDTO  | R. senza payload/DTO conferma |sì
 | OTTIENI_LOCALITA_INIZIALE           | null                   | PosizioneDTO                  |no
-| OTTIENI_DETTAGLI_RISTORANTE         | SelezionaRistoranteDTO | RistoranteDTO                 |no
+| OTTIENI_DETTAGLI_RISTORANTE         | IdRistoranteDTO        | RistoranteDTO                 |no
 | LEGGI_RECENSIONI                    | LeggiRecensioniDTO     | RecensioniRistoranteDTO       |no
-| AGGIUNGI_PREFERITO                  | AggiungiPreferitoDTO   | R. senza payload              |sì
-| RIMUOVI_PREFERITO                   | RimuoviPreferitoDTO    | R. senza payload              |sì
+| AGGIUNGI_PREFERITO                  | IdRistoranteDTO        | R. senza payload              |sì
+| RIMUOVI_PREFERITO                   | IdRistoranteDTO        | R. senza payload              |sì
 | VEDI_PREFERITI                      | null                   | `List<RistoranteDTO>`         |sì
 | MODIFICA_RECENSIONE                 | ModificaRecensioneDTO  | R. senza payload/DTO conferma |sì
 | ELIMINA_RECENSIONE                  | EliminaRecensioneDTO   | R. senza payload              |sì
 | CERCA_VICINO                        | CercaVicinoDTO         | `List<RistoranteDTO>`         |sì
 | ESCI (DISCONNETTITI)                | null                   | R. senza payload              |sì
-| AGGIUNGI_RISTORANTE                 | AggiungiRistoranteDTO  | R: senza payload/DTO conferma |sì
+| AGGIUNGI_RISTORANTE                 | AggiungiRistoranteDTO  | R. senza payload/DTO conferma |sì
 | VEDI_RISTORANTI_GESTITI             | null                   | `List<RistoranteDTO>`         |sì
 | LEGGI_RECENSIONI_RISTORANTI_GESTITI | null                   | `List<RecensioneDTO>`         |sì
-| OTTIENI_RIEPILOGO_RISTORANTE        | DettagliRistoranteDTO  | StatisticheRistoranteDTO      |sì
+| OTTIENI_RIEPILOGO_RISTORANTE        | IdRistoranteDTO        | StatisticheRistoranteDTO      |sì
 | RISPONDI_RECENSIONE                 | RispondiRecensioneDTO  | R. senza payload              |sì
-| ASSOCIA_RISTORANTE                  | AssociaRistoranteDTO   | R. senza payload/DTO conferma |sì
+| ASSOCIA_RISTORANTE                  | IdRistoranteDTO        | R. senza payload/DTO conferma |sì
 
 
 | ruolo       | operazione                          | richiede dati  | restituisce dati        |
