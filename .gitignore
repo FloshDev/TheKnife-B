@@ -17,6 +17,7 @@ Thumbs.db
 
 # Maven
 target/
+dependency-reduced-pom.xml
 
 # IDE
 .idea/
