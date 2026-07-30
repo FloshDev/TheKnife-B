@@ -1,3 +1,6 @@
+package theknife.common.dto;
+import java.io.Serializable;
+
 public class LoginDTO implements Serializable {
     private static final long serialVersionUID = 1L;
     private String username;
@@ -24,8 +27,8 @@ public class LoginDTO implements Serializable {
         this.password = password;
     }
 //Metodo toString
-@Override
+    @Override
     public String toString() {
-        return "LoginDTO [username=" + username + ", password=" + password + "]";
+        return "LoginDTO [username=" + username + "]";
     }
 }

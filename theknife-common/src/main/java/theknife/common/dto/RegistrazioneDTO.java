@@ -1,4 +1,7 @@
-import javax.xml.crypto.Data;
+package theknife.common.dto;
+import java.io.Serializable;
+import java.time.LocalDate;
+import theknife.common.enums.Ruolo;
 
 public class RegistrazioneDTO implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -8,12 +11,12 @@ public class RegistrazioneDTO implements Serializable {
     private String password;
     private String email;
     private Ruolo ruolo;
-    private Data dataNascita;
+    private LocalDate dataNascita;
     private String domicilio;
 
 //Costruttore
     public RegistrazioneDTO(String nome, String cognome, String username, 
-        String password, String email, Ruolo ruolo, Data dataNascita, String domicilio) {
+        String password, String email, Ruolo ruolo, LocalDate dataNascita, String domicilio) {
         this.nome = nome;
         this.cognome = cognome;
         this.username = username;
@@ -23,7 +26,6 @@ public class RegistrazioneDTO implements Serializable {
         this.dataNascita = dataNascita;
         this.domicilio = domicilio;
     }
-}
 //Setters
     public void setNome(String x) {
         this.nome = x;
@@ -49,7 +51,7 @@ public class RegistrazioneDTO implements Serializable {
         this.ruolo = x;
     }
 
-    public void setDataNascita(Data x) {
+    public void setDataNascita(LocalDate x) {
         this.dataNascita = x;
     }
 
@@ -81,7 +83,7 @@ public class RegistrazioneDTO implements Serializable {
         return ruolo;
     }
 
-    public Data getDataNascita() {
+    public LocalDate getDataNascita() {
         return dataNascita;
     }
 
@@ -89,10 +91,10 @@ public class RegistrazioneDTO implements Serializable {
         return domicilio;
     }
 //Metodo toString
-@Override
+    @Override
     public String toString() {
         return "RegistrazioneDTO [nome=" + nome + ", cognome=" + cognome + ", username=" + username + 
-            ", password=" + password + ", email=" + email + ", ruolo=" + ruolo + 
+            ", email=" + email + ", ruolo=" + ruolo + 
             ", dataNascita=" + dataNascita + ", domicilio=" + domicilio + "]";
     }
 }

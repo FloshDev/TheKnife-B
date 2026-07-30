@@ -1,4 +1,6 @@
+package theknife.common.protocol;
 import java.io.Serializable;
+import theknife.common.enums.CommandType;
 
 public class Request implements Serializable{
     private static final long serialVersionUID = 1L;
@@ -36,7 +38,7 @@ public class Request implements Serializable{
         return sessionToken;
     }
 //Metodo toString
-@Override
+    @Override
     public String toString() {
         return "Request [commandType=" + commandType + ", payload=" + payload + 
             ", sessionToken=" + sessionToken + "]";

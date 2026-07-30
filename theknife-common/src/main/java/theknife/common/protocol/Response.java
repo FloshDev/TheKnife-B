@@ -1,4 +1,6 @@
+package theknife.common.protocol;
 import java.io.Serializable;
+import theknife.common.enums.ResponseStatus;
 
 public class Response implements Serializable{
     private static final long serialVersionUID = 1L;
@@ -37,7 +39,7 @@ public class Response implements Serializable{
         return messaggio;
     }
 //Metodo toString
-@Override
+    @Override
     public String toString() {
         return "Response [status=" + status + ", payload=" + payload + 
             ", messaggio=" + messaggio + "]";

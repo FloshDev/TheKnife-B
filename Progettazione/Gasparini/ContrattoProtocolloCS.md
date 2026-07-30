@@ -1,6 +1,7 @@
 # Contratto del protocollo
 
-Ogni CommandType rappresenta una singola operazione atomica eseguibile dal server.
+- Ogni CommandType rappresenta una singola operazione atomica eseguibile dal server.
+- I DTO del modulo common sono classi immutabili dal punto di vista del significato: contengono esclusivamente dati trasferiti sulla rete e non implementano alcuna logica applicativa.
 
 
 | CommandType                         | DTO Request            | DTO/ogg. Response             |Token
@@ -9,7 +10,7 @@ Ogni CommandType rappresenta una singola operazione atomica eseguibile dal serve
 | CERCA_RISTORANTI                    | CercaRistoranteDTO     | `List<RistoranteDTO>`         |no
 | REGISTRATI                          | RegistratiDTO          | R. senza payload/DTO conferma |no
 | AGGIUNGI_RECENSIONE                 | AggiungiRecensioneDTO  | R. senza payload/DTO conferma |sì
-| OTTIENI_LOCALITA_INIZIALE           | LocalizzazioneDTO      | PosizioneDTO                  |no
+| OTTIENI_LOCALITA_INIZIALE           | null                   | PosizioneDTO                  |no
 | OTTIENI_DETTAGLI_RISTORANTE         | SelezionaRistoranteDTO | RistoranteDTO                 |no
 | LEGGI_RECENSIONI                    | LeggiRecensioniDTO     | RecensioniRistoranteDTO       |no
 | AGGIUNGI_PREFERITO                  | AggiungiPreferitoDTO   | R. senza payload              |sì

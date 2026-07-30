@@ -1,3 +1,5 @@
+package theknife.common.enums;
+
 public enum CommandType { 
 // GUEST 
 OTTIENI_LOCALITA_INIZIALE, ACCEDI, REGISTRATI, CERCA_RISTORANTI, OTTIENI_DETTAGLI_RISTORANTE,
