@@ -1,7 +1,7 @@
 package theknife.common.dto;
 import java.util.List;
 
-public class CercaRistoranteDTO implements java.io.Serializable {
+public class CercaRistorantiDTO implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     private String nome;
     private String citta;
@@ -11,7 +11,7 @@ public class CercaRistoranteDTO implements java.io.Serializable {
     private Boolean consegnaADomicilio;
     private List<String> servizi;
 //Costruttore
-    public CercaRistoranteDTO(String nome, String citta, String tipoCucina, 
+    public CercaRistorantiDTO(String nome, String citta, String tipoCucina, 
             Boolean prenotazioneOnline, String fasciaPrezzo, Boolean consegnaADomicilio, 
             List<String> servizi) {
         this.nome = nome;
