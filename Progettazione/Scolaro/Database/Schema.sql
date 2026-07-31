@@ -21,14 +21,13 @@ CREATE TABLE RistorantiTheKnife (
     delivery            BOOLEAN DEFAULT FALSE,
     prenotazione_online BOOLEAN DEFAULT FALSE,
     tipo_cucina         VARCHAR(100),
-    -- AGGIUNGERE QUESTI:
     telefono            VARCHAR(20),
     website             VARCHAR(255),
     premi               TEXT,
     servizi             TEXT,
+    descrizione         TEXT,
     username_gestore    VARCHAR(50) REFERENCES Utenti(username) ON DELETE SET NULL
 );
-
 
 CREATE TABLE Recensioni (
     id_recensione   SERIAL PRIMARY KEY,
