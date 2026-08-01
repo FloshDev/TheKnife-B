@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Layout della schermata di login (S02). @author Barlera Marco, 760000, VA -->
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.LoginController">
+
+    <TextField fx:id="usernameField" promptText="Username" />
+    <PasswordField fx:id="passwordField" promptText="Password" />
+    <Button text="Accedi" onAction="#handleLogin"/>
+    <Button text="Registrati" onAction="#handleRegistrazione"/>
+    <Hyperlink text="Continua come ospite" onAction="#handleGuest"/>
+</VBox>
