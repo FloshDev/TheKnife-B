@@ -4,6 +4,7 @@ import theknife.common.enums.Ruolo;
 
 public class UtenteDTO implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
+    private long idUtente;
     private String username;
     private String nome;
     private String cognome;
@@ -13,8 +14,9 @@ public class UtenteDTO implements java.io.Serializable {
     private String domicilio;
 
 //Costruttore
-    public UtenteDTO(String username, String nome, String cognome, String email, 
+    public UtenteDTO(long idUtente, String username, String nome, String cognome, String email, 
             Ruolo ruolo, LocalDate dataNascita, String domicilio) {
+        this.idUtente = idUtente;
         this.username = username;
         this.nome = nome;
         this.cognome = cognome;
@@ -25,6 +27,14 @@ public class UtenteDTO implements java.io.Serializable {
     }
 
 //Getters e Setters
+    public long getIdUtente() {
+        return idUtente;
+    }
+
+    public void setIdUtente(long idUtente) {
+        this.idUtente = idUtente;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -84,7 +94,7 @@ public class UtenteDTO implements java.io.Serializable {
 //Metodo toString
     @Override
     public String toString() {
-        return "UtenteDTO [username=" + username + ", nome=" + nome + 
+        return "UtenteDTO [idUtente=" + idUtente + ", username=" + username + ", nome=" + nome + 
             ", cognome=" + cognome + ", email=" + email + ", ruolo=" + ruolo + 
             ", dataNascita=" + dataNascita + ", domicilio=" + domicilio + "]";
     }

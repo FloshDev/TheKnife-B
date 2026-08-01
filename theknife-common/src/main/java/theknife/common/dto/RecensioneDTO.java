@@ -8,21 +8,26 @@ public class RecensioneDTO implements java.io.Serializable {
     private String titolo;
     private String testo;
     private int stelle;
+    private long idUtente;
     private String usernameAutore;
     private LocalDate dataPubblicazione;
     private String risposta;
+    private LocalDate dataRisposta;
 
 //Costruttore
-    public RecensioneDTO(long idRecensione,  long idRistorante, String titolo, String testo, 
-            int stelle, String usernameAutore, LocalDate dataPubblicazione, String risposta) {
+    public RecensioneDTO(long idRecensione, long idRistorante, String titolo, String testo, 
+            int stelle, long idUtente, String usernameAutore, LocalDate dataPubblicazione, String risposta, 
+            LocalDate dataRisposta) {
         this.idRecensione = idRecensione;
         this.idRistorante = idRistorante;
         this.titolo = titolo;
         this.testo = testo;
         this.stelle = stelle;
+        this.idUtente = idUtente;
         this.usernameAutore = usernameAutore;
         this.dataPubblicazione = dataPubblicazione;
         this.risposta = risposta;
+        this.dataRisposta = dataRisposta;
     }
 
 //Getters e Setters
@@ -66,6 +71,14 @@ public class RecensioneDTO implements java.io.Serializable {
         this.stelle = stelle;
     }
 
+    public long getIdUtente() {
+        return idUtente;
+    }
+
+    public void setIdUtente(long idUtente) {
+        this.idUtente = idUtente;
+    }
+
     public String getUsernameAutore() {
         return usernameAutore;
     }
@@ -90,12 +103,21 @@ public class RecensioneDTO implements java.io.Serializable {
         this.risposta = risposta;
     }
 
+    public LocalDate getDataRisposta() {
+        return dataRisposta;
+    }
+
+    public void setDataRisposta(LocalDate dataRisposta) {
+        this.dataRisposta = dataRisposta;
+    }
+
 //Metodo toString
     @Override
     public String toString() {
         return "RecensioneDTO [idRecensione=" + idRecensione + ", idRistorante=" + idRistorante + 
             ", titolo=" + titolo + ", testo=" + testo + ", stelle=" + stelle + 
-            ", usernameAutore=" + usernameAutore + ", dataPubblicazione=" + dataPubblicazione + 
-            ", risposta=" + risposta + "]";
+            ", idUtente=" + idUtente + ", usernameAutore=" + usernameAutore + 
+            ", dataPubblicazione=" + dataPubblicazione + 
+            ", risposta=" + risposta + ", dataRisposta=" + dataRisposta + "]";
     }
 }

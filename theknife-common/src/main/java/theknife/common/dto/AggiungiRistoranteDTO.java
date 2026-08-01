@@ -7,19 +7,19 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
     private String indirizzo;
     private String citta;
     private String nazione;
-    private String fasciaPrezzo;
+    private int fasciaPrezzo;
     private boolean prenotazioneOnline;
     private boolean consegnaADomicilio;
     private String tipoCucina;
     private String website;
     private String telefono;
     private String premi;
-    private List<String> servizi;
+    private List<ServizioDTO> servizi;
 
     //Costruttore
     public AggiungiRistoranteDTO(String nome, String indirizzo, String citta, String nazione, 
-            String fasciaPrezzo, boolean prenotazioneOnline, boolean consegnaADomicilio, 
-            String tipoCucina, String website, String telefono, String premi, List<String> servizi) {
+            int fasciaPrezzo, boolean prenotazioneOnline, boolean consegnaADomicilio, 
+            String tipoCucina, String website, String telefono, String premi, List<ServizioDTO> servizi) {
         this.nome = nome;
         this.indirizzo = indirizzo;
         this.citta = citta;
@@ -67,11 +67,11 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
         this.nazione = nazione;
     }
 
-    public String getFasciaPrezzo() {
+    public int getFasciaPrezzo() {
         return fasciaPrezzo;
     }
 
-    public void setFasciaPrezzo(String fasciaPrezzo) {
+    public void setFasciaPrezzo(int fasciaPrezzo) {
         this.fasciaPrezzo = fasciaPrezzo;
     }
 
@@ -115,11 +115,11 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
         this.premi = premi;
     }
 
-    public List<String> getServizi() {
+    public List<ServizioDTO> getServizi() {
         return servizi;
     }
 
-    public void setServizi(List<String> servizi) {
+    public void setServizi(List<ServizioDTO> servizi) {
         this.servizi = servizi;
     }
 

@@ -11,22 +11,24 @@ public class RistoranteDTO implements java.io.Serializable {
     private String nazione;
     private double latitudine;
     private double longitudine;
-    private String fasciaPrezzo;
+    private int fasciaPrezzo;
     private boolean prenotazioneOnline;
     private boolean consegnaADomicilio;
     private String tipoCucina;
     private String website;
     private String telefono;
     private String premi;
-    private List<String> servizi;
+    private List<ServizioDTO> servizi;
     private double mediaStelle;
     private int numeroRecensioni;
+    private long idGestore;
 
 //Costruttore
     public RistoranteDTO(long idRistorante, String nome, String indirizzo, String citta, 
-        String provincia, String nazione, double latitudine, double longitudine, String fasciaPrezzo, 
+        String provincia, String nazione, double latitudine, double longitudine, int fasciaPrezzo, 
         boolean prenotazioneOnline, boolean consegnaADomicilio, String tipoCucina, String website, 
-        String telefono, String premi, List<String> servizi, double mediaStelle, int numeroRecensioni) {
+        String telefono, String premi, List<ServizioDTO> servizi, double mediaStelle, int numeroRecensioni, 
+        long idGestore) {
         this.idRistorante = idRistorante;
         this.nome = nome;
         this.indirizzo = indirizzo;
@@ -45,6 +47,7 @@ public class RistoranteDTO implements java.io.Serializable {
         this.servizi = servizi;
         this.mediaStelle = mediaStelle;
         this.numeroRecensioni = numeroRecensioni;
+        this.idGestore = idGestore;
     }
 
 //Getters e Setters
@@ -113,11 +116,11 @@ public class RistoranteDTO implements java.io.Serializable {
         this.longitudine = longitudine;
     }
 
-    public String getFasciaPrezzo() {
+    public int getFasciaPrezzo() {
         return fasciaPrezzo;
     }
 
-    public void setFasciaPrezzo(String fasciaPrezzo) {
+    public void setFasciaPrezzo(int fasciaPrezzo) {
         this.fasciaPrezzo = fasciaPrezzo;
     }
 
@@ -169,11 +172,11 @@ public class RistoranteDTO implements java.io.Serializable {
         this.premi = premi;
     }
 
-    public List<String> getServizi() {
+    public List<ServizioDTO> getServizi() {
         return servizi;
     }
 
-    public void setServizi(List<String> servizi) {
+    public void setServizi(List<ServizioDTO> servizi) {
         this.servizi = servizi;
     }
 
@@ -193,6 +196,14 @@ public class RistoranteDTO implements java.io.Serializable {
         this.numeroRecensioni = numeroRecensioni;
     }
 
+    public long getIdGestore() {
+        return idGestore;
+    }
+
+    public void setIdGestore(long idGestore) {
+        this.idGestore = idGestore;
+    }
+
 //Metodo toString
     @Override
     public String toString() {
@@ -203,6 +214,6 @@ public class RistoranteDTO implements java.io.Serializable {
             ", prenotazioneOnline=" + prenotazioneOnline + ", consegnaADomicilio=" + consegnaADomicilio +
             ", tipoCucina=" + tipoCucina + ", website=" + website + ", telefono=" + telefono +
             ", premi=" + premi + ", servizi=" + servizi + ", mediaStelle=" + mediaStelle +
-            ", numeroRecensioni=" + numeroRecensioni + "]";
+            ", numeroRecensioni=" + numeroRecensioni + ", idGestore=" + idGestore + "]";
     }
 }

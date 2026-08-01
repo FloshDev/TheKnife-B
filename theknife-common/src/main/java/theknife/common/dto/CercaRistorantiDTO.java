@@ -7,13 +7,13 @@ public class CercaRistorantiDTO implements java.io.Serializable {
     private String citta;
     private String tipoCucina;
     private Boolean prenotazioneOnline;
-    private String fasciaPrezzo;
+    private int fasciaPrezzo;
     private Boolean consegnaADomicilio;
-    private List<String> servizi;
+    private List<ServizioDTO> servizi;
 //Costruttore
     public CercaRistorantiDTO(String nome, String citta, String tipoCucina, 
-            Boolean prenotazioneOnline, String fasciaPrezzo, Boolean consegnaADomicilio, 
-            List<String> servizi) {
+            Boolean prenotazioneOnline, int fasciaPrezzo, Boolean consegnaADomicilio, 
+            List<ServizioDTO> servizi) {
         this.nome = nome;
         this.citta = citta;
         this.tipoCucina = tipoCucina;
@@ -55,11 +55,11 @@ public class CercaRistorantiDTO implements java.io.Serializable {
         this.prenotazioneOnline = prenotazioneOnline;
     }
 
-    public String getFasciaPrezzo() {
+    public int getFasciaPrezzo() {
         return fasciaPrezzo;
     }
 
-    public void setFasciaPrezzo(String fasciaPrezzo) {
+    public void setFasciaPrezzo(int fasciaPrezzo) {
         this.fasciaPrezzo = fasciaPrezzo;
     }
 
@@ -67,21 +67,21 @@ public class CercaRistorantiDTO implements java.io.Serializable {
         return consegnaADomicilio;
     }
 
-    public void setConsegnaADomicilio(boolean consegnaADomicilio) {
+    public void setConsegnaADomicilio(Boolean consegnaADomicilio) {
         this.consegnaADomicilio = consegnaADomicilio;
     }
 
-    public List<String> getServizi() {
+    public List<ServizioDTO> getServizi() {
         return servizi;
     }
 
-    public void setServizi(List<String> servizi) {
+    public void setServizi(List<ServizioDTO> servizi) {
         this.servizi = servizi;
     }
 //Metodo toString
     @Override
     public String toString() {
-        return "CercaRistoranteDTO [nome=" + nome + ", citta=" + citta + 
+        return "CercaRistorantiDTO [nome=" + nome + ", citta=" + citta + 
             ", tipoCucina=" + tipoCucina + ", prenotazioneOnline=" + prenotazioneOnline + 
             ", fasciaPrezzo=" + fasciaPrezzo + ", consegnaADomicilio=" + consegnaADomicilio + 
             ", servizi=" + servizi + "]";
