@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Layout della schermata dettaglio (S06). @author Barlera Marco, 760000, VA -->
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.DettaglioController">
+
+    <Label fx:id="nomeLabel" text="Nome"/>
+    <Label fx:id="tipoCucinaLabel" text="Tipo di cucina"/>
+    <Label fx:id="indirizzoLabel" text="Indirizzo"/>
+    <Label fx:id="fasciaPrezzoLabel" text="Fascia Prezzo"/>
+    <Label fx:id="mediaStelleLabel" text="Media Stelle"/>
+
+    <Button fx:id="preferitiButton" text="Aggiungi ai preferiti" onAction="#handlePreferiti"/>
+    <Button fx:id="scriviRecensioneButton" text="Scrivi Recensione" onAction="#handleScriviRecensione"/>
+    <Button fx:id="rispondiRecensioneButton" text="Rispondi Recensione" onAction="#handleRispondiRecensione"/>
+    <Button fx:id="tornaIndietroButton" text="Torna Indietro" onAction="#handleTornaIndietro"/>   
+    
+    <ListView fx:id="recensioniListView"/>
+
+</VBox>
