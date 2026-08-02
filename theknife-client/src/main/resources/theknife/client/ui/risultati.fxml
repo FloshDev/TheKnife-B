@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Layout della schermata risultati ricerca (S05). @author Barlera Marco, 760000, VA -->
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.RisultatiController">
+
+    <Label text="Risultati" fx:id="risultatiLabel"/>
+    <ListView fx:id="risultatiListView"/>
+    
+    <Button fx:id="dettaglioButton" text="Vedi dettaglio" onAction="#handleDettaglio"/>
+    <Button fx:id="tornaIndietroButton" text="Torna Indietro" onAction="#handleTornaIndietro"/>
+    
+</VBox>
