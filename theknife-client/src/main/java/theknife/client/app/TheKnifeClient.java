@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
+
 /**
  * Punto d'ingresso dell'applicazione client JavaFX di TheKnife.
  *
@@ -16,7 +17,7 @@ public class TheKnifeClient extends Application {
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/login.fxml"));
         Parent root = loader.load();
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(root, 800, 600);
         stage.setScene(scene);
         stage.setTitle("TheKnife");
         stage.show();
