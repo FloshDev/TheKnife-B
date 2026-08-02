@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Layout della schermata iniziale (S01). @author Barlera Marco, 760000, VA -->
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.SplashController">
+
+    <Label text="The Knife" fx:id="theKnifeLabel"/>
+    <Label fx:id="localitaLabel" text="Milano, Italia"/>
+    <TextField fx:id="modificaLocalitaField" promptText="Modifica località"/>
+    <Button text="Conferma" onAction="#handleConferma"/>
+    <Hyperlink text="Vai al Login" onAction="#handleLogin"/>
+    <Hyperlink text="Continua come ospite" onAction="#handleGuest"/>
+    
+</VBox>
