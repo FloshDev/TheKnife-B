@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Layout della schermata Home (S04). @author Barlera Marco, 760000, VA -->
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.HomeController">
+
+    <TextField fx:id="nomeField" promptText="Nome Ristorante"/>
+    <TextField fx:id="cittaField" promptText="Citta"/>
+    <TextField fx:id="tipoCucinaField" promptText="Tipo di cucina"/>
+    <TextField fx:id="fasciaPrezzoField" promptText="Fascia Prezzo"/>
+    <TextField fx:id="raggioKmField" promptText="Raggio di ricerca (km)"/>
+    
+    <CheckBox fx:id="prenotazioneOnlineCheck" text="Prenotazione Online"/>
+    <CheckBox fx:id="consegnaADomicilioCheck" text="Consegna a domicilio"/>
+    
+    <Button text="Vicino a me" onAction="#handleVicinoAMe"/>
+    <Button text="Cerca" onAction="#handleCerca"/>
+
+    <Hyperlink text="Vai al Login" onAction="#handleLogin"/>
+    <Hyperlink text="Logout" onAction="#handleLogout"/>
+    <Hyperlink text="Preferiti" onAction="#handlePreferiti"/>
+    <Hyperlink text="Dashboard" onAction="#handleDashboard"/>
+
+</VBox>

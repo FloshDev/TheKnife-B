@@ -16,18 +16,14 @@ import java.io.IOException;
  * @author Barlera Marco, 760000, VA
  */
 public class LoginController {
-    @FXML
-    private TextField usernameField;
-    @FXML
-    private PasswordField passwordField;
-    
-    @FXML
-    private void handleLogin() {
+    @FXML private TextField usernameField;
+    @FXML private PasswordField passwordField;
+
+    @FXML private void handleLogin() {
         System.out.println("Login cliccato, username: " + usernameField.getText());
     }
 
-    @FXML
-    private void handleRegistrazione(ActionEvent event) throws IOException {
+    @FXML private void handleRegistrazione(ActionEvent event) throws IOException {
         System.out.println("Registrazione cliccato");
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); // Non crei una finestra nuova, riusi quella che già esiste
@@ -35,8 +31,7 @@ public class LoginController {
         stage.setScene(new Scene(root, 800, 600));
     }
 
-    @FXML
-    private void handleGuest() {
+    @FXML private void handleGuest() {
         System.out.println("Continua come ospite cliccato");
     }
 }
