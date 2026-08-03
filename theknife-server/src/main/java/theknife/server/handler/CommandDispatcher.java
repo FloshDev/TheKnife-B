@@ -1,9 +1,11 @@
 package theknife.server.handler;
+
 import theknife.common.protocol.Response;
 import theknife.server.command.Command;
 import theknife.common.protocol.Request;
 import theknife.common.enums.ResponseStatus;
 import theknife.common.dto.UtenteDTO;
+import theknife.server.service.SessionManager;
 
 public class CommandDispatcher {
 

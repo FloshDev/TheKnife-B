@@ -1,4 +1,5 @@
 package theknife.server.command;
+
 import theknife.common.protocol.Request;
 import theknife.common.protocol.Response;
 import theknife.common.dto.CercaRistorantiDTO;
@@ -6,6 +7,10 @@ import java.util.List;
 import theknife.common.dto.RistoranteDTO;
 import theknife.common.enums.ResponseStatus;
 import theknife.common.dto.UtenteDTO;
+import theknife.server.service.RistoranteService;
+import theknife.server.exception.ValidationException;
+import theknife.server.exception.UnauthorizedException;
+import theknife.server.exception.ApplicationException;
 
 public class CercaRistorantiCommand implements Command {
     
