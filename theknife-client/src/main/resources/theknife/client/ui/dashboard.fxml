@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Layout della schermata dashboard ristoratore (S09). @author Barlera Marco, 760000, VA -->
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.DashboardController">
+
+    <Label fx:id="dashboardLabel" text="Dashboard Ristoratore"/>
+
+    <ListView fx:id="ristorantiGestiti"/>
+
+    <Button fx:id="aggiungiNuovoRistoranteButton" text="Aggiungi Nuovo Ristorante" onAction="#handleAggiungiNuovoRistorante"/>
+    <Button fx:id="associaRistoranteButton" text="Associati a ristorante esistente" onAction="#handleAssociaRistorante"/>
+    <Button fx:id="gestisciRecensioniButton" text="Gestisci Recensioni" onAction="#handleGestisciRecensioni"/>
+    <Button fx:id="tornaHomeButton" text="Torna Home" onAction="#handleTornaHome"/>
+    <Button fx:id="logoutButton" text="Logout" onAction="#handleLogout"/>
+    
+</VBox>
