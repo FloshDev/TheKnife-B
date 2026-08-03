@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Layout della schermata aggiungi nuovo ristorante (S10). @author Barlera Marco, 760000, VA -->
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.AggiungiRistoranteController">
+
+    <TextField fx:id="nomeField" promptText="Nome"/>
+    <TextField fx:id="indirizzoField" promptText="Indirizzo"/>
+    <TextField fx:id="cittaField" promptText="Citta"/>
+    <TextField fx:id="nazioneField" promptText="Nazione"/>
+    <TextField fx:id="fasciaPrezzoField" promptText="Fascia di prezzo"/>
+    <TextField fx:id="tipoCucinaField" promptText="Tipo di cucina"/>
+    <TextField fx:id="webSiteField" promptText="Website"/>
+    <TextField fx:id="telefonoField" promptText="Telefono"/>
+    <TextField fx:id="premiField" promptText="Premi"/>
+
+    <CheckBox fx:id="prenotazioneOnlineCheck" text="Prenotazione Online"/>
+    <CheckBox fx:id="consegnaADomicilioCheck" text="Consegna a domicilio"/>
+    
+    <Button fx:id="salvaButton" text="Salva" onAction="#handleSalva"/>
+    <Button fx:id="annullaButton" text="Annulla" onAction="#handleAnnulla"/>
+
+</VBox>
