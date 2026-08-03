@@ -19,6 +19,9 @@ Thumbs.db
 target/
 dependency-reduced-pom.xml
 
+# Guida personale server (Ciani)
+Progettazione/Ciani/GUIDA_SERVER.md
+
 # IDE
 .idea/
 .settings/
