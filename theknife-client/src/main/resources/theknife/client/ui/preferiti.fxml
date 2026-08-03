@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Layout della schermata lista preferiti (S08). @author Barlera Marco, 760000, VA -->
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.PreferitiController">
+
+    <Label fx:id="preferitiLabel" text="Preferiti"/>
+
+    <ListView fx:id="preferitiListView"/>
+
+    <Button fx:id="tornaIndietroButton" text="Torna Indietro" onAction="#handleTornaIndietro"/>
+    <Button fx:id="rimuoviPreferitoButton" text="Rimuovi Preferito" onAction="#handleRimuoviPreferito"/>
+    <Button fx:id="vediDettaglioButton" text="Vedi dettaglio" onAction="#handleVediDettaglio"/>
+
+</VBox>
