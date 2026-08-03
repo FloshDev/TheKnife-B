@@ -8,23 +8,23 @@ package theknife.common.dto;
 
 public class IdRistoranteDTO implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
-    private long IdRistorante;
+    private long idRistorante;
 
 //Costruttore
     public IdRistoranteDTO(long idRistorante) {
-        this.IdRistorante = idRistorante;
+        this.idRistorante = idRistorante;
     }
 //Getters e Setters
     public long getIdRistorante() {
-        return IdRistorante;
+        return idRistorante;
     }
 
     public void setIdRistorante(long idRistorante) {
-        this.IdRistorante = idRistorante;
+        this.idRistorante = idRistorante;
     }
 //Metodo toString
     @Override
     public String toString() {
-        return "DettagliRistoranteDTO [IdRistorante=" + IdRistorante + "]";
+        return "IdRistoranteDTO [idRistorante=" + idRistorante + "]";
     }
 }

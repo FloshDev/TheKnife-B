@@ -8,22 +8,22 @@ package theknife.common.dto;
 
 public class IdRecensioneDTO implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
-    private long IdRecensione;
+    private long idRecensione;
 //Costruttore
     public IdRecensioneDTO(long idRecensione) {
-        this.IdRecensione = idRecensione;
+        this.idRecensione = idRecensione;
     }
 //Getter
     public long getIdRecensione() {
-        return IdRecensione;
+        return idRecensione;
     }
 //Setter
     public void setIdRecensione(long x) {
-        this.IdRecensione = x;
+        this.idRecensione = x;
     }
 //Metodo toString
     @Override
     public String toString() {
-        return "IdRecensioneDTO [IdRecensione=" + IdRecensione + "]";
+        return "IdRecensioneDTO [idRecensione=" + idRecensione + "]";
     }
 }
