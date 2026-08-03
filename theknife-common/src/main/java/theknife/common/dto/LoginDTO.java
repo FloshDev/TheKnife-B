@@ -1,6 +1,12 @@
 package theknife.common.dto;
 import java.io.Serializable;
 
+/**
+ * Rappresenta le credenziali utilizzate nella richiesta di autenticazione di un utente.
+ *
+ * @author Gasparini Lorenzo, 759929, VA
+ */
+
 public class LoginDTO implements Serializable {
     private static final long serialVersionUID = 1L;
     private String username;

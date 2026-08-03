@@ -2,6 +2,12 @@ package theknife.common.protocol;
 import java.io.Serializable;
 import theknife.common.enums.CommandType;
 
+/**
+ * Rappresenta una richiesta inviata dal client al server.
+ * 
+ * @author Gasparini Lorenzo, 759929, VA
+ */
+
 public class Request implements Serializable{
     private static final long serialVersionUID = 1L;
     private CommandType commandType;

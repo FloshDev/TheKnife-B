@@ -1,5 +1,11 @@
 package theknife.common.dto;
 
+/**
+ * Rappresenta le statistiche di un ristorante trasferite tra client e server.
+ *
+ * @author Gasparini Lorenzo, 759929, VA
+ */
+
 public class StatisticheRistoranteDTO implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     private long idRistorante;

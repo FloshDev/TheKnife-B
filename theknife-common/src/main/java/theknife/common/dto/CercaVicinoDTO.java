@@ -1,5 +1,11 @@
 package theknife.common.dto;
 
+/**
+ * Rappresenta i dati necessari per la richiesta di ricerca di ristoranti vicini.
+ *
+ * @author Gasparini Lorenzo, 759929, VA
+ */
+
 public class CercaVicinoDTO implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     private double raggioKm;

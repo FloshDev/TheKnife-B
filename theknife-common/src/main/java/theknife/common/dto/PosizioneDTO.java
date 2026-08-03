@@ -1,5 +1,11 @@
 package theknife.common.dto;
 
+/**
+ * Rappresenta una posizione geografica mediante coordinate di latitudine e longitudine.
+ *
+ * @author Gasparini Lorenzo, 759929, VA
+ */
+
 public class PosizioneDTO implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     private double latitudine;

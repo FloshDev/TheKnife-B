@@ -3,6 +3,12 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import theknife.common.enums.Ruolo;
 
+/**
+ * Rappresenta i dati necessari per la richiesta di registrazione di un nuovo utente.
+ *
+ * @author Gasparini Lorenzo, 759929, VA
+ */
+
 public class RegistrazioneDTO implements Serializable {
     private static final long serialVersionUID = 1L;
     private String nome;

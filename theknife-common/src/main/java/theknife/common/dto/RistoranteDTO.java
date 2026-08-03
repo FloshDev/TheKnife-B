@@ -1,6 +1,12 @@
 package theknife.common.dto;
 import java.util.List;
 
+/**
+ * Rappresenta i dati di un ristorante trasferiti tra client e server.
+ * 
+ * @author Gasparini Lorenzo, 759929, VA
+ */
+
 public class RistoranteDTO implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     private long idRistorante;
@@ -21,14 +27,14 @@ public class RistoranteDTO implements java.io.Serializable {
     private List<ServizioDTO> servizi;
     private double mediaStelle;
     private int numeroRecensioni;
-    private long idGestore;
+    private Long idGestore;
 
 //Costruttore
     public RistoranteDTO(long idRistorante, String nome, String indirizzo, String citta, 
         String provincia, String nazione, double latitudine, double longitudine, int fasciaPrezzo, 
         boolean prenotazioneOnline, boolean consegnaADomicilio, String tipoCucina, String website, 
         String telefono, String premi, List<ServizioDTO> servizi, double mediaStelle, int numeroRecensioni, 
-        long idGestore) {
+        Long idGestore) {
         this.idRistorante = idRistorante;
         this.nome = nome;
         this.indirizzo = indirizzo;
@@ -196,11 +202,11 @@ public class RistoranteDTO implements java.io.Serializable {
         this.numeroRecensioni = numeroRecensioni;
     }
 
-    public long getIdGestore() {
+    public Long getIdGestore() {
         return idGestore;
     }
 
-    public void setIdGestore(long idGestore) {
+    public void setIdGestore(Long idGestore) {
         this.idGestore = idGestore;
     }
 

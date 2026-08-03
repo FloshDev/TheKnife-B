@@ -1,6 +1,13 @@
 package theknife.common.dto;
 import java.util.List;
 
+/**
+ * Rappresenta i criteri di ricerca utilizzati nella richiesta di ricerca dei ristoranti da parte 
+ * di un utente.
+ *
+ * @author Gasparini Lorenzo, 759929, VA
+ */
+
 public class CercaRistorantiDTO implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     private String nome;

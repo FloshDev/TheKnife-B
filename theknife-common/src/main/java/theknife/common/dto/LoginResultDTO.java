@@ -1,6 +1,12 @@
 package theknife.common.dto;
 import theknife.common.enums.Ruolo;
 
+/**
+ * Rappresenta i dati restituiti come risultato della richiesta di autenticazione di un utente.
+ *
+ * @author Gasparini Lorenzo, 759929, VA
+ */
+
 public class LoginResultDTO implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     private String sessionToken;

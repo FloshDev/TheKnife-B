@@ -1,5 +1,11 @@
 package theknife.common.dto;
 
+/**
+ * Rappresenta i dati necessari per la richiesta di aggiunta di una recensione da parte di un utente.
+ *
+ * @author Gasparini Lorenzo, 759929, VA
+ */
+
 public class AggiungiRecensioneDTO implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     private long idRistorante;

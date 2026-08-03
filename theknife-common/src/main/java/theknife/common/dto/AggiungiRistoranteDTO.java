@@ -1,6 +1,12 @@
 package theknife.common.dto;
 import java.util.List;
 
+/**
+ * Rappresenta i dati necessari per la richiesta di aggiunta di un ristorante da parte di un utente.
+ *
+ * @author Gasparini Lorenzo, 759929, VA
+ */
+
 public class AggiungiRistoranteDTO implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     private String nome;

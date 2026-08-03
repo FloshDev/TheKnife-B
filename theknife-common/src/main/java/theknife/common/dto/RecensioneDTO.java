@@ -1,5 +1,11 @@
 package theknife.common.dto;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+/**
+ * Rappresenta i dati di una recensione trasferiti tra client e server.
+ *
+ * @author Gasparini Lorenzo, 759929, VA
+ */
 
 public class RecensioneDTO implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
@@ -9,22 +15,20 @@ public class RecensioneDTO implements java.io.Serializable {
     private String testo;
     private int stelle;
     private long idUtente;
-    private String usernameAutore;
-    private LocalDate dataPubblicazione;
+    private LocalDateTime dataPubblicazione;
     private String risposta;
-    private LocalDate dataRisposta;
+    private LocalDateTime dataRisposta;
 
 //Costruttore
     public RecensioneDTO(long idRecensione, long idRistorante, String titolo, String testo, 
-            int stelle, long idUtente, String usernameAutore, LocalDate dataPubblicazione, String risposta, 
-            LocalDate dataRisposta) {
+            int stelle, long idUtente, LocalDateTime dataPubblicazione, String risposta, 
+            LocalDateTime dataRisposta) {
         this.idRecensione = idRecensione;
         this.idRistorante = idRistorante;
         this.titolo = titolo;
         this.testo = testo;
         this.stelle = stelle;
         this.idUtente = idUtente;
-        this.usernameAutore = usernameAutore;
         this.dataPubblicazione = dataPubblicazione;
         this.risposta = risposta;
         this.dataRisposta = dataRisposta;
@@ -79,19 +83,11 @@ public class RecensioneDTO implements java.io.Serializable {
         this.idUtente = idUtente;
     }
 
-    public String getUsernameAutore() {
-        return usernameAutore;
-    }
-
-    public void setUsernameAutore(String usernameAutore) {
-        this.usernameAutore = usernameAutore;
-    }
-
-    public LocalDate getDataPubblicazione() {
+    public LocalDateTime getDataPubblicazione() {
         return dataPubblicazione;
     }
 
-    public void setDataPubblicazione(LocalDate dataPubblicazione) {
+    public void setDataPubblicazione(LocalDateTime dataPubblicazione) {
         this.dataPubblicazione = dataPubblicazione;
     }
 
@@ -103,11 +99,11 @@ public class RecensioneDTO implements java.io.Serializable {
         this.risposta = risposta;
     }
 
-    public LocalDate getDataRisposta() {
+    public LocalDateTime getDataRisposta() {
         return dataRisposta;
     }
 
-    public void setDataRisposta(LocalDate dataRisposta) {
+    public void setDataRisposta(LocalDateTime dataRisposta) {
         this.dataRisposta = dataRisposta;
     }
 
@@ -116,8 +112,7 @@ public class RecensioneDTO implements java.io.Serializable {
     public String toString() {
         return "RecensioneDTO [idRecensione=" + idRecensione + ", idRistorante=" + idRistorante + 
             ", titolo=" + titolo + ", testo=" + testo + ", stelle=" + stelle + 
-            ", idUtente=" + idUtente + ", usernameAutore=" + usernameAutore + 
-            ", dataPubblicazione=" + dataPubblicazione + 
+            ", idUtente=" + idUtente + ", dataPubblicazione=" + dataPubblicazione + 
             ", risposta=" + risposta + ", dataRisposta=" + dataRisposta + "]";
     }
 }

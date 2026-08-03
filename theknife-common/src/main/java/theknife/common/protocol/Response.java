@@ -2,6 +2,12 @@ package theknife.common.protocol;
 import java.io.Serializable;
 import theknife.common.enums.ResponseStatus;
 
+/**
+ * Rappresenta una risposta inviata dal server al client.
+ *
+ * @author Gasparini Lorenzo, 759929, VA
+ */
+
 public class Response implements Serializable{
     private static final long serialVersionUID = 1L;
     private ResponseStatus status;

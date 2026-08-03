@@ -1,5 +1,11 @@
 package theknife.common.dto;
 
+/**
+ * Rappresenta i dati necessari per la richiesta di modifica di una recensione da parte di un utente.
+ *
+ * @author Gasparini Lorenzo, 759929, VA
+ */
+
 public class ModificaRecensioneDTO implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     private long idRecensione;

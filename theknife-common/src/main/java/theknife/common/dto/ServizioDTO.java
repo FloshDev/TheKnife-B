@@ -1,5 +1,11 @@
 package theknife.common.dto;
 
+/**
+ * Rappresenta i dati di un servizio offerto da un ristorante trasferiti tra client e server.
+ *
+ * @author Gasparini Lorenzo, 759929, VA
+ */
+
 public class ServizioDTO implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     private long idServizio;

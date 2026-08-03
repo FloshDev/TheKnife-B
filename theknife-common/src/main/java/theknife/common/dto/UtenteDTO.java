@@ -2,6 +2,12 @@ package theknife.common.dto;
 import java.time.LocalDate;
 import theknife.common.enums.Ruolo;
 
+/**
+ * Rappresenta i dati di un utente trasferiti tra client e server.
+ *
+ * @author Gasparini Lorenzo, 759929, VA
+ */
+
 public class UtenteDTO implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     private long idUtente;
