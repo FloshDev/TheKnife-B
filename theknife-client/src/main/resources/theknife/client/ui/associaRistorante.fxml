@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Layout della schermata associa ristorante (S11). @author Barlera Marco, 760000, VA -->
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.AssociaRistoranteController">
+
+    <TextField fx:id="ricercaField" promptText="Cerca per nome o indirizzo"/>
+
+    <ListView fx:id="risultatiListView"/>
+    
+    <Button fx:id="cercaButton" text="Cerca" onAction="#handleCerca"/>
+    <Button fx:id="associaButton" text="Associa" onAction="#handleAssocia"/>
+    <Button fx:id="annullaButton" text="Annulla" onAction="#handleAnnulla"/>
+
+</VBox>
