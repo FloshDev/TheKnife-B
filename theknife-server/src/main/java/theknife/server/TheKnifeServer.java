@@ -12,6 +12,7 @@ public class TheKnifeServer {
         
         ConfigurazioneDB config = ConfigurazioneDB.leggiDaTerminale();
         new Server(config).avvia();
+        
     }
     
 }
