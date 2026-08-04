@@ -64,18 +64,6 @@ Durante la progettazione ogni membro lavora **solo nella propria cartella** in
 `1_Doc. Conclusi/`. Per il codice ci si coordina sui moduli secondo i verbali in
 `Sessioni/`.
 
-### Workflow base
-
-```bash
-# Prima di iniziare: aggiorna
-git pull
-
-# Dopo aver modificato o aggiunto file
-git add <percorso>
-git commit -m "descrizione breve di cosa hai aggiunto/modificato"
-git push
-```
-
 ### Regole
 
 - Non modificare i file nelle cartelle di progettazione degli altri
