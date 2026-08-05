@@ -1,3 +1,17 @@
+
+package theknife.server.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+
+import theknife.common.dto.RegistrazioneDTO;
+import theknife.common.dto.UtenteDTO;
+import theknife.common.enums.Ruolo;
+import theknife.server.exception.ApplicationException;
+
 /**
  * DAO di accesso alla tabella Utenti. Incapsula le query di
  * lettura e scrittura degli utenti. Non contiene alcuna logica di dominio: riceve dati gia' validi
@@ -10,22 +24,6 @@
  *
  * @author Scolaro Gabriele, 760123, VA
  */
-
-
-package theknife.server.dao;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.time.LocalDate;
-
-import theknife.common.dto.RegistrazioneDTO;
-import theknife.common.dto.UtenteDTO;
-import theknife.common.enums.Ruolo;
-import theknife.server.exception.ApplicationException;
-
 
 public class UtenteDAO {
 
