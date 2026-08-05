@@ -45,7 +45,6 @@ public class AuthService {
         
         if(response.getStatus() == ResponseStatus.SUCCESSO) {
             LoginResultDTO loginResultDTO = (LoginResultDTO) response.getPayload();
-            connection.setSessionToken(loginResultDTO.getSessionToken());
             return loginResultDTO;
         } else {
             throw new IOException(response.getMessaggio());
