@@ -5,20 +5,24 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import javafx.concurrent.Task;
 import theknife.common.protocol.Request;
 import theknife.common.protocol.Response;
 
 /**
  * Gestisce la connessione socket verso il server: apre lo stream, invia le
- * Request e riceve le Response. Singleton: un'unica istanza condivisa per
- * tutta la durata dell'applicazione client, inizializzata una volta
- * all'avvio e mai chiusa durante logout (solo il sessionToken viene svuotato).
+ * Request e riceve le Response, in versione sincrona ({@link #inviaRichiesta})
+ * o asincrona ({@link #inviaRichiestaAsync}, per non bloccare l'Application
+ * Thread di JavaFX). Singleton: un'unica istanza condivisa per tutta la
+ * durata dell'applicazione client, creata eagerly al caricamento della
+ * classe (thread-safe per garanzia della JVM) e mai chiusa durante logout
+ * (solo il sessionToken viene svuotato).
  *
  * @author Barlera Marco, 760000, VA
  */
 
 public class ServerConnection {
-    private static ServerConnection instance = null;
+    private static final ServerConnection instance = new ServerConnection();
 
     private Socket socket;
     private ObjectOutputStream out;
@@ -28,9 +32,6 @@ public class ServerConnection {
     private ServerConnection() {}
 
     public static ServerConnection getInstance() {
-        if (instance == null) {
-            instance = new ServerConnection();
-        }
         return instance;
     }
 
@@ -40,6 +41,10 @@ public class ServerConnection {
 
     public void setSessionToken(String sessionToken) {
         this.sessionToken = sessionToken;
+    }
+
+    public void clearSessionToken() {
+        this.sessionToken = null;
     }
 
     public void connect(String host, int port) throws IOException {
@@ -59,6 +64,15 @@ public class ServerConnection {
         out.writeObject(request);
         out.flush();
         return (Response) in.readObject();
+    }
+
+    public Task<Response> inviaRichiestaAsync(Request request) {
+        return new Task<>() {
+            @Override
+            public Response call() throws Exception {
+                return inviaRichiesta(request);
+            }
+        };
     }
     
 }

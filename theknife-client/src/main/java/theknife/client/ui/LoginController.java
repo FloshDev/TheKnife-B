@@ -1,14 +1,17 @@
 package theknife.client.ui;
-import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
-import javafx.scene.control.PasswordField;
+import java.io.IOException;
+
 import javafx.event.ActionEvent;
-import javafx.stage.Stage;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.fxml.FXMLLoader;
-import java.io.IOException;
+import javafx.scene.control.Alert;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import theknife.client.service.AuthService;
 
 /**
  * Controller della schermata di login (S02).
@@ -18,9 +21,27 @@ import java.io.IOException;
 public class LoginController {
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
+    private final AuthService authService = new AuthService();
 
-    @FXML private void handleLogin() {
+    @FXML private void handleLogin(ActionEvent event) {
         System.out.println("Login cliccato, username: " + usernameField.getText());
+
+        String username = usernameField.getText();
+        String password = passwordField.getText();
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); 
+        
+        TaskRunner.run(
+            () -> authService.login(username, password),
+            loginResult -> {
+                try{
+                    Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/home.fxml"));
+                    stage.setScene(new Scene(root, 800, 600));
+                }catch (IOException e) {
+                    new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
+                }
+            }
+        );
     }
 
     @FXML private void handleRegistrazione(ActionEvent event) throws IOException {
