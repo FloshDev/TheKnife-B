@@ -1,3 +1,10 @@
+-- ============================================================
+-- Utilizzo: questo è lo script che popola completamente la tabella
+-- Servizio e RistornatiTheKnife a partire dal file csv.
+--
+-- @author Scolaro Gabriele, 760123, VA
+-- ============================================================
+
 INSERT INTO Servizio (id, nome) VALUES
 	(1, 'Air conditioning'),
 	(2, 'Garden or park'),

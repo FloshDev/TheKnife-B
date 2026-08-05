@@ -1,3 +1,9 @@
+-- ============================================================
+-- Utilizzo: questo script permette la creazione dello schema del
+-- database, ovvero la struttura delle 6 tabelle.
+--
+-- @author Scolaro Gabriele, 760123, VA
+-- ============================================================
 
 CREATE TABLE Utenti (
     id            SERIAL PRIMARY KEY,
