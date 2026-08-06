@@ -13,12 +13,12 @@ import theknife.common.enums.Ruolo;
 import theknife.server.exception.ApplicationException;
 
 /**
- * DAO di accesso alla tabella Utenti. Incapsula le query di
+ * DAO di accesso alla tabella <code>Utenti</code>. Incapsula le query di
  * lettura e scrittura degli utenti. Non contiene alcuna logica di dominio: riceve dati gia' validi
- * e li scrive, legge righe e le impacchetta in UtenteDTO.
+ * e li scrive, legge righe e le impacchetta in <code>UtenteDTO</code>.
  * 
  * Ogni metodo apre una connessione nuova tramite {@link DatabaseManager},
- * la usa con try-with-resources e la chiude da solo. Qualsiasi
+ * la usa con <code>try-with-resources</code> e la chiude da solo. Qualsiasi
  * {@link SQLException} viene catturata e riavvolta in
  * {@link ApplicationException}, come previsto dal layering del server.
  *
