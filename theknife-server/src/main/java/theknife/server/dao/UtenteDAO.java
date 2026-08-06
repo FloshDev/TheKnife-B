@@ -16,7 +16,7 @@ import theknife.server.exception.ApplicationException;
  * DAO di accesso alla tabella <code>Utenti</code>. Incapsula le query di
  * lettura e scrittura degli utenti. Non contiene alcuna logica di dominio: riceve dati gia' validi
  * e li scrive, legge righe e le impacchetta in <code>UtenteDTO</code>.
- * 
+ * <p>
  * Ogni metodo apre una connessione nuova tramite {@link DatabaseManager},
  * la usa con <code>try-with-resources</code> e la chiude da solo. Qualsiasi
  * {@link SQLException} viene catturata e riavvolta in
