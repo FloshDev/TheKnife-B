@@ -11,10 +11,12 @@ public class LoginResultDTO implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     private String sessionToken;
     private Ruolo ruolo;
+    private UtenteDTO utente;
 //Costruttore
-    public LoginResultDTO(String sessionToken, Ruolo ruolo) {
+    public LoginResultDTO(String sessionToken, Ruolo ruolo, UtenteDTO utente) {
         this.sessionToken = sessionToken;
         this.ruolo = ruolo;
+        this.utente = utente;
     }
 //Getters
     public String getSessionToken() {
@@ -24,6 +26,10 @@ public class LoginResultDTO implements java.io.Serializable {
     public Ruolo getRuolo() {
         return ruolo;
     }
+
+    public UtenteDTO getUtente() {
+        return utente;
+    }
 //Setters
     public void setSessionToken(String sessionToken) {
         this.sessionToken = sessionToken;
@@ -32,9 +38,14 @@ public class LoginResultDTO implements java.io.Serializable {
     public void setRuolo(Ruolo ruolo) {
         this.ruolo = ruolo;
     }
+
+    public void setUtente(UtenteDTO utente) {
+        this.utente = utente;
+    }
 //Metodo toString
     @Override
     public String toString() {
-        return "LoginResultDTO [sessionToken=" + sessionToken + ", ruolo=" + ruolo + "]";
+        return "LoginResultDTO [sessionToken=" + sessionToken + ", ruolo=" + ruolo + 
+        ", utente=" + utente + "]";
     }
 }
