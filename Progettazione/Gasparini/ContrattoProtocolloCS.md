@@ -3,29 +3,38 @@
 - Ogni CommandType rappresenta una singola operazione atomica eseguibile dal server.
 - I DTO del modulo common sono classi immutabili dal punto di vista del significato: contengono esclusivamente dati trasferiti sulla rete e non implementano alcuna logica applicativa.
 
+// GUEST 
+OTTIENI_LOCALITA_INIZIALE, ACCEDI, REGISTRATI, CERCA_RISTORANTI, OTTIENI_DETTAGLI_RISTORANTE,
+LEGGI_RECENSIONI,
+// CLIENTE 
+AGGIUNGI_PREFERITO, RIMUOVI_PREFERITO, VEDI_PREFERITI, AGGIUNGI_RECENSIONE, MODIFICA_RECENSIONE, 
+ELIMINA_RECENSIONE, CERCA_VICINO, ESCI, 
+// RISTORATORE 
+AGGIUNGI_RISTORANTE, VEDI_RISTORANTI_GESTITI, LEGGI_RECENSIONI_RISTORANTI_GESTITI, 
+OTTIENI_STATISTICHE_RISTORANTE, RISPONDI_RECENSIONE, ASSOCIA_RISTORANTE
 
-| CommandType                         | DTO Request            | DTO/ogg. Response             |Token
-| ----------------------------------- | ---------------------- | ----------------------------- |
-| ACCEDI                              | LoginDTO               | LoginResultDTO                |no
-| CERCA_RISTORANTI                    | CercaRistoranteDTO     | `List<RistoranteDTO>`         |no
-| REGISTRATI                          | RegistratiDTO          | R. senza payload/DTO conferma |no
-| AGGIUNGI_RECENSIONE                 | AggiungiRecensioneDTO  | R. senza payload/DTO conferma |sì
-| OTTIENI_LOCALITA_INIZIALE           | null                   | PosizioneDTO                  |no
-| OTTIENI_DETTAGLI_RISTORANTE         | IdRistoranteDTO        | RistoranteDTO                 |no
-| LEGGI_RECENSIONI                    | LeggiRecensioniDTO     | RecensioniRistoranteDTO       |no
-| AGGIUNGI_PREFERITO                  | IdRistoranteDTO        | R. senza payload              |sì
-| RIMUOVI_PREFERITO                   | IdRistoranteDTO        | R. senza payload              |sì
-| VEDI_PREFERITI                      | null                   | `List<RistoranteDTO>`         |sì
-| MODIFICA_RECENSIONE                 | ModificaRecensioneDTO  | R. senza payload/DTO conferma |sì
-| ELIMINA_RECENSIONE                  | EliminaRecensioneDTO   | R. senza payload              |sì
-| CERCA_VICINO                        | CercaVicinoDTO         | `List<RistoranteDTO>`         |sì
-| ESCI (DISCONNETTITI)                | null                   | R. senza payload              |sì
-| AGGIUNGI_RISTORANTE                 | AggiungiRistoranteDTO  | R. senza payload/DTO conferma |sì
-| VEDI_RISTORANTI_GESTITI             | null                   | `List<RistoranteDTO>`         |sì
-| LEGGI_RECENSIONI_RISTORANTI_GESTITI | null                   | `List<RecensioneDTO>`         |sì
-| OTTIENI_RIEPILOGO_RISTORANTE        | IdRistoranteDTO        | StatisticheRistoranteDTO      |sì
-| RISPONDI_RECENSIONE                 | RispondiRecensioneDTO  | R. senza payload              |sì
-| ASSOCIA_RISTORANTE                  | IdRistoranteDTO        | R. senza payload/DTO conferma |sì
+| CommandType                         | DTO Request            | DTO/ogg. Response         |Token |Autenticaz.
+| ----------------------------------- | ---------------------- | ------------------------- | ---- |
+| ACCEDI                              | LoginDTO               | LoginResultDTO            |no    |non serve
+| CERCA_RISTORANTI                    | CercaRistoranteDTO     | `List<RistoranteDTO>`     |no    |non serve
+| REGISTRATI                          | RegistrazioneDTO       | R. senza payload          |no    |non serve
+| AGGIUNGI_RECENSIONE                 | AggiungiRecensioneDTO  | R. senza payload          |sì    |serve
+| OTTIENI_LOCALITA_INIZIALE           | null                   | PosizioneDTO              |no    |non serve
+| OTTIENI_DETTAGLI_RISTORANTE         | IdRistoranteDTO        | RistoranteDTO             |no    |non serve
+| LEGGI_RECENSIONI                    | IdRistoranteDTO        | `List<RecensioneDTO`      |no    |non serve
+| AGGIUNGI_PREFERITO                  | IdRistoranteDTO        | R. senza payload          |sì    |serve
+| RIMUOVI_PREFERITO                   | IdRistoranteDTO        | R. senza payload          |sì    |serve
+| VEDI_PREFERITI                      | null                   | `List<RistoranteDTO>`     |sì    |serve
+| MODIFICA_RECENSIONE                 | ModificaRecensioneDTO  | R. senza payload          |sì    |serve
+| ELIMINA_RECENSIONE                  | IdRecensioneDTO        | R. senza payload          |sì    |serve
+| CERCA_VICINO                        | CercaVicinoDTO         | `List<RistoranteDTO>`     |sì    |serve
+| ESCI (DISCONNETTITI)                | null                   | R. senza payload          |sì    |serve
+| AGGIUNGI_RISTORANTE                 | AggiungiRistoranteDTO  | R. senza payload          |sì    |serve
+| VEDI_RISTORANTI_GESTITI             | null                   | `List<RistoranteDTO>`     |sì    |serve
+| LEGGI_RECENSIONI_RISTORANTI_GESTITI | null                   | `List<RecensioneDTO>`     |sì    |serve
+| OTTIENI_STATISTICHE_RISTORANTE      | IdRistoranteDTO        | StatisticheRistoranteDTO  |sì    |serve
+| RISPONDI_RECENSIONE                 | RispondiRecensioneDTO  | R. senza payload          |sì    |serve
+| ASSOCIA_RISTORANTE                  | IdRistoranteDTO        | R. senza payload          |sì    |serve
 
 
 | ruolo       | operazione                          | richiede dati  | restituisce dati        |
@@ -63,7 +72,7 @@ Object payload;
 ```
 
 ## ResponseStatus
-SUCCESSO, ERRORE_VALIDAZIONE, NON_AUTORIZZATO, NON_TROVATO, ERRORE_SERVER
+SUCCESSO, ERRORE_VALIDAZIONE, NON_AUTORIZZATO, NON_TROVATO, ERRORE_SERVER, ERRORE
 
 ## Response
 
