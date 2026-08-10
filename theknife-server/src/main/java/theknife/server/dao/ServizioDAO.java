@@ -4,12 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import theknife.common.dto.ServizioDTO;
-import theknife.server.exception.ApplicationException;
+import theknife.server.exception.DataAccessException;
 
 /**
  * DAO di accesso alle tabelle <code>Servizio</code> e
@@ -20,10 +19,11 @@ import theknife.server.exception.ApplicationException;
  * Ogni metodo apre una connessione nuova tramite {@link DatabaseManager}, la
  * usa con <code>try-with-resources</code> e la chiude da solo. Le
  * {@link SQLException} vengono catturate e riavvolte in
- * {@link ApplicationException}.
+ * {@link DataAccessException}.
  *
  * @author Scolaro Gabriele, 760123, VA
  */
+
 public class ServizioDAO {
 
     private final DatabaseManager db;
@@ -41,9 +41,9 @@ public class ServizioDAO {
      * Restituisce l'elenco completo dei servizi disponibili, ordinati per nome.
      *
      * @return la lista dei servizi, eventualmente vuota
-     * @throws ApplicationException se l'accesso al database fallisce
+     * @throws DataAccessException se l'accesso al database fallisce
      */
-    public List<ServizioDTO> tutti () throws ApplicationException {
+    public List<ServizioDTO> tutti () throws DataAccessException {
         String sql = "SELECT id, nome FROM Servizio ORDER BY nome";
         List<ServizioDTO> servizi = new ArrayList<>();
         try (Connection conn = db.getConnection();
@@ -54,7 +54,7 @@ public class ServizioDAO {
             }
             return servizi;
         } catch (SQLException e) {
-            throw new ApplicationException("Errore nel recupero dei servizi: " + e.getMessage());
+            throw new DataAccessException("Errore nel recupero dei servizi: " + e.getMessage());
         }
     }
 
@@ -63,9 +63,9 @@ public class ServizioDAO {
      *
      * @param idRistorante l'identificativo del ristorante
      * @return la lista dei servizi del ristorante, eventualmente vuota
-     * @throws ApplicationException se l'accesso al database fallisce
+     * @throws DataAccessException se l'accesso al database fallisce
      */
-    public List<ServizioDTO> trovaPerRistorante (long idRistorante) throws ApplicationException {
+    public List<ServizioDTO> trovaPerRistorante (long idRistorante) throws DataAccessException {
         String sql = "SELECT s.id, s.nome FROM Servizio s "
                    + "JOIN RistoranteServizio rs ON s.id = rs.id_servizio "
                    + "WHERE rs.id_ristorante = ? ORDER BY s.nome";
@@ -80,7 +80,7 @@ public class ServizioDAO {
             }
             return servizi;
         } catch (SQLException e) {
-            throw new ApplicationException("Errore nel recupero dei servizi del ristorante: "
+            throw new DataAccessException("Errore nel recupero dei servizi del ristorante: "
                 + e.getMessage());
         }
     }
@@ -93,9 +93,9 @@ public class ServizioDAO {
      *
      * @param idRistorante l'identificativo del ristorante
      * @param servizi      i servizi da associare al ristorante
-     * @throws ApplicationException se l'accesso al database fallisce
+     * @throws DataAccessException se l'accesso al database fallisce
      */
-    public void associa (long idRistorante, List<ServizioDTO> servizi) throws ApplicationException {
+    public void associa (long idRistorante, List<ServizioDTO> servizi) throws DataAccessException {
         String sqlDelete = "DELETE FROM RistoranteServizio WHERE id_ristorante = ?";
         String sqlInsert = "INSERT INTO RistoranteServizio (id_ristorante, id_servizio) VALUES (?, ?)";
         try (Connection conn = db.getConnection()) {
@@ -131,7 +131,7 @@ public class ServizioDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new ApplicationException("Errore nell'associazione dei servizi al ristorante: "
+            throw new DataAccessException("Errore nell'associazione dei servizi al ristorante: "
                 + e.getMessage());
         }
     }
