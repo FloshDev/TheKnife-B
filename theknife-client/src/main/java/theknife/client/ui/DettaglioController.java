@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -38,13 +39,37 @@ public class DettaglioController {
 
     private final RistoranteService ristoranteService = new RistoranteService();
     private final RecensioneService recensioneService = new RecensioneService();
+    private long idRistorante;
 
     @FXML private void handlePreferiti() {
         System.out.println("Preferiti cliccato");
+
+        TaskRunner.run(
+            () -> {
+                ristoranteService.aggiungiPreferito(new IdRistoranteDTO(idRistorante));
+                return null;
+            },
+            esito -> {
+                new Alert(Alert.AlertType.INFORMATION, "Ristorante aggiunto ai preferiti.").showAndWait();
+            }
+        );
     }
 
-    @FXML private void handleScriviRecensione() {
+    @FXML private void handleScriviRecensione(ActionEvent event) {
         System.out.println("Scrivi recensione cliccato");
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/recensione.fxml"));
+            Parent root = loader.load();
+            ScriviRecensioneController controller = loader.getController();
+            controller.impostaRistorante(idRistorante, nomeLabel.getText());
+            stage.setScene(new Scene(root, 800, 600));
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
+        }
+
     }
 
     @FXML private void handleRispondiRecensione() {
@@ -60,6 +85,7 @@ public class DettaglioController {
     }
 
     public void impostaRistorante(long idRistorante) {
+        this.idRistorante = idRistorante;
         TaskRunner.run(
             () -> ristoranteService.ottieniDettagli(new IdRistoranteDTO(idRistorante)),
             ristorante -> {

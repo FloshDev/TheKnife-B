@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import theknife.client.service.RecensioneService;
 
 /**
  * Controller della schermata recensione (S07).
@@ -25,6 +26,9 @@ public class ScriviRecensioneController {
     @FXML private TextField titoloField;
     @FXML private TextField stelleField;
     @FXML private TextArea testoField;
+
+    private final RecensioneService recensioneService = new RecensioneService();
+    private long idRistorante;
     
     @FXML public void handlePubblica(ActionEvent event) throws IOException {
         System.out.println("Pubblica cliccato");
@@ -40,5 +44,10 @@ public class ScriviRecensioneController {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); 
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/dettaglio.fxml"));
         stage.setScene(new Scene(root, 800, 600));
+    }
+
+    public void impostaRistorante(long idRistorante, String nomeRistorante) {
+        this.idRistorante = idRistorante;
+        nomeRistoranteLabel.setText(nomeRistorante);
     }
 }
