@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import theknife.common.dto.RegistrazioneDTO;
 import theknife.common.dto.UtenteDTO;
 import theknife.common.enums.Ruolo;
-import theknife.server.exception.ApplicationException;
+import theknife.server.exception.DataAccessException;
 
 /**
  * DAO di accesso alla tabella <code>Utenti</code>. Incapsula le query di
@@ -20,7 +20,7 @@ import theknife.server.exception.ApplicationException;
  * Ogni metodo apre una connessione nuova tramite {@link DatabaseManager},
  * la usa con <code>try-with-resources</code> e la chiude da solo. Qualsiasi
  * {@link SQLException} viene catturata e riavvolta in
- * {@link ApplicationException}, come previsto dal layering del server.
+ * {@link DataAccessException}, come previsto dal layering del server.
  *
  * @author Scolaro Gabriele, 760123, VA
  */
@@ -43,9 +43,9 @@ public class UtenteDAO {
      *
      * @param username lo username da cercare
      * @return l'utente trovato, oppure <code>null</code> se assente
-     * @throws ApplicationException se l'accesso al database fallisce
+     * @throws DataAccessException se l'accesso al database fallisce
      */
-    public UtenteDTO trovaPerUsername (String username) throws ApplicationException {
+    public UtenteDTO trovaPerUsername (String username) throws DataAccessException {
         String sql = "SELECT id, username, nome, cognome, email, data_nascita, domicilio, ruolo "
                    + "FROM Utenti WHERE username = ?";
         try (Connection conn = db.getConnection();
@@ -55,7 +55,7 @@ public class UtenteDAO {
                 return rs.next() ? toDTO(rs) : null;
             }
         } catch (SQLException e) {
-            throw new ApplicationException("Errore nel recupero dell'utente: " + e.getMessage());
+            throw new DataAccessException("Errore nel recupero dell'utente: " + e.getMessage());
         }
     }
 
@@ -64,9 +64,9 @@ public class UtenteDAO {
      *
      * @param idUtente l'identificativo dell'utente
      * @return l'utente trovato, oppure <code>null</code> se assente
-     * @throws ApplicationException se l'accesso al database fallisce
+     * @throws DataAccessException se l'accesso al database fallisce
      */
-    public UtenteDTO trovaPerId (long idUtente) throws ApplicationException {
+    public UtenteDTO trovaPerId (long idUtente) throws DataAccessException {
         String sql = "SELECT id, username, nome, cognome, email, data_nascita, domicilio, ruolo "
                    + "FROM Utenti WHERE id = ?";
         try (Connection conn = db.getConnection();
@@ -76,7 +76,7 @@ public class UtenteDAO {
                 return rs.next() ? toDTO(rs) : null;
             }
         } catch (SQLException e) {
-            throw new ApplicationException("Errore nel recupero dell'utente: " + e.getMessage());
+            throw new DataAccessException("Errore nel recupero dell'utente: " + e.getMessage());
         }
     }
 
@@ -88,9 +88,9 @@ public class UtenteDAO {
      * @param username lo username dell'utente
      * @return l'hash della password, oppure <code>null</code> se l'utente non
      *         esiste
-     * @throws ApplicationException se l'accesso al database fallisce
+     * @throws DataAccessException se l'accesso al database fallisce
      */
-    public String trovaHashPassword (String username) throws ApplicationException {
+    public String trovaHashPassword (String username) throws DataAccessException {
         String sql = "SELECT password FROM Utenti WHERE username = ?";
         try (Connection conn = db.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -99,7 +99,7 @@ public class UtenteDAO {
                 return rs.next() ? rs.getString("password") : null;
             }
         } catch (SQLException e) {
-            throw new ApplicationException("Errore nel recupero dell'hash della password: "
+            throw new DataAccessException("Errore nel recupero dell'hash della password: "
                 + e.getMessage());
         }
     }
@@ -111,9 +111,9 @@ public class UtenteDAO {
      * @param hashPassword l'hash (BCrypt) della password, gia' calcolato dal
      *                     livello service
      * @return l'identificativo generato per il nuovo utente
-     * @throws ApplicationException se l'accesso al database fallisce
+     * @throws DataAccessException se l'accesso al database fallisce
      */
-    public long inserisci (RegistrazioneDTO dati, String hashPassword) throws ApplicationException {
+    public long inserisci (RegistrazioneDTO dati, String hashPassword) throws DataAccessException {
         String sql = "INSERT INTO Utenti (username, password, nome, cognome, email, "
                    + "data_nascita, domicilio, ruolo) "
                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id";
@@ -135,10 +135,10 @@ public class UtenteDAO {
                 if (rs.next()) {
                     return rs.getLong("id");
                 }
-                throw new ApplicationException("Inserimento utente senza id generato.");
+                throw new DataAccessException("Inserimento utente senza id generato.");
             }
         } catch (SQLException e) {
-            throw new ApplicationException("Errore nell'inserimento dell'utente: " + e.getMessage());
+            throw new DataAccessException("Errore nell'inserimento dell'utente: " + e.getMessage());
         }
     }
 
@@ -148,9 +148,9 @@ public class UtenteDAO {
      * @param username lo username da controllare
      * @return <code>true</code> se lo username esiste gia', altrimenti
      *         <code>false</code>
-     * @throws ApplicationException se l'accesso al database fallisce
+     * @throws DataAccessException se l'accesso al database fallisce
      */
-    public boolean usernameEsiste (String username) throws ApplicationException {
+    public boolean usernameEsiste (String username) throws DataAccessException {
         String sql = "SELECT 1 FROM Utenti WHERE username = ?";
         try (Connection conn = db.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -159,7 +159,7 @@ public class UtenteDAO {
                 return rs.next();
             }
         } catch (SQLException e) {
-            throw new ApplicationException("Errore nella verifica dello username: "
+            throw new DataAccessException("Errore nella verifica dello username: "
                 + e.getMessage());
         }
     }
