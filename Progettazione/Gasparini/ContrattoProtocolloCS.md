@@ -39,19 +39,19 @@ OTTIENI_STATISTICHE_RISTORANTE, RISPONDI_RECENSIONE, ASSOCIA_RISTORANTE
 
 | ruolo                 | operazione                          | richiede dati  | restituisce dati        |
 | -----------           | ----------------------------------- | -------------- | ----------------------- |
-| guest                 | OTTIENI_LOCALITA_INIZIALE           | no             | posizione               |
-| guest                 | ACCEDI                              | sì             | sì                      |
-| guest                 | REGISTRATI                          | sì             | conferma                |
-| guest                 | CERCA_RISTORANTI                    | sì             | lista                   |
-| guest                 | OTTIENI_DETTAGLI_RISTORANTE         | sì             | RistoranteDTO           |
-| guest                 | LEGGI_RECENSIONI                    | sì             | lista                   |
+| ospite                | OTTIENI_LOCALITA_INIZIALE           | no             | posizione               |
+| ospite                | ACCEDI                              | sì             | sì                      |
+| ospite                | REGISTRATI                          | sì             | conferma                |
+| tutti                 | CERCA_RISTORANTI                    | sì             | lista                   |
+| tutti                 | OTTIENI_DETTAGLI_RISTORANTE         | sì             | RistoranteDTO           |
+| tutti                 | LEGGI_RECENSIONI                    | sì             | lista                   |
 | cliente               | AGGIUNGI_PREFERITO                  | sì             | conferma                |
 | cliente               | RIMUOVI_PREFERITO                   | sì             | conferma                |
 | cliente               | VEDI_PREFERITI                      | no             | lista                   |
 | cliente               | AGGIUNGI_RECENSIONE                 | sì             | conferma                |
 | cliente               | MODIFICA_RECENSIONE                 | sì             | conferma                |
 | cliente               | ELIMINA_RECENSIONE                  | sì             | conferma                |
-| cliente               | CERCA_VICINO                        | sì-geoloc.     | lista                   |
+| tutti                 | CERCA_VICINO                        | sì-geoloc.     | lista                   |
 | cliente/ristoratore   | ESCI (DISCONNETTITI)                | no             | conferma                |
 | ristoratore           | AGGIUNGI_RISTORANTE                 | sì             | conferma                |
 | ristoratore           | VEDI_RISTORANTI_GESTITI             | no             | lista                   |
