@@ -40,24 +40,20 @@ public class RecensioneService {
         }
     }
 
-    public RecensioneDTO aggiungiRecensione(AggiungiRecensioneDTO dati) throws IOException, ClassNotFoundException {
+    public void aggiungiRecensione(AggiungiRecensioneDTO dati) throws IOException, ClassNotFoundException {
         Request request = new Request(CommandType.AGGIUNGI_RECENSIONE, dati, connection.getSessionToken());
         Response response = connection.inviaRichiesta(request);
         
-        if (response.getStatus() == ResponseStatus.SUCCESSO) {
-            return (RecensioneDTO) response.getPayload();
-        } else {
+        if (response.getStatus() != ResponseStatus.SUCCESSO) {
             throw new IOException(response.getMessaggio());
         }
     }
 
-    public RecensioneDTO modificaRecensione(ModificaRecensioneDTO recensione) throws IOException, ClassNotFoundException {
+    public void modificaRecensione(ModificaRecensioneDTO recensione) throws IOException, ClassNotFoundException {
         Request request = new Request(CommandType.MODIFICA_RECENSIONE, recensione, connection.getSessionToken());
         Response response = connection.inviaRichiesta(request);
         
-        if (response.getStatus() == ResponseStatus.SUCCESSO) {
-            return (RecensioneDTO) response.getPayload();
-        } else {
+        if (response.getStatus() != ResponseStatus.SUCCESSO) {
             throw new IOException(response.getMessaggio());
         }
     }
@@ -82,13 +78,11 @@ public class RecensioneService {
         }
     }
 
-    public RecensioneDTO rispondiRecensione(RispondiRecensioneDTO recensione) throws IOException, ClassNotFoundException {
+    public void rispondiRecensione(RispondiRecensioneDTO recensione) throws IOException, ClassNotFoundException {
         Request request = new Request(CommandType.RISPONDI_RECENSIONE, recensione, connection.getSessionToken());
         Response response = connection.inviaRichiesta(request);
         
-        if (response.getStatus() == ResponseStatus.SUCCESSO) {
-            return (RecensioneDTO) response.getPayload();
-        } else {
+        if (response.getStatus() != ResponseStatus.SUCCESSO) {
             throw new IOException(response.getMessaggio());
         }
     }

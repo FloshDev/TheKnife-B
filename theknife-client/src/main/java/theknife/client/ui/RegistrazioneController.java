@@ -76,7 +76,7 @@ public class RegistrazioneController {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
         TaskRunner.run(
-            () -> authService.registrati(dati),
+            () -> {authService.registrati(dati); return null;},
             registrazioneResult -> {
                 try{
                     Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/login.fxml"));

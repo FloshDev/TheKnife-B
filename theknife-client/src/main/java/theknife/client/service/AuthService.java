@@ -38,15 +38,12 @@ public class AuthService {
         }
     }
 
-    public LoginResultDTO registrati(RegistrazioneDTO dati) throws IOException, ClassNotFoundException {
+    public void registrati(RegistrazioneDTO dati) throws IOException, ClassNotFoundException {
         Request request = new Request(CommandType.REGISTRATI, dati, connection.getSessionToken());
 
         Response response = connection.inviaRichiesta(request);
         
-        if(response.getStatus() == ResponseStatus.SUCCESSO) {
-            LoginResultDTO loginResultDTO = (LoginResultDTO) response.getPayload();
-            return loginResultDTO;
-        } else {
+        if(response.getStatus() != ResponseStatus.SUCCESSO) {
             throw new IOException(response.getMessaggio());
         }
     }
