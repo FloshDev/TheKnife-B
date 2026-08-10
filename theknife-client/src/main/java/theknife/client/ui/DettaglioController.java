@@ -1,6 +1,7 @@
 package theknife.client.ui;
 
 import java.io.IOException;
+import java.util.List;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,6 +13,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import theknife.client.service.RecensioneService;
+import theknife.client.service.RistoranteService;
+import theknife.common.dto.IdRistoranteDTO;
 
 /**
  * Controller della schermata di dettaglio (S06).
@@ -32,6 +36,9 @@ public class DettaglioController {
     @FXML private Button tornaIndietroButton;
     @FXML private ListView<String> recensioniListView;
 
+    private final RistoranteService ristoranteService = new RistoranteService();
+    private final RecensioneService recensioneService = new RecensioneService();
+
     @FXML private void handlePreferiti() {
         System.out.println("Preferiti cliccato");
     }
@@ -50,5 +57,28 @@ public class DettaglioController {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/risultati.fxml"));
         stage.setScene(new Scene(root, 800, 600));
+    }
+
+    public void impostaRistorante(long idRistorante) {
+        TaskRunner.run(
+            () -> ristoranteService.ottieniDettagli(new IdRistoranteDTO(idRistorante)),
+            ristorante -> {
+                nomeLabel.setText(ristorante.getNome());
+                tipoCucinaLabel.setText(ristorante.getTipoCucina());
+                indirizzoLabel.setText(ristorante.getIndirizzo());
+                fasciaPrezzoLabel.setText(String.valueOf(ristorante.getFasciaPrezzo()));
+                mediaStelleLabel.setText(String.valueOf(ristorante.getMediaStelle()));
+            }
+        );
+
+        TaskRunner.run(
+            () -> recensioneService.leggiRecensioni(new IdRistoranteDTO(idRistorante)),
+            recensioni -> {
+                List<String> testi = recensioni.stream()
+                    .map(r -> r.getStelle() + "★ - " + r.getTesto()) // Trasformo ogni recensione in una stringa leggibile
+                    .toList(); // Chiude lo stream 
+                recensioniListView.getItems().setAll(testi);
+            }
+        );
     }
 }

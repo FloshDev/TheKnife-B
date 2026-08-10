@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -29,8 +30,26 @@ public class RisultatiController {
     @FXML private Button dettaglioButton;
     @FXML private Button tornaIndietroButton;
     
-    @FXML private void handleDettaglio() {
+    @FXML private void handleDettaglio(ActionEvent event) {
         System.out.println("Dettaglio cliccato");
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        RistoranteDTO selectedRistorante = risultatiListView.getSelectionModel().getSelectedItem();
+        if (selectedRistorante != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/dettaglio.fxml"));
+                Parent root = loader.load();
+                DettaglioController controller = loader.getController();
+                controller.impostaRistorante(selectedRistorante.getIdRistorante());
+                stage.setScene(new Scene(root, 800, 600));
+            } catch (IOException e) {
+                new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
+            }
+        }
+        else {
+            new Alert(Alert.AlertType.ERROR, "Nessun ristorante selezionato").showAndWait();
+        }
     }
     
     @FXML private void handleTornaIndietro(ActionEvent event) throws IOException {
