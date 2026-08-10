@@ -12,10 +12,12 @@ import java.util.Map;
 
 import theknife.common.dto.AggiungiRistoranteDTO;
 import theknife.common.dto.CercaRistorantiDTO;
+import theknife.common.dto.PosizioneDTO;
 import theknife.common.dto.RistoranteDTO;
 import theknife.common.dto.ServizioDTO;
 import theknife.common.dto.StatisticheRistoranteDTO;
 import theknife.server.exception.ApplicationException;
+import theknife.server.exception.DataAccessException;
 
 /**
  * DAO di accesso alla tabella <code>RistorantiTheKnife</code> e alle tabelle
@@ -41,7 +43,7 @@ import theknife.server.exception.ApplicationException;
  * Ogni metodo apre una connessione nuova tramite {@link DatabaseManager}, la
  * usa con <code>try-with-resources</code> e la chiude da solo. Le
  * {@link SQLException} vengono catturate e riavvolte in
- * {@link ApplicationException}.
+ * {@link DataAccessException}.
  *
  * @author Scolaro Gabriele, 760123, VA
  */
@@ -69,9 +71,9 @@ public class RistoranteDAO {
      * @param filtri i criteri di ricerca; quelli a <code>null</code>/vuoti
      *               vengono ignorati
      * @return la lista dei ristoranti trovati, eventualmente vuota
-     * @throws ApplicationException se l'accesso al database fallisce
+     * @throws DataAccessException se l'accesso al database fallisce
      */
-    public List<RistoranteDTO> cerca (CercaRistorantiDTO filtri) throws ApplicationException {
+    public List<RistoranteDTO> cerca (CercaRistorantiDTO filtri) throws DataAccessException {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT r.id_ristorante, r.nome, r.nazione, r.citta, r.provincia, r.indirizzo, ")
            .append("r.latitudine, r.longitudine, r.fascia_prezzo, r.prenotazione_online, ")
@@ -132,7 +134,7 @@ public class RistoranteDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new ApplicationException("Errore nella ricerca dei ristoranti: " + e.getMessage());
+            throw new DataAccessException("Errore nella ricerca dei ristoranti: " + e.getMessage());
         }
         popolaServizi(risultato);
         return risultato;
@@ -144,9 +146,9 @@ public class RistoranteDAO {
      *
      * @param idRistorante l'identificativo del ristorante
      * @return il ristorante trovato, oppure <code>null</code> se assente
-     * @throws ApplicationException se l'accesso al database fallisce
+     * @throws DataAccessException se l'accesso al database fallisce
      */
-    public RistoranteDTO trovaPerId (long idRistorante) throws ApplicationException {
+    public RistoranteDTO trovaPerId (long idRistorante) throws DataAccessException {
         String sql = "SELECT r.id_ristorante, r.nome, r.nazione, r.citta, r.provincia, r.indirizzo, "
                    + "r.latitudine, r.longitudine, r.fascia_prezzo, r.prenotazione_online, "
                    + "r.consegna_a_domicilio, r.tipo_cucina, r.telefono, r.website, r.premi, r.id_gestore, "
@@ -165,7 +167,7 @@ public class RistoranteDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new ApplicationException("Errore nel recupero del ristorante: " + e.getMessage());
+            throw new DataAccessException("Errore nel recupero del ristorante: " + e.getMessage());
         }
         if (ristorante != null) {
             popolaServizi(Collections.singletonList(ristorante));
@@ -178,9 +180,9 @@ public class RistoranteDAO {
      *
      * @param idGestore l'identificativo del ristoratore (gestore)
      * @return la lista dei ristoranti del gestore, eventualmente vuota
-     * @throws ApplicationException se l'accesso al database fallisce
+     * @throws DataAccessException se l'accesso al database fallisce
      */
-    public List<RistoranteDTO> trovaPerGestore (long idGestore) throws ApplicationException {
+    public List<RistoranteDTO> trovaPerGestore (long idGestore) throws DataAccessException {
         String sql = "SELECT r.id_ristorante, r.nome, r.nazione, r.citta, r.provincia, r.indirizzo, "
                    + "r.latitudine, r.longitudine, r.fascia_prezzo, r.prenotazione_online, "
                    + "r.consegna_a_domicilio, r.tipo_cucina, r.telefono, r.website, r.premi, r.id_gestore, "
@@ -199,7 +201,7 @@ public class RistoranteDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new ApplicationException("Errore nel recupero dei ristoranti del gestore: "
+            throw new DataAccessException("Errore nel recupero dei ristoranti del gestore: "
                 + e.getMessage());
         }
         popolaServizi(risultato);
@@ -219,9 +221,9 @@ public class RistoranteDAO {
      * @param idGestore l'identificativo del gestore che inserisce il
      *                  ristorante
      * @return l'identificativo generato per il nuovo ristorante
-     * @throws ApplicationException se l'accesso al database fallisce
+     * @throws DataAccessException se l'accesso al database fallisce
      */
-    public long inserisci (AggiungiRistoranteDTO dati, long idGestore) throws ApplicationException {
+    public long inserisci (AggiungiRistoranteDTO dati, long idGestore) throws DataAccessException {
         String sql = "INSERT INTO RistorantiTheKnife "
                    + "(nome, nazione, citta, provincia, indirizzo, latitudine, longitudine, "
                    + " fascia_prezzo, prenotazione_online, consegna_a_domicilio, tipo_cucina, "
@@ -249,10 +251,10 @@ public class RistoranteDAO {
                 if (rs.next()) {
                     return rs.getLong("id_ristorante");
                 }
-                throw new ApplicationException("Inserimento ristorante senza id generato.");
+                throw new DataAccessException("Inserimento ristorante senza id generato.");
             }
         } catch (SQLException e) {
-            throw new ApplicationException("Errore nell'inserimento del ristorante: " + e.getMessage());
+            throw new DataAccessException("Errore nell'inserimento del ristorante: " + e.getMessage());
         }
     }
 
@@ -261,9 +263,9 @@ public class RistoranteDAO {
      *
      * @param idRistorante l'identificativo del ristorante
      * @param idGestore    l'identificativo del gestore da associare
-     * @throws ApplicationException se l'accesso al database fallisce
+     * @throws DataAccessException se l'accesso al database fallisce
      */
-    public void associaGestore (long idRistorante, long idGestore) throws ApplicationException {
+    public void associaGestore (long idRistorante, long idGestore) throws DataAccessException {
         String sql = "UPDATE RistorantiTheKnife SET id_gestore = ? WHERE id_ristorante = ?";
         try (Connection conn = db.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -271,7 +273,7 @@ public class RistoranteDAO {
             ps.setLong(2, idRistorante);
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new ApplicationException("Errore nell'associazione del gestore al ristorante: "
+            throw new DataAccessException("Errore nell'associazione del gestore al ristorante: "
                 + e.getMessage());
         }
     }
@@ -283,9 +285,9 @@ public class RistoranteDAO {
      * @param idRistorante l'identificativo del ristorante
      * @return le statistiche del ristorante, oppure <code>null</code> se il
      *         ristorante non esiste
-     * @throws ApplicationException se l'accesso al database fallisce
+     * @throws DataAccessException se l'accesso al database fallisce
      */
-    public StatisticheRistoranteDTO statistiche (long idRistorante) throws ApplicationException {
+    public StatisticheRistoranteDTO statistiche (long idRistorante) throws DataAccessException {
         String sql = "SELECT r.nome, COALESCE(AVG(rec.stelle), 0) AS media_stelle, "
                    + "COUNT(rec.id_recensione) AS numero_recensioni "
                    + "FROM RistorantiTheKnife r "
@@ -304,7 +306,7 @@ public class RistoranteDAO {
                 return null;
             }
         } catch (SQLException e) {
-            throw new ApplicationException("Errore nel calcolo delle statistiche del ristorante: "
+            throw new DataAccessException("Errore nel calcolo delle statistiche del ristorante: "
                 + e.getMessage());
         }
     }
@@ -321,10 +323,10 @@ public class RistoranteDAO {
      * @param raggioKm il raggio di ricerca in chilometri
      * @return la lista dei ristoranti nel raggio, ordinati per distanza
      *         crescente, eventualmente vuota
-     * @throws ApplicationException se l'accesso al database fallisce
+     * @throws DataAccessException se l'accesso al database fallisce
      */
     public List<RistoranteDTO> cercaVicino (double lat, double lon, double raggioKm)
-            throws ApplicationException {
+            throws DataAccessException {
         String sql = "SELECT t.id_ristorante, t.nome, t.nazione, t.citta, t.provincia, t.indirizzo, "
                    + "t.latitudine, t.longitudine, t.fascia_prezzo, t.prenotazione_online, "
                    + "t.consegna_a_domicilio, t.tipo_cucina, t.telefono, t.website, t.premi, "
@@ -360,11 +362,42 @@ public class RistoranteDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new ApplicationException("Errore nella ricerca dei ristoranti vicini: "
+            throw new DataAccessException("Errore nella ricerca dei ristoranti vicini: "
                 + e.getMessage());
         }
         popolaServizi(risultato);
         return risultato;
+    }
+
+    /**
+     * Individua le coordinate geografiche (latitudine e longitudine) di un
+     * luogo a partire dal suo nome, calcolandole come media delle coordinate
+     * dei ristoranti presenti in quella citta'. E' il ramo di fallback del
+     * geocoding: viene usato quando il servizio esterno di
+     * geocodifica non risponde.
+     *
+     * @param luogo il nome del luogo (citta') da geocodificare
+     * @return la posizione stimata del luogo, oppure <code>null</code> se non
+     *         esiste alcun ristorante in quella citta'
+     * @throws DataAccessException se l'accesso al database fallisce
+     */
+    public PosizioneDTO trovaCoordinateLuogo (String luogo) throws DataAccessException {
+        String sql = "SELECT AVG(latitudine) AS latitudine, AVG(longitudine) AS longitudine "
+                   + "FROM RistorantiTheKnife WHERE citta ILIKE ?";
+        try (Connection conn = db.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, luogo);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next() && rs.getObject("latitudine") != null) {
+                    return new PosizioneDTO(
+                        rs.getDouble("latitudine"),
+                        rs.getDouble("longitudine"));
+                }
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Errore nella geocodifica del luogo: " + e.getMessage());
+        }
     }
 
     /**
@@ -407,9 +440,9 @@ public class RistoranteDAO {
      * (trappola b del contratto) e il problema N+1.
      *
      * @param ristoranti i ristoranti da arricchire
-     * @throws ApplicationException se l'accesso al database fallisce
+     * @throws DataAccessException se l'accesso al database fallisce
      */
-    private void popolaServizi (List<RistoranteDTO> ristoranti) throws ApplicationException {
+    private void popolaServizi (List<RistoranteDTO> ristoranti) throws DataAccessException {
         if (ristoranti == null || ristoranti.isEmpty()) {
             return;
         }
@@ -433,7 +466,7 @@ public class RistoranteDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new ApplicationException("Errore nel recupero dei servizi dei ristoranti: "
+            throw new DataAccessException("Errore nel recupero dei servizi dei ristoranti: "
                 + e.getMessage());
         }
         for (RistoranteDTO r : ristoranti) {
