@@ -12,6 +12,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import theknife.client.service.AuthService;
+import theknife.common.enums.Ruolo;
 
 /**
  * Controller della schermata di login (S02).
@@ -35,8 +36,14 @@ public class LoginController {
             () -> authService.login(username, password),
             loginResult -> {
                 try{
-                    Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/home.fxml"));
-                    stage.setScene(new Scene(root, 800, 600));
+                    if(loginResult.getUtente().getRuolo() == Ruolo.CLIENTE) {
+                        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/home.fxml"));
+                        stage.setScene(new Scene(root, 800, 600));
+                    }
+                    else if (loginResult.getUtente().getRuolo() == Ruolo.RISTORATORE) {
+                        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/dashboard.fxml"));
+                        stage.setScene(new Scene(root, 800, 600));
+                    }
                 }catch (IOException e) {
                     new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
                 }

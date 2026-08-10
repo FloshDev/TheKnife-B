@@ -42,8 +42,8 @@ public class RistoranteService {
     }
 
     @SuppressWarnings("unchecked")
-    public List<RistoranteDTO> cercaVicino(CercaVicinoDTO raggioKm) throws IOException, ClassNotFoundException {
-        Request request = new Request(CommandType.CERCA_VICINO, raggioKm, connection.getSessionToken());
+    public List<RistoranteDTO> cercaVicino(CercaVicinoDTO filtri) throws IOException, ClassNotFoundException {
+        Request request = new Request(CommandType.CERCA_VICINO, filtri, connection.getSessionToken());
         Response response = connection.inviaRichiesta(request);
 
         if (response.getStatus() == ResponseStatus.SUCCESSO) {

@@ -1,6 +1,7 @@
 package theknife.client.ui;
 
 import java.io.IOException;
+import java.util.List;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,8 +11,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import theknife.common.dto.RistoranteDTO;
+
 
 /**
  * Controller della schermata risultati (S05).
@@ -21,7 +25,7 @@ import javafx.stage.Stage;
 
 public class RisultatiController {
     @FXML private Label risultatiLabel;
-    @FXML private ListView<String> risultatiListView;
+    @FXML private ListView<RistoranteDTO> risultatiListView;
     @FXML private Button dettaglioButton;
     @FXML private Button tornaIndietroButton;
     
@@ -36,4 +40,21 @@ public class RisultatiController {
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/home.fxml"));
         stage.setScene(new Scene(root, 800, 600));
     }
+
+    public void impostaRisultati(List<RistoranteDTO> risultati) {
+        risultatiListView.getItems().setAll(risultati);
+
+        risultatiListView.setCellFactory(lv -> new ListCell<RistoranteDTO>() {
+        @Override
+            protected void updateItem(RistoranteDTO item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.getNome() + " - " + item.getCitta() + " - " + item.getTipoCucina());
+                }
+            }
+        });
+    }
+    
 }

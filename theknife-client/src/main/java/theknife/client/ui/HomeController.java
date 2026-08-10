@@ -8,9 +8,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import theknife.client.service.RistoranteService;
+import theknife.common.dto.CercaRistorantiDTO;
+import theknife.common.dto.CercaVicinoDTO;
 
 /**
  * Controller della schermata Home (S04).
@@ -27,13 +31,62 @@ public class HomeController {
     @FXML private TextField raggioKmField;
     @FXML private CheckBox prenotazioneOnlineCheck;
     @FXML private CheckBox consegnaADomicilioCheck;
+    private final RistoranteService ristoranteService = new RistoranteService();
 
-    @FXML private void handleCerca() {
+    @FXML private void handleCerca(ActionEvent event) {
         System.out.println("Cerca cliccato");
+
+        String nome = nomeField.getText();
+        String citta = cittaField.getText();
+        String tipoCucina = tipoCucinaField.getText();
+        int fasciaPrezzo = Integer.parseInt(fasciaPrezzoField.getText());
+        boolean prenotazioneOnline = prenotazioneOnlineCheck.isSelected();
+        boolean consegnaADomicilio = consegnaADomicilioCheck.isSelected();
+
+        CercaRistorantiDTO filtri = new CercaRistorantiDTO(
+            nome, citta, tipoCucina, prenotazioneOnline, fasciaPrezzo, consegnaADomicilio, null
+        );
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); 
+
+        TaskRunner.run(
+        () -> ristoranteService.cercaRistoranti(filtri),
+        cercaResult -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/risultati.fxml"));
+                Parent root = loader.load();
+                RisultatiController controller = loader.getController();
+                controller.impostaRisultati(cercaResult);
+                stage.setScene(new Scene(root, 800, 600));
+            } catch (IOException e) {
+                new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
+            }
+        }
+        );
     }
 
-    @FXML private void handleVicinoAMe() {
+    @FXML private void handleVicinoAMe(ActionEvent event) {
         System.out.println("Vicino a me cliccato");
+
+        double raggioKm = Double.parseDouble(raggioKmField.getText());
+        CercaVicinoDTO filtri = new CercaVicinoDTO(raggioKm, null);
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        TaskRunner.run(
+        () -> ristoranteService.cercaVicino(filtri),
+        cercaResult -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/risultati.fxml"));
+                Parent root = loader.load();
+                RisultatiController controller = loader.getController();
+                controller.impostaRisultati(cercaResult);
+                stage.setScene(new Scene(root, 800, 600));
+            } catch (IOException e) {
+                new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
+            }
+        }
+        );
     }
 
     @FXML private void handlePreferiti() {
