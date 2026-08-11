@@ -47,24 +47,35 @@ public class TaskRunner {
      *                   può toccare i nodi della schermata
      */
     public static <T> void run(Callable<T> operazione, Consumer<T> alSuccesso) {
-        Task<T> task = new Task<T>() {
-            @Override protected T call() throws Exception {
-                return operazione.call();
-            }
-        };
-        task.setOnSucceeded(e -> {
-            alSuccesso.accept(task.getValue());
-        });
-        task.setOnFailed(e -> {
-            String messaggio = task.getException().getMessage();
+        run(operazione, alSuccesso, eccezione -> {
+            String messaggio = eccezione.getMessage();
             if (messaggio == null) {
                 messaggio = "Si è verificato un errore sconosciuto.";
             }
             new Alert(Alert.AlertType.ERROR, messaggio).showAndWait();
         });
-        executor.execute(task);
-    } 
+    }
 
-    
+    /**
+     * Come {@link #run(Callable, Consumer)}, ma lascia al chiamante decidere
+     * cosa fare in caso di fallimento invece di mostrare sempre un Alert —
+     * serve quando l'errore va gestito in silenzio (es. geolocalizzazione
+     * iniziale, decisione 18).
+     *
+     * @param <T> tipo del risultato prodotto dall'operazione
+     * @param operazione chiamata bloccante da eseguire fuori dal thread della UI
+     * @param alSuccesso cosa fare col risultato, sul thread della UI
+     * @param alFallimento cosa fare in caso di errore, sul thread della UI
+     */
+    public static <T> void run(Callable<T> operazione, Consumer<T> alSuccesso, Consumer<Throwable> alFallimento) {
+        Task<T> task = new Task<T>() {
+            @Override protected T call() throws Exception {
+                return operazione.call();
+            }
+        };
+        task.setOnSucceeded(e -> alSuccesso.accept(task.getValue()));
+        task.setOnFailed(e -> alFallimento.accept(task.getException()));
+        executor.execute(task);
+    }
 
 }
