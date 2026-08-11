@@ -68,7 +68,6 @@ public class ConfigurazioneDB {
         System.out.println("Connessione a " + host 
             + ":" + PORTA_DB + "/" + NOME_DB + " come " + utente);
 
-        sc.close();
 
         return new ConfigurazioneDB(host, utente, password);
 
