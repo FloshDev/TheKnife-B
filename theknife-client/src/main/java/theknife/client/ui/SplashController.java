@@ -24,6 +24,12 @@ public class SplashController {
 
     private final RistoranteService ristoranteService = new RistoranteService();
 
+    /**
+     * Tenta di rilevare la posizione dell'utente dall'IP della connessione
+     * (decisione 18). Il fallimento è silenzioso e non mostra nulla: su IP
+     * locale o di rete privata la geolocalizzazione fallisce sistematicamente,
+     * e l'utente corregge a mano con {@code modificaLocalitaField}.
+     */
     @FXML private void initialize() {
         TaskRunner.run(
             () -> ristoranteService.ottieniLocalitaIniziale(),
@@ -32,25 +38,37 @@ public class SplashController {
         );
     }
 
+    /**
+     * Naviga alla schermata di login.
+     *
+     * @param event l'evento generato dal click sul link di login
+     * @throws IOException se il caricamento della schermata fallisce
+     */
     @FXML private void handleLogin(ActionEvent event) throws IOException {
-        System.out.println("Login cliccato: ");
-
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); // Non crei una finestra nuova, riusi quella che già esiste
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/login.fxml"));
         stage.setScene(new Scene(root, 800, 600));
     }
 
+    /**
+     * Naviga alla Home senza autenticarsi.
+     *
+     * @param event l'evento generato dal click sul link "Continua come ospite"
+     * @throws IOException se il caricamento della schermata fallisce
+     */
     @FXML private void handleGuest(ActionEvent event) throws IOException {
-        System.out.println("Continua come ospite cliccato");
-
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/home.fxml"));
         stage.setScene(new Scene(root, 800, 600));
     }
 
+    /**
+     * Conferma la località rilevata (o corretta a mano) e naviga alla Home.
+     *
+     * @param event l'evento generato dal click sul bottone "Conferma"
+     * @throws IOException se il caricamento della schermata fallisce
+     */
     @FXML private void handleConferma(ActionEvent event) throws IOException {
-        System.out.println("Conferma cliccato");
-
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/home.fxml"));
         stage.setScene(new Scene(root, 800, 600));

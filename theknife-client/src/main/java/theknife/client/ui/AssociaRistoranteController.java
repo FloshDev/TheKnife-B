@@ -35,9 +35,13 @@ public class AssociaRistoranteController {
 
     private final RistoranteService ristoranteService = new RistoranteService();
 
+    /**
+     * Cerca i ristoranti per nome e mostra i risultati nella lista. Solo il
+     * nome è supportato: nessun comando del protocollo consente la ricerca
+     * per indirizzo, benché fosse promessa dal placeholder originale del
+     * campo di ricerca.
+     */
     @FXML private void handleCerca() {
-        System.out.println("Cerca cliccato");
-
         CercaRistorantiDTO cercaRistoranteDTO = new CercaRistorantiDTO(ricercaField.getText(), null, null, null, 0, null, null);
 
         TaskRunner.run(
@@ -58,9 +62,15 @@ public class AssociaRistoranteController {
             }
         );
     }
+    /**
+     * Associa l'utente come gestore del ristorante selezionato nella lista e
+     * torna alla dashboard. Mostra un avviso se nessun elemento è
+     * selezionato.
+     *
+     * @param event l'evento generato dal click sul bottone "Associa"
+     * @throws IOException se il caricamento della schermata fallisce
+     */
     @FXML private void handleAssocia(ActionEvent event) throws IOException {
-        System.out.println("Associa cliccato");
-
         RistoranteDTO selectedRistorante = risultatiListView.getSelectionModel().getSelectedItem();
         if (selectedRistorante != null) {
             TaskRunner.run(
@@ -82,9 +92,13 @@ public class AssociaRistoranteController {
             new Alert(Alert.AlertType.WARNING, "Seleziona un ristorante dalla lista").showAndWait();
         }
     }
+    /**
+     * Torna alla dashboard senza associare nulla.
+     *
+     * @param event l'evento generato dal click sul bottone "Annulla"
+     * @throws IOException se il caricamento della schermata fallisce
+     */
     @FXML private void handleAnnulla(ActionEvent event) throws IOException {
-        System.out.println("Annulla cliccato");
-
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/dashboard.fxml"));
         stage.setScene(new Scene(root, 800, 600));

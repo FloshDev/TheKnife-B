@@ -38,9 +38,16 @@ public class AggiungiRistoranteController {
 
     private final RistoranteService ristoranteService = new RistoranteService();
 
+    /**
+     * Crea un nuovo ristorante con i dati del form e, al successo, naviga
+     * direttamente al suo dettaglio usando l'id restituito dal server
+     * (decisione 15: su questo comando il payload di ritorno esiste
+     * apposta per evitare un giro di rete in più).
+     *
+     * @param event l'evento generato dal click sul bottone "Salva"
+     * @throws IOException se il caricamento della schermata fallisce
+     */
     @FXML private void handleSalva(ActionEvent event) throws IOException {
-        System.out.println("Salva cliccato");
-
         String nome = nomeField.getText();
         String indirizzo = indirizzoField.getText();
         String citta = cittaField.getText();
@@ -60,7 +67,6 @@ public class AggiungiRistoranteController {
         TaskRunner.run(
             () -> ristoranteService.aggiungiRistorante(ristoranteDTO),
             result -> {
-                System.out.println("Ristorante aggiunto con successo");
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/dettaglio.fxml"));
                     Parent root = loader.load();
@@ -74,9 +80,13 @@ public class AggiungiRistoranteController {
         );
     }
 
+    /**
+     * Torna alla dashboard senza salvare.
+     *
+     * @param event l'evento generato dal click sul bottone "Annulla"
+     * @throws IOException se il caricamento della schermata fallisce
+     */
     @FXML private void handleAnnulla(ActionEvent event) throws IOException {
-        System.out.println("Torna indietro cliccato");
-
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/dashboard.fxml"));
         stage.setScene(new Scene(root, 800, 600));

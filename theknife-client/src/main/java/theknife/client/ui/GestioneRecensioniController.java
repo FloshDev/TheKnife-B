@@ -34,6 +34,10 @@ public class GestioneRecensioniController {
 
     private final RecensioneService recensioneService = new RecensioneService();
 
+    /**
+     * Carica dal server le recensioni di tutti i ristoranti gestiti
+     * dall'utente e le mostra, sostituendo il contenuto attuale della lista.
+     */
     private void caricaRecensioni() {
         TaskRunner.run(
             () -> recensioneService.leggiRecensioniRistorantiGestiti(),
@@ -54,13 +58,18 @@ public class GestioneRecensioniController {
         );
     }
 
+    /**
+     * Carica le recensioni all'apertura della schermata.
+     */
     @FXML private void initialize() {
         caricaRecensioni();
     }
 
+    /**
+     * Invia la risposta scritta alla recensione selezionata nella lista e
+     * ricarica l'elenco. Mostra un avviso se nessun elemento è selezionato.
+     */
     @FXML private void handleRispondi() {
-        System.out.println("Rispondi");
-
         RecensioneDTO selectedRecensione = recensioniListView.getSelectionModel().getSelectedItem();
         if (selectedRecensione != null) {
             String risposta = rispostaField.getText();
@@ -81,9 +90,13 @@ public class GestioneRecensioniController {
         }
     }
 
+    /**
+     * Naviga alla dashboard.
+     *
+     * @param event l'evento generato dal click sul bottone "Torna indietro"
+     * @throws IOException se il caricamento della schermata fallisce
+     */
     @FXML private void handleTornaIndietro(ActionEvent event) throws IOException {
-        System.out.println("Torna indietro");
-        
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/dashboard.fxml"));
         stage.setScene(new Scene(root, 800, 600));

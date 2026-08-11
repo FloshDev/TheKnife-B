@@ -30,9 +30,13 @@ public class RisultatiController {
     @FXML private Button dettaglioButton;
     @FXML private Button tornaIndietroButton;
     
+    /**
+     * Naviga al dettaglio del ristorante selezionato nella lista. Mostra un
+     * avviso se nessun elemento è selezionato.
+     *
+     * @param event l'evento generato dal click sul bottone "Vedi dettaglio"
+     */
     @FXML private void handleDettaglio(ActionEvent event) {
-        System.out.println("Dettaglio cliccato");
-
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
         RistoranteDTO selectedRistorante = risultatiListView.getSelectionModel().getSelectedItem();
@@ -52,14 +56,25 @@ public class RisultatiController {
         }
     }
     
+    /**
+     * Naviga alla schermata Home.
+     *
+     * @param event l'evento generato dal click sul bottone "Torna indietro"
+     * @throws IOException se il caricamento della schermata fallisce
+     */
     @FXML private void handleTornaIndietro(ActionEvent event) throws IOException {
-        System.out.println("Torna indietro cliccato");
-
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/home.fxml"));
         stage.setScene(new Scene(root, 800, 600));
     }
 
+    /**
+     * Popola la lista dei risultati con i ristoranti ricevuti e imposta il
+     * cell factory per mostrarli in forma leggibile (nome, città, cucina)
+     * invece del {@code toString()} grezzo del DTO.
+     *
+     * @param risultati i ristoranti da mostrare
+     */
     public void impostaRisultati(List<RistoranteDTO> risultati) {
         risultatiListView.getItems().setAll(risultati);
 

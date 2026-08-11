@@ -32,9 +32,13 @@ public class ScriviRecensioneController {
     private final RecensioneService recensioneService = new RecensioneService();
     private long idRistorante;
     
+    /**
+     * Pubblica la recensione scritta nel form e, al successo, torna al
+     * dettaglio del ristorante con i dati aggiornati.
+     *
+     * @param event l'evento generato dal click sul bottone "Pubblica"
+     */
     @FXML public void handlePubblica(ActionEvent event) {
-        System.out.println("Pubblica cliccato");
-
         String titolo = titoloField.getText();
         String testo = testoField.getText();
         int stelle = Integer.parseInt(stelleField.getText());
@@ -59,9 +63,13 @@ public class ScriviRecensioneController {
     );
     }
     
+    /**
+     * Torna al dettaglio del ristorante senza pubblicare la recensione.
+     *
+     * @param event l'evento generato dal click sul bottone "Annulla"
+     * @throws IOException se il caricamento della schermata fallisce
+     */
     @FXML public void handleAnnulla(ActionEvent event) throws IOException {
-        System.out.println("Annulla cliccato");
-
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/dettaglio.fxml"));
         Parent root = loader.load();
@@ -70,6 +78,13 @@ public class ScriviRecensioneController {
         stage.setScene(new Scene(root, 800, 600));
     }
 
+    /**
+     * Riceve l'identificativo del ristorante da recensire e il suo nome, da
+     * mostrare nella schermata.
+     *
+     * @param idRistorante l'identificativo del ristorante da recensire
+     * @param nomeRistorante il nome del ristorante, mostrato nella schermata
+     */
     public void impostaRistorante(long idRistorante, String nomeRistorante) {
         this.idRistorante = idRistorante;
         nomeRistoranteLabel.setText(nomeRistorante);

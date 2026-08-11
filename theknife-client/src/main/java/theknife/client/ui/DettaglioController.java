@@ -41,9 +41,10 @@ public class DettaglioController {
     private final RecensioneService recensioneService = new RecensioneService();
     private long idRistorante;
 
+    /**
+     * Aggiunge il ristorante corrente ai preferiti dell'utente.
+     */
     @FXML private void handlePreferiti() {
-        System.out.println("Preferiti cliccato");
-
         TaskRunner.run(
             () -> {
                 ristoranteService.aggiungiPreferito(new IdRistoranteDTO(idRistorante));
@@ -55,9 +56,13 @@ public class DettaglioController {
         );
     }
 
+    /**
+     * Naviga alla schermata di scrittura recensione, passando id e nome del
+     * ristorante corrente.
+     *
+     * @param event l'evento generato dal click sul bottone "Scrivi recensione"
+     */
     @FXML private void handleScriviRecensione(ActionEvent event) {
-        System.out.println("Scrivi recensione cliccato");
-
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         
         try {
@@ -72,18 +77,31 @@ public class DettaglioController {
 
     }
 
+    /**
+     * Placeholder per la risposta a una recensione, non ancora implementato.
+     */
     @FXML private void handleRispondiRecensione() {
-        System.out.println("Rispondi recensione cliccato");
     }
 
+    /**
+     * Naviga alla schermata dei risultati di ricerca.
+     *
+     * @param event l'evento generato dal click sul bottone "Torna indietro"
+     * @throws IOException se il caricamento della schermata fallisce
+     */
     @FXML private void handleTornaIndietro(ActionEvent event) throws IOException {
-        System.out.println("Torna indietro cliccato");
-
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/risultati.fxml"));
         stage.setScene(new Scene(root, 800, 600));
     }
 
+    /**
+     * Carica dal server i dettagli e le recensioni del ristorante indicato e
+     * popola la schermata. Le due chiamate sono indipendenti: ognuna
+     * aggiorna la propria parte di schermo quando la sua risposta arriva.
+     *
+     * @param idRistorante l'identificativo del ristorante da mostrare
+     */
     public void impostaRistorante(long idRistorante) {
         this.idRistorante = idRistorante;
         TaskRunner.run(

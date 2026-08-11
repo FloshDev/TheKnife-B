@@ -35,8 +35,11 @@ public class DashboardController {
     private final RistoranteService ristoranteService = new RistoranteService();
     private final AuthService authService = new AuthService();
     
+    /**
+     * Carica i ristoranti gestiti dall'utente ristoratore all'apertura
+     * della schermata.
+     */
     @FXML private void initialize() {
-        System.out.println("Dashboard caricata");
         TaskRunner.run(
             () -> ristoranteService.vediRistorantiGestiti(),
             ristoranti -> {
@@ -48,16 +51,25 @@ public class DashboardController {
         );
     }
 
+    /**
+     * Naviga alla schermata Home.
+     *
+     * @param event l'evento generato dal click sul bottone "Torna Home"
+     * @throws IOException se il caricamento della schermata fallisce
+     */
     @FXML private void handleTornaHome(ActionEvent event) throws IOException {
-        System.out.println("Torna Home cliccato");
-
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/home.fxml"));
         stage.setScene(new Scene(root, 800, 600)); 
     }
 
+    /**
+     * Invalida la sessione sul server e naviga alla schermata iniziale.
+     *
+     * @param event l'evento generato dal click sul bottone "Logout"
+     * @throws IOException se il caricamento della schermata fallisce
+     */
     @FXML private void handleLogout(ActionEvent event) throws IOException {
-        System.out.println("Logout cliccato");
         TaskRunner.run(
             () -> { authService.logout();
                     return null;
@@ -74,25 +86,38 @@ public class DashboardController {
         );
     }
 
+    /**
+     * Naviga alla schermata di inserimento di un nuovo ristorante.
+     *
+     * @param event l'evento generato dal click sul bottone corrispondente
+     * @throws IOException se il caricamento della schermata fallisce
+     */
     @FXML private void handleAggiungiNuovoRistorante(ActionEvent event) throws IOException {
-        System.out.println("Aggiungi nuovo ristorante cliccato");
-
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/aggiungiRistorante.fxml"));
         stage.setScene(new Scene(root, 800, 600));  
     }
 
+    /**
+     * Naviga alla schermata per associarsi a un ristorante esistente.
+     *
+     * @param event l'evento generato dal click sul bottone corrispondente
+     * @throws IOException se il caricamento della schermata fallisce
+     */
     @FXML private void handleAssociaRistorante(ActionEvent event) throws IOException {
-        System.out.println("Associa ristorante cliccato");
-
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/associaRistorante.fxml"));
         stage.setScene(new Scene(root, 800, 600));
     }
 
+    /**
+     * Naviga alla schermata di gestione delle recensioni dei ristoranti
+     * gestiti.
+     *
+     * @param event l'evento generato dal click sul bottone corrispondente
+     * @throws IOException se il caricamento della schermata fallisce
+     */
     @FXML private void handleGestisciRecensioni(ActionEvent event) throws IOException {
-        System.out.println("Gestisci recensioni cliccato");
-
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/gestioneRecensione.fxml"));
         stage.setScene(new Scene(root, 800, 600));

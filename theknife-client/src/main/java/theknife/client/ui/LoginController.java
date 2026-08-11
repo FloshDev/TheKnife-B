@@ -24,9 +24,14 @@ public class LoginController {
     @FXML private PasswordField passwordField;
     private final AuthService authService = new AuthService();
 
+    /**
+     * Autentica l'utente con le credenziali inserite e, al successo, naviga
+     * alla schermata corretta in base al ruolo: Cliente verso Home,
+     * Ristoratore verso Dashboard.
+     *
+     * @param event l'evento generato dal click sul bottone di accesso
+     */
     @FXML private void handleLogin(ActionEvent event) {
-        System.out.println("Login cliccato, username: " + usernameField.getText());
-
         String username = usernameField.getText();
         String password = passwordField.getText();
 
@@ -51,15 +56,21 @@ public class LoginController {
         );
     }
 
+    /**
+     * Naviga alla schermata di registrazione.
+     *
+     * @param event l'evento generato dal click sul link di registrazione
+     * @throws IOException se il caricamento della schermata fallisce
+     */
     @FXML private void handleRegistrazione(ActionEvent event) throws IOException {
-        System.out.println("Registrazione cliccato");
-
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); // Non crei una finestra nuova, riusi quella che già esiste
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/registrazione.fxml"));
         stage.setScene(new Scene(root, 800, 600));
     }
 
+    /**
+     * Placeholder per l'accesso come ospite, non ancora implementato.
+     */
     @FXML private void handleGuest() {
-        System.out.println("Continua come ospite cliccato");
     }
 }

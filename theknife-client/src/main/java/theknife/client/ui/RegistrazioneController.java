@@ -37,17 +37,27 @@ public class RegistrazioneController {
 
     private final AuthService authService = new AuthService();
 
+    /**
+     * Naviga alla schermata di login, senza registrare nessun utente.
+     *
+     * @param event l'evento generato dal click sul link di login
+     * @throws IOException se il caricamento della schermata fallisce
+     */
     @FXML private void handleLogin(ActionEvent event) throws IOException {
-        System.out.println("Login cliccato: " + usernameField.getText());
-
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); // Non crei una finestra nuova, riusi quella che già esiste
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/login.fxml"));
         stage.setScene(new Scene(root, 800, 600));
     }
 
+    /**
+     * Valida i dati del form (password coincidenti e non vuote, ruolo
+     * selezionato) e, se validi, registra il nuovo utente. Al successo
+     * naviga alla schermata di login: la decisione 15 esclude l'auto-login
+     * dopo la registrazione.
+     *
+     * @param event l'evento generato dal click sul bottone di registrazione
+     */
     @FXML private void handleRegistrazione(ActionEvent event) {
-        System.out.println("Registrazione cliccato: " + usernameField.getText());
-
         String nome = nomeField.getText();
         String cognome = cognomeField.getText();
         String username = usernameField.getText();

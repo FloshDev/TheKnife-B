@@ -33,9 +33,13 @@ public class HomeController {
     @FXML private CheckBox consegnaADomicilioCheck;
     private final RistoranteService ristoranteService = new RistoranteService();
 
+    /**
+     * Cerca i ristoranti che rispettano i filtri del form e mostra i
+     * risultati nella schermata dei risultati.
+     *
+     * @param event l'evento generato dal click sul bottone di ricerca
+     */
     @FXML private void handleCerca(ActionEvent event) {
-        System.out.println("Cerca cliccato");
-
         String nome = nomeField.getText();
         String citta = cittaField.getText();
         String tipoCucina = tipoCucinaField.getText();
@@ -65,9 +69,14 @@ public class HomeController {
         );
     }
 
+    /**
+     * Cerca i ristoranti entro il raggio indicato, usando il domicilio
+     * dell'utente loggato per risolvere la posizione (decisione 14; il
+     * campo luogo resta nullo, non c'è un flusso guest su questa schermata).
+     *
+     * @param event l'evento generato dal click sul bottone "Vicino a me"
+     */
     @FXML private void handleVicinoAMe(ActionEvent event) {
-        System.out.println("Vicino a me cliccato");
-
         double raggioKm = Double.parseDouble(raggioKmField.getText());
         CercaVicinoDTO filtri = new CercaVicinoDTO(raggioKm, null);
 
@@ -89,25 +98,39 @@ public class HomeController {
         );
     }
 
+    /**
+     * Placeholder per la navigazione ai preferiti, non ancora implementato.
+     */
     @FXML private void handlePreferiti() {
-        System.out.println("Preferiti cliccato");
     }
 
+    /**
+     * Placeholder per la navigazione alla dashboard, non ancora implementato.
+     */
     @FXML private void handleDashboard() {
-        System.out.println("Dashboard cliccato");
     }
 
+    /**
+     * Naviga alla schermata iniziale. Nota: non invoca
+     * {@code AuthService.logout()}, la sessione resta attiva lato server
+     * (bug noto, da allineare a {@code DashboardController.handleLogout}).
+     *
+     * @param event l'evento generato dal click sul link di logout
+     * @throws IOException se il caricamento della schermata fallisce
+     */
     @FXML private void handleLogout(ActionEvent event) throws IOException {
-        System.out.println("Logout cliccato");
-
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); 
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/splash.fxml"));
         stage.setScene(new Scene(root, 800, 600));
     }
 
+    /**
+     * Naviga alla schermata di login.
+     *
+     * @param event l'evento generato dal click sul link di login
+     * @throws IOException se il caricamento della schermata fallisce
+     */
     @FXML private void handleLogin(ActionEvent event) throws IOException {
-        System.out.println("Login cliccato");
-
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); 
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/login.fxml"));
         stage.setScene(new Scene(root, 800, 600));

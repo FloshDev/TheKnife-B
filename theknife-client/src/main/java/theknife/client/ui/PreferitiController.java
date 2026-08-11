@@ -35,6 +35,10 @@ public class PreferitiController {
 
     private final RistoranteService ristoranteService = new RistoranteService();
 
+    /**
+     * Carica dal server la lista dei ristoranti preferiti dell'utente e la
+     * mostra, sostituendo il contenuto attuale della lista.
+     */
     private void caricaPreferiti() {
         TaskRunner.run(
             () -> ristoranteService.ottieniPreferiti(),
@@ -55,21 +59,33 @@ public class PreferitiController {
         );
     }
 
+    /**
+     * Carica i preferiti all'apertura della schermata.
+     */
     @FXML private void initialize() {
         caricaPreferiti();
     }
 
+    /**
+     * Naviga alla schermata Home.
+     *
+     * @param event l'evento generato dal click sul bottone "Torna indietro"
+     * @throws IOException se il caricamento della schermata fallisce
+     */
     @FXML private void handleTornaIndietro(ActionEvent event) throws IOException {
-        System.out.println("Torna indietro cliccato");
-
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); 
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/home.fxml"));
         stage.setScene(new Scene(root, 800, 600));
     }
 
+    /**
+     * Rimuove dai preferiti il ristorante selezionato nella lista e ricarica
+     * l'elenco. Mostra un avviso se nessun elemento è selezionato.
+     *
+     * @param event l'evento generato dal click sul bottone "Rimuovi preferito"
+     * @throws IOException se il caricamento della schermata fallisce
+     */
     @FXML private void handleRimuoviPreferito(ActionEvent event) throws IOException {
-        System.out.println("Rimuovi preferito cliccato");
-
         RistoranteDTO selectedRistorante = preferitiListView.getSelectionModel().getSelectedItem();
         if (selectedRistorante != null) {
             TaskRunner.run(
@@ -87,9 +103,13 @@ public class PreferitiController {
         }
     }
 
+    /**
+     * Naviga al dettaglio del ristorante selezionato nella lista. Mostra un
+     * avviso se nessun elemento è selezionato.
+     *
+     * @param event l'evento generato dal click sul bottone "Vedi dettaglio"
+     */
     @FXML private void handleVediDettaglio(ActionEvent event) {
-        System.out.println("Dettaglio cliccato");
-
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
         RistoranteDTO selectedRistorante = preferitiListView.getSelectionModel().getSelectedItem();
