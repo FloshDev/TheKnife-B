@@ -20,7 +20,9 @@ import theknife.common.enums.Ruolo;
  * @author Barlera Marco, 760000, VA
  */
 public class LoginController {
+    /** Campo di testo per lo username. */
     @FXML private TextField usernameField;
+    /** Campo per la password, mascherato a schermo. */
     @FXML private PasswordField passwordField;
     private final AuthService authService = new AuthService();
 

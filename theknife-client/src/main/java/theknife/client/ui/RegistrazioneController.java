@@ -24,15 +24,25 @@ import theknife.common.enums.Ruolo;
  * @author Barlera Marco, 760000, VA
  */
 public class RegistrazioneController {
+    /** Campo di testo per il nome. */
     @FXML private TextField nomeField;
+    /** Campo di testo per il cognome. */
     @FXML private TextField cognomeField;
+    /** Campo di testo per lo username scelto. */
     @FXML private TextField usernameField;
+    /** Campo di testo per l'email. */
     @FXML private TextField emailField;
+    /** Campo di testo per il domicilio, facoltativo. */
     @FXML private TextField domicilioField;
+    /** Campo per la password, mascherato a schermo. */
     @FXML private PasswordField passwordField;
+    /** Campo per la conferma della password, mascherato a schermo. */
     @FXML private PasswordField passwordField2;
+    /** Selettore della data di nascita, facoltativo. */
     @FXML private DatePicker dataNascitaField;
+    /** Selezione del ruolo Cliente. */
     @FXML private RadioButton clienteRadio;
+    /** Selezione del ruolo Ristoratore. */
     @FXML private RadioButton ristoratoreRadio;
 
     private final AuthService authService = new AuthService();

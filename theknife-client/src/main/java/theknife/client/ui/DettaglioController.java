@@ -1,7 +1,7 @@
 package theknife.client.ui;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Optional;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,11 +12,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 import theknife.client.service.RecensioneService;
 import theknife.client.service.RistoranteService;
 import theknife.common.dto.IdRistoranteDTO;
+import theknife.common.dto.RecensioneDTO;
+import theknife.common.dto.RispondiRecensioneDTO;
 
 /**
  * Controller della schermata di dettaglio (S06).
@@ -25,17 +29,27 @@ import theknife.common.dto.IdRistoranteDTO;
  */
 
 public class DettaglioController {
+    /** Nome del ristorante. */
     @FXML private Label nomeLabel;
+    /** Tipo di cucina del ristorante. */
     @FXML private Label tipoCucinaLabel;
+    /** Indirizzo del ristorante. */
     @FXML private Label indirizzoLabel;
+    /** Fascia di prezzo del ristorante. */
     @FXML private Label fasciaPrezzoLabel;
+    /** Media delle stelle delle recensioni del ristorante. */
     @FXML private Label mediaStelleLabel;
 
+    /** Bottone per aggiungere il ristorante ai preferiti. */
     @FXML private Button preferitiButton;
+    /** Bottone per scrivere una recensione al ristorante. */
     @FXML private Button scriviRecensioneButton;
+    /** Bottone per rispondere alla recensione selezionata nella lista. */
     @FXML private Button rispondiRecensioneButton;
+    /** Bottone per tornare alla schermata dei risultati. */
     @FXML private Button tornaIndietroButton;
-    @FXML private ListView<String> recensioniListView;
+    /** Lista delle recensioni del ristorante. */
+    @FXML private ListView<RecensioneDTO> recensioniListView;
 
     private final RistoranteService ristoranteService = new RistoranteService();
     private final RecensioneService recensioneService = new RecensioneService();
@@ -78,9 +92,30 @@ public class DettaglioController {
     }
 
     /**
-     * Placeholder per la risposta a una recensione, non ancora implementato.
+     * Chiede il testo della risposta alla recensione selezionata nella lista
+     * e la invia al server. Mostra un avviso se nessun elemento è
+     * selezionato; se l'utente annulla il dialog, non invia nulla.
      */
     @FXML private void handleRispondiRecensione() {
+        RecensioneDTO selezionata = recensioniListView.getSelectionModel().getSelectedItem();
+        if(selezionata == null) {
+            new Alert(Alert.AlertType.WARNING, "Seleziona una recensione a cui rispondere.").showAndWait();
+        }
+        else {
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setHeaderText("Scrivi la risposta");
+            Optional<String> risposta = dialog.showAndWait();
+
+            risposta.ifPresent(testo -> {
+                TaskRunner.run(
+                    () -> {
+                        recensioneService.rispondiRecensione(new RispondiRecensioneDTO(selezionata.getIdRecensione(), testo));
+                        return null;
+                    },
+                    esito -> caricaRecensioni()
+                );
+            });
+        }
     }
 
     /**
@@ -115,14 +150,27 @@ public class DettaglioController {
             }
         );
 
-        TaskRunner.run(
-            () -> recensioneService.leggiRecensioni(new IdRistoranteDTO(idRistorante)),
-            recensioni -> {
-                List<String> testi = recensioni.stream()
-                    .map(r -> r.getStelle() + "★ - " + r.getTesto()) // Trasformo ogni recensione in una stringa leggibile
-                    .toList(); // Chiude lo stream 
-                recensioniListView.getItems().setAll(testi);
-            }
-        );
+        caricaRecensioni();
     }
+
+    private void caricaRecensioni() {
+    TaskRunner.run(
+        () -> recensioneService.leggiRecensioni(new IdRistoranteDTO(idRistorante)),
+        recensioni -> {
+            recensioniListView.getItems().setAll(recensioni);
+            recensioniListView.setCellFactory(lv -> new ListCell<RecensioneDTO>() {
+                @Override
+                protected void updateItem(RecensioneDTO item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                    } else {
+                        String base = item.getStelle() + "★ - " + item.getTesto();
+                        setText(item.getRisposta() == null ? base : base + " [risposto]");
+                    }
+                }
+            });
+        }
+    );
+}
 }

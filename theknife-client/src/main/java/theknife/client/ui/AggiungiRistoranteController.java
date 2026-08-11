@@ -24,16 +24,27 @@ import theknife.common.dto.AggiungiRistoranteDTO;
 
 public class AggiungiRistoranteController {
     
+    /** Campo di testo per il nome del ristorante. */
     @FXML private TextField nomeField;
+    /** Campo di testo per l'indirizzo. */
     @FXML private TextField indirizzoField;
+    /** Campo di testo per la città. */
     @FXML private TextField cittaField;
+    /** Campo di testo per la nazione. */
     @FXML private TextField nazioneField;
+    /** Campo di testo per la fascia di prezzo (1-4). */
     @FXML private TextField fasciaPrezzoField;
+    /** Campo di testo per il tipo di cucina. */
     @FXML private TextField tipoCucinaField;
+    /** Campo di testo per il sito web, facoltativo. */
     @FXML private TextField webSiteField;
+    /** Campo di testo per il telefono, facoltativo. */
     @FXML private TextField telefonoField;
+    /** Campo di testo per eventuali premi ricevuti, facoltativo. */
     @FXML private TextField premiField;
+    /** Indica se il ristorante offre prenotazione online. */
     @FXML private CheckBox prenotazioneOnlineCheck;
+    /** Indica se il ristorante offre consegna a domicilio. */
     @FXML private CheckBox consegnaADomicilioCheck;
 
     private final RistoranteService ristoranteService = new RistoranteService();

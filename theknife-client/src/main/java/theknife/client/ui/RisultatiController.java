@@ -25,9 +25,13 @@ import theknife.common.dto.RistoranteDTO;
  */
 
 public class RisultatiController {
+    /** Titolo della schermata dei risultati. */
     @FXML private Label risultatiLabel;
+    /** Lista dei ristoranti trovati dalla ricerca. */
     @FXML private ListView<RistoranteDTO> risultatiListView;
+    /** Bottone per aprire il dettaglio del ristorante selezionato. */
     @FXML private Button dettaglioButton;
+    /** Bottone per tornare alla schermata Home. */
     @FXML private Button tornaIndietroButton;
     
     /**

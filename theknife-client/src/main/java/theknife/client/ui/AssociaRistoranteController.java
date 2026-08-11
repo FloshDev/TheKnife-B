@@ -27,10 +27,15 @@ import theknife.common.dto.RistoranteDTO;
  */
 
 public class AssociaRistoranteController {
+    /** Campo di testo per la ricerca del ristorante per nome. */
     @FXML private TextField ricercaField;
+    /** Lista dei ristoranti trovati dalla ricerca. */
     @FXML private ListView<RistoranteDTO> risultatiListView;
+    /** Bottone per avviare la ricerca. */
     @FXML private Button cercaButton;
+    /** Bottone per associarsi al ristorante selezionato. */
     @FXML private Button associaButton;
+    /** Bottone per tornare alla dashboard senza associare nulla. */
     @FXML private Button annullaButton;
 
     private final RistoranteService ristoranteService = new RistoranteService();

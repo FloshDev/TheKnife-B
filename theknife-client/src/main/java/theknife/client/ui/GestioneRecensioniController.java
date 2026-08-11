@@ -26,10 +26,15 @@ import theknife.common.dto.RispondiRecensioneDTO;
  */
 
 public class GestioneRecensioniController {
+    /** Nome del ristorante a cui appartiene la recensione selezionata. */
     @FXML private Label nomeRistoranteLabel;
+    /** Lista delle recensioni di tutti i ristoranti gestiti. */
     @FXML private ListView<RecensioneDTO> recensioniListView;
+    /** Area di testo per la risposta alla recensione selezionata. */
     @FXML private TextArea rispostaField;
+    /** Bottone per inviare la risposta. */
     @FXML private Button rispondiButton;
+    /** Bottone per tornare alla dashboard. */
     @FXML private Button tornaIndietroButton;
 
     private final RecensioneService recensioneService = new RecensioneService();

@@ -27,10 +27,15 @@ import theknife.common.dto.RistoranteDTO;
 
 public class PreferitiController {
 
+    /** Titolo della schermata dei preferiti. */
     @FXML private Label preferitiLabel;
+    /** Lista dei ristoranti preferiti dell'utente. */
     @FXML private ListView<RistoranteDTO> preferitiListView;
+    /** Bottone per tornare alla schermata Home. */
     @FXML private Button tornaIndietroButton;
+    /** Bottone per rimuovere il ristorante selezionato dai preferiti. */
     @FXML private Button rimuoviPreferitoButton;
+    /** Bottone per aprire il dettaglio del ristorante selezionato. */
     @FXML private Button vediDettaglioButton;
 
     private final RistoranteService ristoranteService = new RistoranteService();

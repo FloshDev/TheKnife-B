@@ -24,9 +24,13 @@ import theknife.common.dto.AggiungiRecensioneDTO;
 
 public class ScriviRecensioneController {
 
+    /** Nome del ristorante che si sta recensendo. */
     @FXML private Label nomeRistoranteLabel;
+    /** Campo di testo per il titolo della recensione. */
     @FXML private TextField titoloField;
+    /** Campo di testo per il numero di stelle (1-5). */
     @FXML private TextField stelleField;
+    /** Area di testo per il corpo della recensione. */
     @FXML private TextArea testoField;
 
     private final RecensioneService recensioneService = new RecensioneService();

@@ -19,7 +19,9 @@ import theknife.client.service.RistoranteService;
  * @author Barlera Marco, 760000, VA
  */
 public class SplashController {
+    /** Campo di testo per correggere a mano la località rilevata. */
     @FXML private TextField modificaLocalitaField;
+    /** Mostra la località rilevata dall'IP della connessione. */
     @FXML private Label localitaLabel;
 
     private final RistoranteService ristoranteService = new RistoranteService();

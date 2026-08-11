@@ -24,12 +24,19 @@ import theknife.client.service.RistoranteService;
  * @author Barlera Marco, 760000, VA
  */
 public class DashboardController {
+    /** Titolo della schermata dashboard. */
     @FXML private Label dashboardLabel;
+    /** Lista dei ristoranti gestiti dall'utente ristoratore. */
     @FXML private ListView<String> ristorantiGestiti;
+    /** Bottone per aggiungere un nuovo ristorante. */
     @FXML private Button aggiungiNuovoRistoranteButton;
+    /** Bottone per associarsi a un ristorante esistente. */
     @FXML private Button associaRistoranteButton;
+    /** Bottone per aprire la gestione delle recensioni. */
     @FXML private Button gestisciRecensioniButton;
+    /** Bottone per tornare alla schermata Home. */
     @FXML private Button tornaHomeButton;
+    /** Bottone per effettuare il logout. */
     @FXML private Button logoutButton;
 
     private final RistoranteService ristoranteService = new RistoranteService();

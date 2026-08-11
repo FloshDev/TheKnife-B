@@ -25,12 +25,19 @@ import theknife.common.dto.CercaVicinoDTO;
 
 public class HomeController {
     
+    /** Campo di testo per filtrare per nome del ristorante. */
     @FXML private TextField nomeField;
+    /** Campo di testo per filtrare per città. */
     @FXML private TextField cittaField;
+    /** Campo di testo per filtrare per tipo di cucina. */
     @FXML private TextField tipoCucinaField;
+    /** Campo di testo per filtrare per fascia di prezzo (1-4). */
     @FXML private TextField fasciaPrezzoField;
+    /** Campo di testo per il raggio, in km, della ricerca "vicino a me". */
     @FXML private TextField raggioKmField;
+    /** Filtro per i ristoranti che offrono prenotazione online. */
     @FXML private CheckBox prenotazioneOnlineCheck;
+    /** Filtro per i ristoranti che offrono consegna a domicilio. */
     @FXML private CheckBox consegnaADomicilioCheck;
     private final RistoranteService ristoranteService = new RistoranteService();
     private final AuthService authService = new AuthService();
