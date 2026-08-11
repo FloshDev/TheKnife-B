@@ -135,11 +135,13 @@ public class RecensioneDAO {
      * @param dati     i dati della recensione da inserire
      * @param idUtente l'identificativo del cliente che recensisce
      * @return l'identificativo generato per la nuova recensione
-     * @throws DataAccessException se l'accesso al database fallisce, oppure
-     *         se il cliente ha gia' recensito il ristorante (vincolo
-     *         <code>UNIQUE (id_cliente, id_ristorante)</code> violato)
+     * @throws DataAccessException se l'accesso al database fallisce
+     * @throws ApplicationException se il cliente ha gia' recensito il
+     *         ristorante (vincolo <code>UNIQUE (id_cliente, id_ristorante)</code>
+     *         violato)
      */
-    public long inserisci (AggiungiRecensioneDTO dati, long idUtente) throws DataAccessException {
+    public long inserisci (AggiungiRecensioneDTO dati, long idUtente)
+            throws DataAccessException, ApplicationException {
         String sql = "INSERT INTO Recensioni (id_ristorante, id_cliente, titolo, testo, stelle) "
                    + "VALUES (?, ?, ?, ?, ?) RETURNING id_recensione";
         try (Connection conn = db.getConnection();
