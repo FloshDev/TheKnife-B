@@ -71,3 +71,21 @@ CREATE TABLE Preferiti (
     PRIMARY KEY (id_cliente, id_ristorante)
 );
 
+
+
+-- Permessi per il ruolo applicativo tk_app. Eseguiti dopo la
+-- creazione di tabelle e sequenze: ON ALL TABLES agisce sulle tabelle
+-- esistenti, ON ALL SEQUENCES sui SERIAL appena creati.
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO tk_app;
+
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO tk_app;
+
+GRANT USAGE ON SCHEMA public TO tk_app;
+
+
+
+
+
+
+
