@@ -1,6 +1,7 @@
 package theknife.client.ui;
 
 import java.io.IOException;
+import java.util.List;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,10 +9,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import theknife.client.service.AuthService;
+import theknife.client.service.RistoranteService;
 
 
 /**
@@ -27,7 +31,23 @@ public class DashboardController {
     @FXML private Button gestisciRecensioniButton;
     @FXML private Button tornaHomeButton;
     @FXML private Button logoutButton;
+
+    private final RistoranteService ristoranteService = new RistoranteService();
+    private final AuthService authService = new AuthService();
     
+    @FXML private void initialize() {
+        System.out.println("Dashboard caricata");
+        TaskRunner.run(
+            () -> ristoranteService.vediRistorantiGestiti(),
+            ristoranti -> {
+                List<String> nomi = ristoranti.stream()
+                    .map(r -> r.getNome() + " - " + r.getCitta())
+                    .toList();
+                ristorantiGestiti.getItems().setAll(nomi);
+            }
+        );
+    }
+
     @FXML private void handleTornaHome(ActionEvent event) throws IOException {
         System.out.println("Torna Home cliccato");
 
@@ -38,21 +58,43 @@ public class DashboardController {
 
     @FXML private void handleLogout(ActionEvent event) throws IOException {
         System.out.println("Logout cliccato");
-
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); 
-        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/splash.fxml"));
-        stage.setScene(new Scene(root, 800, 600));
+        TaskRunner.run(
+            () -> { authService.logout();
+                    return null;
+                },
+            _void -> {
+                try{
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/splash.fxml"));
+                    stage.setScene(new Scene(root, 800, 600));
+                } catch (IOException e) {
+                    new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
+                }
+            }
+        );
     }
 
     @FXML private void handleAggiungiNuovoRistorante(ActionEvent event) throws IOException {
         System.out.println("Aggiungi nuovo ristorante cliccato");
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/aggiungiRistorante.fxml"));
+        stage.setScene(new Scene(root, 800, 600));  
     }
 
     @FXML private void handleAssociaRistorante(ActionEvent event) throws IOException {
         System.out.println("Associa ristorante cliccato");
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/associaRistorante.fxml"));
+        stage.setScene(new Scene(root, 800, 600));
     }
 
     @FXML private void handleGestisciRecensioni(ActionEvent event) throws IOException {
         System.out.println("Gestisci recensioni cliccato");
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/gestioneRecensione.fxml"));
+        stage.setScene(new Scene(root, 800, 600));
     }
 }
