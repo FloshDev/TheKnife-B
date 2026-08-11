@@ -16,7 +16,6 @@ import theknife.common.dto.PosizioneDTO;
 import theknife.common.dto.RistoranteDTO;
 import theknife.common.dto.ServizioDTO;
 import theknife.common.dto.StatisticheRistoranteDTO;
-import theknife.server.exception.ApplicationException;
 import theknife.server.exception.DataAccessException;
 
 /**
