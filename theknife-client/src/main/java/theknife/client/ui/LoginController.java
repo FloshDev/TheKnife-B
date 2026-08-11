@@ -68,9 +68,4 @@ public class LoginController {
         stage.setScene(new Scene(root, 800, 600));
     }
 
-    /**
-     * Placeholder per l'accesso come ospite, non ancora implementato.
-     */
-    @FXML private void handleGuest() {
-    }
 }

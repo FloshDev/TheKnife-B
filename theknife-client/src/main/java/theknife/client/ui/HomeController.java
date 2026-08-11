@@ -12,6 +12,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import theknife.client.service.AuthService;
 import theknife.client.service.RistoranteService;
 import theknife.common.dto.CercaRistorantiDTO;
 import theknife.common.dto.CercaVicinoDTO;
@@ -32,6 +33,7 @@ public class HomeController {
     @FXML private CheckBox prenotazioneOnlineCheck;
     @FXML private CheckBox consegnaADomicilioCheck;
     private final RistoranteService ristoranteService = new RistoranteService();
+    private final AuthService authService = new AuthService();
 
     /**
      * Cerca i ristoranti che rispettano i filtri del form e mostra i
@@ -99,31 +101,52 @@ public class HomeController {
     }
 
     /**
-     * Placeholder per la navigazione ai preferiti, non ancora implementato.
+     * Naviga alla schermata dei preferiti.
+     *
+     * @param event l'evento generato dal click sul link "Preferiti"
+     * @throws IOException se il caricamento della schermata fallisce
      */
-    @FXML private void handlePreferiti() {
+    @FXML private void handlePreferiti(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/preferiti.fxml"));
+        stage.setScene(new Scene(root, 800, 600));
     }
 
     /**
-     * Placeholder per la navigazione alla dashboard, non ancora implementato.
+     * Naviga alla dashboard del ristoratore.
+     *
+     * @param event l'evento generato dal click sul link "Dashboard"
+     * @throws IOException se il caricamento della schermata fallisce
      */
-    @FXML private void handleDashboard() {
+    @FXML private void handleDashboard(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/dashboard.fxml"));
+        stage.setScene(new Scene(root, 800, 600));
     }
 
     /**
-     * Naviga alla schermata iniziale. Nota: non invoca
-     * {@code AuthService.logout()}, la sessione resta attiva lato server
-     * (bug noto, da allineare a {@code DashboardController.handleLogout}).
+     * Invalida la sessione sul server e naviga alla schermata iniziale.
      *
      * @param event l'evento generato dal click sul link di logout
      * @throws IOException se il caricamento della schermata fallisce
      */
     @FXML private void handleLogout(ActionEvent event) throws IOException {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); 
-        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/splash.fxml"));
-        stage.setScene(new Scene(root, 800, 600));
+        TaskRunner.run(
+        () -> { authService.logout();
+                return null;
+            },
+        _void -> {
+            try{
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/splash.fxml"));
+                stage.setScene(new Scene(root, 800, 600));
+            } catch (IOException e) {
+                new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
+            }
+        }
+        );
     }
-
+    
     /**
      * Naviga alla schermata di login.
      *

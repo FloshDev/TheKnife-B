@@ -9,5 +9,4 @@
     <PasswordField fx:id="passwordField" promptText="Password" />
     <Button text="Accedi" onAction="#handleLogin"/>
     <Button text="Registrati" onAction="#handleRegistrazione"/>
-    <Hyperlink text="Continua come ospite" onAction="#handleGuest"/>
 </VBox>
