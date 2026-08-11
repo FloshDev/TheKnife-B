@@ -5,7 +5,7 @@
 
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.AssociaRistoranteController">
 
-    <TextField fx:id="ricercaField" promptText="Cerca per nome o indirizzo"/>
+    <TextField fx:id="ricercaField" promptText="Cerca per nome"/>
 
     <ListView fx:id="risultatiListView"/>
     
