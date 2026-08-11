@@ -410,7 +410,8 @@ public class RistoranteDAO {
      * @throws SQLException se la lettura dei campi fallisce
      */
     private RistoranteDTO toDTO (ResultSet rs) throws SQLException {
-        Long idGestore = rs.getObject("id_gestore", Long.class);
+        long valore = rs.getLong("id_gestore");
+        Long idGestore = rs.wasNull() ? null : valore;
         return new RistoranteDTO(
             rs.getLong("id_ristorante"),
             rs.getString("nome"),
