@@ -133,7 +133,7 @@ SELECT id_ristorante, nome, nazione, citta, indirizzo, latitudine, longitudine,
 FROM RistorantiTheKnife
 WHERE latitudine IS NOT NULL AND longitudine IS NOT NULL
 ORDER BY distanza_km
-LIMIT ?;
+WHERE distanza_km <= ? ;
 
 
 
@@ -239,12 +239,16 @@ WHERE id_cliente = ? AND id_ristorante = ?;
 
 -- visualizzaPreferiti(): elenco dei ristoranti preferiti del cliente
 
-SELECT r.id_ristorante, r.nome, r.nazione, r.citta, r.indirizzo, r.fascia_prezzo,
-       r.tipo_cucina, r.premi
+SELECT r.id_ristorante, r.nome, r.nazione, r.citta, r.provincia, r.indirizzo,
+       r.latitudine, r.longitudine, r.fascia_prezzo, r.prenotazione_online,
+       r.consegna_a_domicilio, r.tipo_cucina, r.telefono, r.website, r.premi,
+       r.id_gestore, COALESCE(AVG(rec.stelle), 0) AS media_stelle,
+       COUNT(rec.id_recensione) AS numero_recensioni
 FROM Preferiti p
 JOIN RistorantiTheKnife r ON p.id_ristorante = r.id_ristorante
+LEFT JOIN Recensioni rec ON r.id_ristorante = rec.id_ristorante
 WHERE p.id_cliente = ?
-ORDER BY r.nome;
+GROUP BY r.id_ristorante ORDER BY r.nome;
 
 
 
@@ -271,7 +275,7 @@ VALUES (?, ?, ?, ?, ?);
 
 UPDATE Recensioni
 SET titolo = ?, testo = ?, stelle = ?, data_pubblicazione = CURRENT_TIMESTAMP
-WHERE id_recensione = ? AND id_cliente = ?;
+WHERE id_recensione = ?;
 
 
 
