@@ -27,7 +27,7 @@ import theknife.server.exception.DataAccessException;
  * {@link SQLException} vengono catturate e riavvolte in
  * {@link DataAccessException}.
  *
- * @author Scolaro Gabriele, 760123, VA
+ * @author Scolaro Gabriele, 760123, VA 
  */
 
 public class PreferitoDAO {
@@ -144,40 +144,6 @@ public class PreferitoDAO {
                 + e.getMessage());
         }
     }
-
-    private void popolaServizi (List<RistoranteDTO> ristoranti) throws DataAccessException {
-        if (ristoranti == null || ristoranti.isEmpty()) {
-            return;
-        }
-        String sql = "SELECT rs.id_ristorante, s.id, s.nome "
-                   + "FROM RistoranteServizio rs "
-                   + "JOIN Servizio s ON rs.id_servizio = s.id "
-                   + "WHERE rs.id_ristorante IN (" + segnaposto(ristoranti.size()) + ") "
-                   + "ORDER BY s.nome";
-        Map<Long, List<ServizioDTO>> serviziPerRistorante = new HashMap<>();
-        try (Connection conn = db.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            for (int i = 0; i < ristoranti.size(); i++) {
-                ps.setLong(i + 1, ristoranti.get(i).getIdRistorante());
-            }
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    long idRistorante = rs.getLong("id_ristorante");
-                    List<ServizioDTO> lista =
-                        serviziPerRistorante.computeIfAbsent(idRistorante, k -> new ArrayList<>());
-                    lista.add(new ServizioDTO(rs.getLong("id"), rs.getString("nome")));
-                }
-            }
-        } catch (SQLException e) {
-            throw new DataAccessException("Errore nel recupero dei servizi dei preferiti: "
-                + e.getMessage());
-        }
-        for (RistoranteDTO r : ristoranti) {
-            r.setServizi(serviziPerRistorante.getOrDefault(r.getIdRistorante(), new ArrayList<>()));
-        }
-    }
-
-
 
 
 }
