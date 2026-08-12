@@ -26,6 +26,16 @@ import javafx.scene.control.Alert;
  */
 public class TaskRunner {
 
+    /**
+     * Esecutore a thread singolo, condiviso da tutta l'applicazione: le
+     * richieste si accodano ed escono una alla volta, mai due in volo.
+     * È una garanzia di protocollo (decisione 25), non un dettaglio
+     * implementativo — {@code ServerConnection} usa un solo socket e un
+     * solo {@code ObjectOutputStream}; due scritture in parallelo lo
+     * corromperebbero, con sintomo una {@code ClassCastException} casuale
+     * in lettura anziché un errore leggibile. Chi allarga questo executor
+     * rompe il protocollo.
+     */
     private static final ExecutorService executor = Executors.newSingleThreadExecutor(r -> {
         Thread t = new Thread(r);
         t.setDaemon(true);

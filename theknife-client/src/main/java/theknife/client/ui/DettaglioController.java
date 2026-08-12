@@ -16,11 +16,15 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
+import theknife.client.network.ServerConnection;
 import theknife.client.service.RecensioneService;
 import theknife.client.service.RistoranteService;
+import theknife.common.dto.IdRecensioneDTO;
 import theknife.common.dto.IdRistoranteDTO;
+import theknife.common.dto.ModificaRecensioneDTO;
 import theknife.common.dto.RecensioneDTO;
 import theknife.common.dto.RispondiRecensioneDTO;
+import theknife.common.dto.UtenteDTO;
 
 /**
  * Controller della schermata di dettaglio (S06).
@@ -50,6 +54,10 @@ public class DettaglioController {
     @FXML private Button tornaIndietroButton;
     /** Lista delle recensioni del ristorante. */
     @FXML private ListView<RecensioneDTO> recensioniListView;
+    /** Bottone per modificare la recensione selezionata nella lista. */
+    @FXML private Button modificaRecensioneButton;
+    /** Bottone per eliminare la recensione selezionata nella lista. */
+    @FXML private Button eliminaRecensioneButton;
 
     private final RistoranteService ristoranteService = new RistoranteService();
     private final RecensioneService recensioneService = new RecensioneService();
@@ -131,14 +139,98 @@ public class DettaglioController {
     }
 
     /**
+     * Chiede titolo, stelle e testo aggiornati per la recensione selezionata
+     * nella lista e li invia al server. Ogni campo è pre-riempito col valore
+     * attuale nel rispettivo dialog; se l'utente annulla il dialog del
+     * titolo non invia nulla, mentre gli altri due, se annullati, mantengono
+     * il valore attuale (stelle) o il testo attuale (RF12).
+     */
+    @FXML private void handleModificaRecensione() {
+        RecensioneDTO selezionata = recensioniListView.getSelectionModel().getSelectedItem();
+        if(selezionata == null) {
+            new Alert(Alert.AlertType.WARNING, "Seleziona una recensione da modificare.").showAndWait();
+        }
+        else {
+            TextInputDialog dialog = new TextInputDialog(selezionata.getTitolo());
+            dialog.setHeaderText("Modifica il titolo");
+            Optional<String> titoloModificato = dialog.showAndWait();
+
+            TextInputDialog dialog2 = new TextInputDialog(String.valueOf(selezionata.getStelle()));
+            dialog2.setHeaderText("Modifica le stelle");
+            Optional<String> stelleModificate = dialog2.showAndWait();
+
+            TextInputDialog dialog3 = new TextInputDialog(selezionata.getTesto());
+            dialog3.setHeaderText("Modifica il testo");
+            Optional<String> testoModificato = dialog3.showAndWait();
+
+            titoloModificato.ifPresent(nuovoTitolo -> {
+                int nuoveStelle = stelleModificate.isPresent() ? Integer.parseInt(stelleModificate.get()) : selezionata.getStelle();
+
+                TaskRunner.run(
+                    () -> {
+                        recensioneService.modificaRecensione(new ModificaRecensioneDTO(selezionata.getIdRecensione(), nuovoTitolo, testoModificato.orElse(selezionata.getTesto()), nuoveStelle));
+                        return null;
+                    },
+                    esito -> caricaRecensioni()
+                );
+            });
+        }
+    }
+
+    /**
+     * Elimina la recensione selezionata nella lista, dopo conferma
+     * dell'utente (RF13). Mostra un avviso se nessun elemento è
+     * selezionato; se l'utente annulla la conferma, non elimina nulla.
+     */
+    @FXML private void handleEliminaRecensione() {
+        RecensioneDTO selezionata = recensioniListView.getSelectionModel().getSelectedItem();
+        if(selezionata == null) {
+            new Alert(Alert.AlertType.WARNING, "Seleziona una recensione da eliminare.").showAndWait();
+        }
+        else {
+            Alert conferma = new Alert(Alert.AlertType.CONFIRMATION, "Sei sicuro di voler eliminare la recensione selezionata?");
+            Optional<javafx.scene.control.ButtonType> result = conferma.showAndWait();
+            if (result.isPresent() && result.get() == javafx.scene.control.ButtonType.OK) {
+                TaskRunner.run(
+                    () -> {
+                        recensioneService.eliminaRecensione(new IdRecensioneDTO(selezionata.getIdRecensione()));
+                        return null;
+                    },
+                    esito -> caricaRecensioni()
+                );
+            }
+        }
+    }
+
+    /**
      * Carica dal server i dettagli e le recensioni del ristorante indicato e
      * popola la schermata. Le due chiamate sono indipendenti: ognuna
      * aggiorna la propria parte di schermo quando la sua risposta arriva.
+     *
+     * <p>Registra anche, una sola volta, il listener sulla selezione della
+     * lista recensioni che mostra {@code modificaRecensioneButton} ed
+     * {@code eliminaRecensioneButton} solo quando la recensione selezionata
+     * appartiene all'utente corrente (RF12/RF13); entrambi restano nascosti
+     * finché non è selezionata una recensione propria. Il filtro è solo
+     * cosmetico: l'autorizzazione vera è demandata al server.
      *
      * @param idRistorante l'identificativo del ristorante da mostrare
      */
     public void impostaRistorante(long idRistorante) {
         this.idRistorante = idRistorante;
+        modificaRecensioneButton.setVisible(false);
+        eliminaRecensioneButton.setVisible(false);
+        recensioniListView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                UtenteDTO utente = ServerConnection.getInstance().getUtenteCorrente();
+                boolean isProprietario = utente != null && newSelection.getIdUtente() == utente.getIdUtente();
+                modificaRecensioneButton.setVisible(isProprietario);
+                eliminaRecensioneButton.setVisible(isProprietario);
+            } else {
+                modificaRecensioneButton.setVisible(false);
+                eliminaRecensioneButton.setVisible(false);
+            }
+        });
         TaskRunner.run(
             () -> ristoranteService.ottieniDettagli(new IdRistoranteDTO(idRistorante)),
             ristorante -> {

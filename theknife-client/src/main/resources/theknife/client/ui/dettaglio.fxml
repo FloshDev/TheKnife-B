@@ -15,7 +15,9 @@
     <Button fx:id="scriviRecensioneButton" text="Scrivi Recensione" onAction="#handleScriviRecensione"/>
     <Button fx:id="rispondiRecensioneButton" text="Rispondi Recensione" onAction="#handleRispondiRecensione"/>
     <Button fx:id="tornaIndietroButton" text="Torna Indietro" onAction="#handleTornaIndietro"/>   
-    
+    <Button fx:id="modificaRecensioneButton" text="Modifica Recensione" onAction="#handleModificaRecensione"/>
+    <Button fx:id="eliminaRecensioneButton" text="Elimina Recensione" onAction="#handleEliminaRecensione"/>
+
     <ListView fx:id="recensioniListView"/>
 
 </VBox>
