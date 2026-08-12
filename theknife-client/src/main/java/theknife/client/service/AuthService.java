@@ -30,9 +30,10 @@ public class AuthService {
         Response response = connection.inviaRichiesta(request); // Invia la richiesta e aspetta risposta
 
         if(response.getStatus() == ResponseStatus.SUCCESSO) {
-            LoginResultDTO loginResultDTO = (LoginResultDTO) response.getPayload(); // Deserializzazione
-            connection.setSessionToken(loginResultDTO.getSessionToken()); // Salva il token
-            return loginResultDTO; 
+            LoginResultDTO loginResultDTO = (LoginResultDTO) response.getPayload();
+            connection.setSessionToken(loginResultDTO.getSessionToken());
+            connection.setUtenteCorrente(loginResultDTO.getUtente());
+            return loginResultDTO;
         } else {
             throw new IOException(response.getMessaggio());
         }
@@ -51,6 +52,6 @@ public class AuthService {
     public void logout() throws IOException, ClassNotFoundException {
         Request request = new Request(CommandType.ESCI, null, connection.getSessionToken());
         connection.inviaRichiesta(request);
-        connection.setSessionToken(null);
+        connection.clearSessionToken(); // Rimuove il token e l'utente loggato
     }
 }

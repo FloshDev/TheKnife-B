@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import javafx.concurrent.Task;
+import theknife.common.dto.UtenteDTO;
 import theknife.common.protocol.Request;
 import theknife.common.protocol.Response;
 
@@ -16,7 +17,7 @@ import theknife.common.protocol.Response;
  * Thread di JavaFX). Singleton: un'unica istanza condivisa per tutta la
  * durata dell'applicazione client, creata eagerly al caricamento della
  * classe (thread-safe per garanzia della JVM) e mai chiusa durante logout
- * (solo il sessionToken viene svuotato).
+ * (solo <code>sessionToken</code> e <code>utenteCorrente</code> vengono svuotati).
  *
  * @author Barlera Marco, 760000, VA
  */
@@ -28,6 +29,13 @@ public class ServerConnection {
     private ObjectOutputStream out;
     private ObjectInputStream in;
     private String sessionToken;
+
+    /**
+     * L'utente autenticato nella sessione corrente (decisione 23). Ha lo
+     * stesso ciclo di vita di {@link #sessionToken}: valorizzato al login,
+     * azzerato da {@link #clearSessionToken()}.
+     */
+    private UtenteDTO utenteCorrente;
 
     private ServerConnection() {}
 
@@ -43,8 +51,33 @@ public class ServerConnection {
         this.sessionToken = sessionToken;
     }
 
+    /**
+     * Azzera lo stato della sessione corrente: token e utente autenticato.
+     * Da chiamare al logout; non chiude la connessione.
+     */
     public void clearSessionToken() {
         this.sessionToken = null;
+        this.utenteCorrente = null;
+    }
+
+    /**
+     * Restituisce l'utente autenticato nella sessione corrente.
+     *
+     * @return l'utente loggato, oppure <code>null</code> se nessuno ha
+     *         effettuato il login
+     */
+    public UtenteDTO getUtenteCorrente() {
+        return utenteCorrente;
+    }
+
+    /**
+     * Imposta l'utente autenticato nella sessione corrente, valorizzato da
+     * {@code AuthService} dopo un login riuscito.
+     *
+     * @param utenteCorrente l'utente appena autenticato
+     */
+    public void setUtenteCorrente(UtenteDTO utenteCorrente) {
+        this.utenteCorrente = utenteCorrente;
     }
 
     public void connect(String host, int port) throws IOException {
