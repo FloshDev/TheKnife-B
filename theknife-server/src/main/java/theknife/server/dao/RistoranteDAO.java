@@ -442,7 +442,7 @@ public class RistoranteDAO {
      * @param ristoranti i ristoranti da arricchire
      * @throws DataAccessException se l'accesso al database fallisce
      */
-    private void popolaServizi (List<RistoranteDTO> ristoranti) throws DataAccessException {
+     void popolaServizi (List<RistoranteDTO> ristoranti) throws DataAccessException {
         if (ristoranti == null || ristoranti.isEmpty()) {
             return;
         }
