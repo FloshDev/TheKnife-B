@@ -145,7 +145,7 @@ FROM (
   GROUP BY r.id_ristorante
 ) t
 WHERE t.distanza_km <= ?
-ORDER BY t.distanza_km
+ORDER BY t.distanza_km;
 
 
 
