@@ -122,18 +122,30 @@ ORDER BY r.nome;
 
 
 -- ristorantiVicini(): ristoranti vicini alle coordinate indicate
--- (formula di Haversine, distanza in km). Parametri: lat, lon, lat, limite.
+-- (formula di Haversine, distanza in km). Parametri: lat, lon, lat, raggioKm).
 
-SELECT id_ristorante, nome, nazione, citta, indirizzo, latitudine, longitudine,
-       fascia_prezzo, tipo_cucina, premi,
-       (6371 * acos(LEAST(1.0,
-          cos(radians(?)) * cos(radians(latitudine)) *
-          cos(radians(longitudine) - radians(?)) +
-          sin(radians(?)) * sin(radians(latitudine))))) AS distanza_km
-FROM RistorantiTheKnife
-WHERE latitudine IS NOT NULL AND longitudine IS NOT NULL
-ORDER BY distanza_km
-WHERE distanza_km <= ? ;
+SELECT t.id_ristorante, t.nome, t.nazione, t.citta, t.provincia, t.indirizzo,
+       t.latitudine, t.longitudine, t.fascia_prezzo, t.prenotazione_online,
+       t.consegna_a_domicilio, t.tipo_cucina, t.telefono, t.website, t.premi,
+       t.id_gestore, COALESCE(t.media_stelle, 0) AS media_stelle,
+       t.numero_recensioni
+FROM (
+  SELECT r.id_ristorante, r.nome, r.nazione, r.citta, r.provincia, r.indirizzo,
+         r.latitudine, r.longitudine, r.fascia_prezzo, r.prenotazione_online,
+         r.consegna_a_domicilio, r.tipo_cucina, r.telefono, r.website, r.premi,
+         r.id_gestore, AVG(rec.stelle) AS media_stelle,
+         COUNT(rec.id_recensione) AS numero_recensioni,
+         (6371 * acos(LEAST(1.0,
+            cos(radians(?)) * cos(radians(r.latitudine)) *
+            cos(radians(r.longitudine) - radians(?)) +
+            sin(radians(?)) * sin(radians(r.latitudine))))) AS distanza_km
+  FROM RistorantiTheKnife r
+  LEFT JOIN Recensioni rec ON r.id_ristorante = rec.id_ristorante
+  WHERE r.latitudine IS NOT NULL AND r.longitudine IS NOT NULL
+  GROUP BY r.id_ristorante
+) t
+WHERE t.distanza_km <= ?
+ORDER BY t.distanza_km
 
 
 
@@ -282,7 +294,7 @@ WHERE id_recensione = ?;
 -- eliminaRecensione(): cancellazione della propria recensione
 
 DELETE FROM Recensioni
-WHERE id_recensione = ? AND id_cliente = ?;
+WHERE id_recensione = ?;
 
 
 
