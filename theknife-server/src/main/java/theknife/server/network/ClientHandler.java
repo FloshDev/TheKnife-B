@@ -34,6 +34,7 @@ public class ClientHandler implements Runnable {
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream())
         ) {
+            out.flush();
             while (true) {
                 Request request = (Request) in.readObject();
                 Response response = dispatcher.dispatch(request);
