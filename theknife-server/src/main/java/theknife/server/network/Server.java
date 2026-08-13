@@ -13,6 +13,7 @@ import theknife.server.handler.CommandDispatcher;
 import java.sql.Connection;
 import java.sql.SQLException;
 import theknife.server.dao.DatabaseManager;
+import theknife.common.config.ConfigurazioneServer;
 
 /**
  * Gestisce il ciclo di vita della rete del server: apre il socket di ascolto,
@@ -22,7 +23,7 @@ import theknife.server.dao.DatabaseManager;
  */
 public class Server {
     
-    private static final int PORTA_SERVER = 9999;
+    private static final int PORTA_SERVER = ConfigurazioneServer.PORTA_DEFAULT;
     private final ConfigurazioneDB config;
 
     public Server (ConfigurazioneDB config) {
