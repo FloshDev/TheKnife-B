@@ -13,6 +13,8 @@ import theknife.server.handler.CommandDispatcher;
 import java.sql.Connection;
 import java.sql.SQLException;
 import theknife.server.dao.DatabaseManager;
+import theknife.server.dao.PreferitoDAO;
+import theknife.server.dao.RistoranteDAO;
 import theknife.common.config.ConfigurazioneServer;
 
 /**
@@ -40,7 +42,9 @@ public class Server {
             ServerSocket serverSocket = new ServerSocket(PORTA_SERVER);
             System.out.println("Server in ascolto sulla porta " + PORTA_SERVER);
             
-            RistoranteService ristoranteService = new RistoranteService();
+            RistoranteDAO ristoranteDAO = new RistoranteDAO(db);
+            PreferitoDAO preferitoDAO = new PreferitoDAO(db);
+            RistoranteService ristoranteService = new RistoranteService(ristoranteDAO, preferitoDAO);
             SessionManager sessionManager = new SessionManager();
             CommandFactory commandFactory = new CommandFactory(ristoranteService);
             CommandDispatcher dispatcher = new CommandDispatcher(commandFactory, sessionManager);
