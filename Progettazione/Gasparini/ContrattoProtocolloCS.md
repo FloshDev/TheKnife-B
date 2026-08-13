@@ -3,15 +3,18 @@
 - Ogni CommandType rappresenta una singola operazione atomica eseguibile dal server.
 - I DTO del modulo common sono classi immutabili dal punto di vista del significato: contengono esclusivamente dati trasferiti sulla rete e non implementano alcuna logica applicativa.
 
-// GUEST 
-OTTIENI_LOCALITA_INIZIALE, ACCEDI, REGISTRATI, CERCA_RISTORANTI, OTTIENI_DETTAGLI_RISTORANTE,
-LEGGI_RECENSIONI,
+//TUTTI
+CERCA_RISTORANTI, OTTIENI_DETTAGLI_RISTORANTE, LEGGI_RECENSIONI, CERCA_VICINO,
+// OSPITE 
+OTTIENI_LOCALITA_INIZIALE, ACCEDI, REGISTRATI,
 // CLIENTE 
 AGGIUNGI_PREFERITO, RIMUOVI_PREFERITO, VEDI_PREFERITI, AGGIUNGI_RECENSIONE, MODIFICA_RECENSIONE, 
-ELIMINA_RECENSIONE, CERCA_VICINO, ESCI, 
+ELIMINA_RECENSIONE,
 // RISTORATORE 
 AGGIUNGI_RISTORANTE, VEDI_RISTORANTI_GESTITI, LEGGI_RECENSIONI_RISTORANTI_GESTITI, 
-OTTIENI_STATISTICHE_RISTORANTE, RISPONDI_RECENSIONE, ASSOCIA_RISTORANTE
+OTTIENI_STATISTICHE_RISTORANTE, RISPONDI_RECENSIONE, ASSOCIA_RISTORANTE,
+// CLIENTE E RISTORATORE
+ESCI
 
 | CommandType                         | DTO Request            | DTO/ogg. Response         |Token |Autenticaz.
 | ----------------------------------- | ---------------------- | ------------------------- | ---- |
