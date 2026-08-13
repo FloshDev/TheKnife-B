@@ -24,6 +24,7 @@ import theknife.common.dto.IdRistoranteDTO;
 import theknife.common.dto.ModificaRecensioneDTO;
 import theknife.common.dto.RecensioneDTO;
 import theknife.common.dto.RispondiRecensioneDTO;
+import theknife.common.dto.RistoranteDTO;
 import theknife.common.dto.UtenteDTO;
 
 /**
@@ -44,7 +45,7 @@ public class DettaglioController {
     /** Media delle stelle delle recensioni del ristorante. */
     @FXML private Label mediaStelleLabel;
 
-    /** Bottone per aggiungere il ristorante ai preferiti. */
+    /** Bottone per aggiungere o rimuovere il ristorante dai preferiti (RF08/RF09). */
     @FXML private Button preferitiButton;
     /** Bottone per scrivere una recensione al ristorante. */
     @FXML private Button scriviRecensioneButton;
@@ -64,18 +65,44 @@ public class DettaglioController {
     private long idRistorante;
 
     /**
-     * Aggiunge il ristorante corrente ai preferiti dell'utente.
+     * Se il ristorante corrente è già nei preferiti dell'utente loggato
+     * (RF08/RF09). Calcolato in {@link #impostaRistorante(long)} interrogando
+     * il server, non è un dato che arriva col dettaglio del ristorante.
+     */
+    private boolean preferito = false;
+
+    /**
+     * Aggiunge o rimuove il ristorante corrente dai preferiti dell'utente, a
+     * seconda dello stato attuale di {@link #preferito} (RF08/RF09): un solo
+     * bottone che alterna comportamento invece di due bottoni separati.
      */
     @FXML private void handlePreferiti() {
-        TaskRunner.run(
-            () -> {
-                ristoranteService.aggiungiPreferito(new IdRistoranteDTO(idRistorante));
-                return null;
-            },
-            esito -> {
-                new Alert(Alert.AlertType.INFORMATION, "Ristorante aggiunto ai preferiti.").showAndWait();
-            }
-        );
+        if(preferito) {
+            TaskRunner.run(
+                () -> {
+                    ristoranteService.rimuoviPreferito(new IdRistoranteDTO(idRistorante));
+                    return null;
+                },
+                esito -> {
+                    preferito = false;
+                    aggiornaTestoPreferiti();
+                    new Alert(Alert.AlertType.INFORMATION, "Ristorante rimosso dai preferiti.").showAndWait();
+                }
+            );
+        }
+        else{
+            TaskRunner.run(
+                () -> {
+                    ristoranteService.aggiungiPreferito(new IdRistoranteDTO(idRistorante));
+                    return null;
+                },
+                esito -> {
+                    preferito = true;
+                    aggiornaTestoPreferiti();
+                    new Alert(Alert.AlertType.INFORMATION, "Ristorante aggiunto ai preferiti.").showAndWait();
+                }
+            );
+        }
     }
 
     /**
@@ -214,6 +241,10 @@ public class DettaglioController {
      * finché non è selezionata una recensione propria. Il filtro è solo
      * cosmetico: l'autorizzazione vera è demandata al server.
      *
+     * <p>Chiede anche la lista dei preferiti dell'utente per determinare se
+     * il ristorante corrente ne fa già parte, aggiornando di conseguenza
+     * {@link #preferito} e il testo di {@code preferitiButton} (RF08/RF09).
+     *
      * @param idRistorante l'identificativo del ristorante da mostrare
      */
     public void impostaRistorante(long idRistorante) {
@@ -242,6 +273,19 @@ public class DettaglioController {
             }
         );
 
+        TaskRunner.run(
+            () -> ristoranteService.ottieniPreferiti(),
+            preferito -> {
+                for (RistoranteDTO r : preferito) {
+                    if (r.getIdRistorante() == idRistorante) {
+                        this.preferito = true;
+                        break;
+                    }
+                }
+                aggiornaTestoPreferiti();
+            }
+        );
+
         caricaRecensioni();
     }
 
@@ -264,5 +308,14 @@ public class DettaglioController {
             });
         }
     );
-}
+    }
+
+    /**
+     * Aggiorna il testo di {@code preferitiButton} in base a
+     * {@link #preferito}, così che rifletta sempre lo stato reale (RF08/RF09)
+     * invece di restare fisso su "Aggiungi ai preferiti".
+     */
+    private void aggiornaTestoPreferiti() {
+        preferitiButton.setText(preferito ? "Nei preferiti" : "Aggiungi ai preferiti");
+    }
 }
