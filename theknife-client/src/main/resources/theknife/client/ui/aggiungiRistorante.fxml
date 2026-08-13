@@ -8,6 +8,7 @@
     <TextField fx:id="nomeField" promptText="Nome"/>
     <TextField fx:id="indirizzoField" promptText="Indirizzo"/>
     <TextField fx:id="cittaField" promptText="Citta"/>
+    <TextField fx:id="provinciaField" promptText="Provincia"/>
     <TextField fx:id="nazioneField" promptText="Nazione"/>
     <TextField fx:id="fasciaPrezzoField" promptText="Fascia di prezzo"/>
     <TextField fx:id="tipoCucinaField" promptText="Tipo di cucina"/>

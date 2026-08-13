@@ -30,6 +30,8 @@ public class AggiungiRistoranteController {
     @FXML private TextField indirizzoField;
     /** Campo di testo per la città. */
     @FXML private TextField cittaField;
+    /** Campo di testo per la provincia. */
+    @FXML private TextField provinciaField;
     /** Campo di testo per la nazione. */
     @FXML private TextField nazioneField;
     /** Campo di testo per la fascia di prezzo (1-4). */
@@ -62,6 +64,7 @@ public class AggiungiRistoranteController {
         String nome = nomeField.getText();
         String indirizzo = indirizzoField.getText();
         String citta = cittaField.getText();
+        String provincia = provinciaField.getText();
         String nazione = nazioneField.getText();
         int fasciaPrezzo = Integer.parseInt(fasciaPrezzoField.getText());
         String tipoCucina = tipoCucinaField.getText();
@@ -71,7 +74,7 @@ public class AggiungiRistoranteController {
         boolean prenotazioneOnline = prenotazioneOnlineCheck.isSelected();
         boolean consegnaADomicilio = consegnaADomicilioCheck.isSelected();
 
-        AggiungiRistoranteDTO ristoranteDTO = new AggiungiRistoranteDTO(nome, indirizzo, citta, nazione, fasciaPrezzo, prenotazioneOnline, consegnaADomicilio, tipoCucina, webSite, telefono, premi, null);
+        AggiungiRistoranteDTO ristoranteDTO = new AggiungiRistoranteDTO(nome, indirizzo, citta, provincia, nazione, fasciaPrezzo, prenotazioneOnline, consegnaADomicilio, tipoCucina, webSite, telefono, premi, null);
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 

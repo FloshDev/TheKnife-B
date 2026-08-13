@@ -44,7 +44,6 @@ public class DettaglioController {
     @FXML private Label fasciaPrezzoLabel;
     /** Media delle stelle delle recensioni del ristorante. */
     @FXML private Label mediaStelleLabel;
-
     /** Bottone per aggiungere o rimuovere il ristorante dai preferiti (RF08/RF09). */
     @FXML private Button preferitiButton;
     /** Bottone per scrivere una recensione al ristorante. */
