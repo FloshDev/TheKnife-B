@@ -12,6 +12,7 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
     private String nome;
     private String indirizzo;
     private String citta;
+    private String provincia;
     private String nazione;
     private int fasciaPrezzo;
     private boolean prenotazioneOnline;
@@ -23,12 +24,13 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
     private List<ServizioDTO> servizi;
 
     //Costruttore
-    public AggiungiRistoranteDTO(String nome, String indirizzo, String citta, String nazione, 
+    public AggiungiRistoranteDTO(String nome, String indirizzo, String citta, String provincia, String nazione, 
             int fasciaPrezzo, boolean prenotazioneOnline, boolean consegnaADomicilio, 
             String tipoCucina, String website, String telefono, String premi, List<ServizioDTO> servizi) {
         this.nome = nome;
         this.indirizzo = indirizzo;
         this.citta = citta;
+        this.provincia = provincia;
         this.nazione = nazione;
         this.fasciaPrezzo = fasciaPrezzo;
         this.prenotazioneOnline = prenotazioneOnline;
@@ -63,6 +65,14 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
 
     public void setCitta(String citta) {
         this.citta = citta;
+    }
+
+    public String getProvincia() {
+        return provincia;
+    }
+
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
     }
 
     public String getNazione() {
@@ -143,6 +153,7 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
                 "nome='" + nome + '\'' +
                 ", indirizzo='" + indirizzo + '\'' +
                 ", citta='" + citta + '\'' +
+                ", provincia='" + provincia + '\'' +
                 ", nazione='" + nazione + '\'' +
                 ", fasciaPrezzo='" + fasciaPrezzo + '\'' +
                 ", prenotazioneOnline=" + prenotazioneOnline +
