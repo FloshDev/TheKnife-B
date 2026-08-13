@@ -1,7 +1,6 @@
 package theknife.server.service;
 
 import java.util.List;
-
 import theknife.common.dto.CercaRistorantiDTO;
 import theknife.common.dto.CercaVicinoDTO;
 import theknife.common.dto.IdRistoranteDTO;
