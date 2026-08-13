@@ -49,7 +49,7 @@ public class DettaglioController {
     @FXML private Button preferitiButton;
     /** Bottone per scrivere una recensione al ristorante. */
     @FXML private Button scriviRecensioneButton;
-    /** Bottone per rispondere alla recensione selezionata nella lista. */
+    /** Bottone per rispondere alla recensione selezionata nella lista, visibile solo al gestore del ristorante (RF18). */
     @FXML private Button rispondiRecensioneButton;
     /** Bottone per tornare alla schermata dei risultati. */
     @FXML private Button tornaIndietroButton;
@@ -245,12 +245,19 @@ public class DettaglioController {
      * il ristorante corrente ne fa già parte, aggiornando di conseguenza
      * {@link #preferito} e il testo di {@code preferitiButton} (RF08/RF09).
      *
+     * <p>Mostra {@code rispondiRecensioneButton} solo se l'utente corrente è
+     * il gestore del ristorante (RF18, decisione 24): a differenza di
+     * modifica/elimina, qui il controllo è unico per l'intera schermata, non
+     * per singola recensione selezionata, perché dipende dal ristorante e
+     * non da chi ha scritto la recensione.
+     *
      * @param idRistorante l'identificativo del ristorante da mostrare
      */
     public void impostaRistorante(long idRistorante) {
         this.idRistorante = idRistorante;
         modificaRecensioneButton.setVisible(false);
         eliminaRecensioneButton.setVisible(false);
+        rispondiRecensioneButton.setVisible(false);
         recensioniListView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 UtenteDTO utente = ServerConnection.getInstance().getUtenteCorrente();
@@ -270,6 +277,9 @@ public class DettaglioController {
                 indirizzoLabel.setText(ristorante.getIndirizzo());
                 fasciaPrezzoLabel.setText(String.valueOf(ristorante.getFasciaPrezzo()));
                 mediaStelleLabel.setText(String.valueOf(ristorante.getMediaStelle()));
+                UtenteDTO utente = ServerConnection.getInstance().getUtenteCorrente();
+                boolean isGestore = utente != null && ristorante.getIdGestore() != null && ristorante.getIdGestore() == utente.getIdUtente();
+                rispondiRecensioneButton.setVisible(isGestore);
             }
         );
 
