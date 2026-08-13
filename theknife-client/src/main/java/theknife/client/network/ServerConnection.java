@@ -87,7 +87,18 @@ public class ServerConnection {
         in = new ObjectInputStream(socket.getInputStream());
     }
 
+    /**
+     * Chiude lo stream e il socket verso il server. Non fa nulla se la
+     * connessione non è mai stata aperta o è già chiusa, invece di lanciare
+     * {@link NullPointerException} — caso reale quando {@link #connect}
+     * fallisce e l'applicazione chiude comunque la finestra.
+     *
+     * @throws IOException se la chiusura di stream o socket fallisce
+     */
     public void disconnect() throws IOException {
+        if (socket == null || socket.isClosed()) {
+            return;
+        }
         out.close();
         in.close();
         socket.close();
