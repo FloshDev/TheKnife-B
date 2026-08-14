@@ -55,7 +55,8 @@ public class GestioneRecensioniController {
                         if (empty || item == null) {
                             setText(null);
                         } else {
-                            setText(item.getTitolo() + " - " + item.getStelle() + "★ (ristorante #" + item.getIdRistorante() + ")");
+                            String base = item.getTitolo() + " - " + item.getStelle() + "★ (ristorante #" + item.getIdRistorante() + ")";
+                            setText(item.getRisposta() == null ? base : base + " [risposto]");
                         }
                     }
                 });
