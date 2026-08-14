@@ -217,15 +217,21 @@ public class RecensioneDAO {
      *
      * @param dati la recensione da rispondere e il testo della risposta
      * @throws DataAccessException se l'accesso al database fallisce
+     * @throws ApplicationException se la recensione ha gia' una risposta
      */
-    public void rispondi (RispondiRecensioneDTO dati) throws DataAccessException {
+
+    public void rispondi (RispondiRecensioneDTO dati)
+            throws DataAccessException, ApplicationException {
         String sql = "UPDATE Recensioni SET risposta = ?, data_risposta = CURRENT_TIMESTAMP "
                    + "WHERE id_recensione = ? AND risposta IS NULL";
         try (Connection conn = db.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, dati.getRisposta());
             ps.setLong(2, dati.getIdRecensione());
-            ps.executeUpdate();
+            int righeAggiornate = ps.executeUpdate();
+            if (righeAggiornate == 0) {
+                throw new ApplicationException("Recensione gia' risposta.");
+            }
         } catch (SQLException e) {
             throw new DataAccessException("Errore nella risposta alla recensione: "
                 + e.getMessage());
