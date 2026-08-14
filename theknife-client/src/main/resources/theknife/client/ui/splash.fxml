@@ -2,14 +2,26 @@
 <!-- Layout della schermata iniziale (S01). @author Barlera Marco, 760000, VA -->
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.SplashController">
 
-    <Label text="The Knife" fx:id="theKnifeLabel"/>
-    <Label fx:id="localitaLabel" text=""/>
-    <TextField fx:id="modificaLocalitaField" promptText="Modifica località"/>
-    <Button text="Conferma" onAction="#handleConferma"/>
-    <Hyperlink text="Vai al Login" onAction="#handleLogin"/>
-    <Hyperlink text="Continua come ospite" onAction="#handleGuest"/>
+<VBox styleClass="splash-root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.SplashController">
+
+    <VBox styleClass="card"> 
+
+        <ImageView fitWidth="110" fitHeight="110" preserveRatio="true">
+            <image>
+                <Image url="@logoIco.png"/>
+            </image>
+        </ImageView>
+
+        <Label text="The Knife" fx:id="theKnifeLabel" styleClass="brand-title"/>
+        <Label fx:id="localitaLabel" text="" styleClass="localita-label"/>
+        <TextField fx:id="modificaLocalitaField" promptText="Modifica località" styleClass="campo-testo"/>
+        <Button text="Conferma" onAction="#handleConferma" styleClass="bottone-primario"/>
+        <Hyperlink text="Vai al Login" onAction="#handleLogin" styleClass="link-primario"/>
+        <Hyperlink text="Continua come ospite" onAction="#handleGuest" styleClass="link-secondario"/>
+    </VBox>
     
 </VBox>

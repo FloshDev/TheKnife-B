@@ -12,7 +12,6 @@ import javafx.stage.Stage;
 import theknife.client.network.ServerConnection;
 import theknife.common.config.ConfigurazioneServer;
 
-
 /**
  * Punto d'ingresso dell'applicazione client JavaFX di TheKnife.
  *
@@ -52,6 +51,7 @@ public class TheKnifeClient extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/splash.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root, 800, 600);
+        scene.getStylesheets().add(getClass().getResource("/theknife/client/ui/style.css").toExternalForm());
         stage.setScene(scene);
         stage.setTitle("TheKnife");
         stage.show();

@@ -45,11 +45,11 @@ public class LoginController {
                 try{
                     if(loginResult.getUtente().getRuolo() == Ruolo.CLIENTE) {
                         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/home.fxml"));
-                        stage.setScene(new Scene(root, 800, 600));
+                        stage.getScene().setRoot(root);
                     }
                     else if (loginResult.getUtente().getRuolo() == Ruolo.RISTORATORE) {
                         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/dashboard.fxml"));
-                        stage.setScene(new Scene(root, 800, 600));
+                        stage.getScene().setRoot(root);
                     }
                 }catch (IOException e) {
                     new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
@@ -67,7 +67,7 @@ public class LoginController {
     @FXML private void handleRegistrazione(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); // Non crei una finestra nuova, riusi quella che già esiste
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/registrazione.fxml"));
-        stage.setScene(new Scene(root, 800, 600));
+        stage.getScene().setRoot(root);
     }
 
 }

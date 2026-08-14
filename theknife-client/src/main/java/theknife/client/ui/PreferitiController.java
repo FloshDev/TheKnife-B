@@ -80,7 +80,7 @@ public class PreferitiController {
     @FXML private void handleTornaIndietro(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); 
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/home.fxml"));
-        stage.setScene(new Scene(root, 800, 600));
+        stage.getScene().setRoot(root);
     }
 
     /**
@@ -124,7 +124,7 @@ public class PreferitiController {
                 Parent root = loader.load();
                 DettaglioController controller = loader.getController();
                 controller.impostaRistorante(selectedRistorante.getIdRistorante());
-                stage.setScene(new Scene(root, 800, 600));
+                stage.getScene().setRoot(root);
             } catch (IOException e) {
                 new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
             }
