@@ -227,7 +227,6 @@ public class RistoranteDAO {
      * @return l'identificativo generato per il nuovo ristorante
      * @throws DataAccessException se l'accesso al database fallisce
      */
-
     public long inserisci (AggiungiRistoranteDTO dati, long idGestore,
         Double lat, Double lon) throws DataAccessException {
         String sql = "INSERT INTO RistorantiTheKnife "
