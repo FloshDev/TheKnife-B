@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -190,7 +189,13 @@ public class DettaglioController {
             Optional<String> testoModificato = dialog3.showAndWait();
 
             titoloModificato.ifPresent(nuovoTitolo -> {
-                int nuoveStelle = stelleModificate.isPresent() ? Integer.parseInt(stelleModificate.get()) : selezionata.getStelle();
+                int nuoveStelle;
+                try {
+                    nuoveStelle = stelleModificate.isPresent() ? Integer.parseInt(stelleModificate.get()) : selezionata.getStelle();
+                } catch (NumberFormatException e) {
+                    new Alert(Alert.AlertType.WARNING, "Le stelle devono essere un numero intero.").showAndWait();
+                    return;
+                }
 
                 TaskRunner.run(
                     () -> {

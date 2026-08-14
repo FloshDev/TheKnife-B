@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.PasswordField;
@@ -78,11 +77,11 @@ public class RegistrazioneController {
         LocalDate dataNascita = dataNascitaField.getValue();
         Ruolo ruolo = clienteRadio.isSelected() ? Ruolo.CLIENTE : (ristoratoreRadio.isSelected() ? Ruolo.RISTORATORE : null);
 
-        if(!password.equals(password2) ) {
-            if(password.isEmpty() || password2.isEmpty()) {
-                new Alert(Alert.AlertType.ERROR, "Inserisci una password").showAndWait();
-                return;
-            }
+        if(password.isEmpty() || password2.isEmpty())  {
+            new Alert(Alert.AlertType.ERROR, "Inserisci una password").showAndWait();
+            return;
+        }
+        if(!password.equals(password2)) {
             new Alert(Alert.AlertType.ERROR, "Le password non coincidono").showAndWait();
             return;
         }
