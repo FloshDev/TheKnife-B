@@ -36,6 +36,10 @@ import theknife.server.exception.DataAccessException;
 
 public class RecensioneDAO {
 
+    /**
+     * Il gestore delle connessioni al database: ogni metodo chiede
+     * una connessione nuova al momento dell'operazione.
+     */
     private final DatabaseManager db;
 
     /**
