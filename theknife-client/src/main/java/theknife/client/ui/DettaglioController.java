@@ -118,7 +118,7 @@ public class DettaglioController {
             Parent root = loader.load();
             ScriviRecensioneController controller = loader.getController();
             controller.impostaRistorante(idRistorante, nomeLabel.getText());
-            stage.setScene(new Scene(root, 800, 600));
+            stage.getScene().setRoot(root);
         } catch (IOException e) {
             new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
         }
@@ -161,7 +161,7 @@ public class DettaglioController {
     @FXML private void handleTornaIndietro(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/risultati.fxml"));
-        stage.setScene(new Scene(root, 800, 600));
+        stage.getScene().setRoot(root);
     }
 
     /**

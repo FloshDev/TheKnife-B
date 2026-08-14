@@ -105,6 +105,6 @@ public class GestioneRecensioniController {
     @FXML private void handleTornaIndietro(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/dashboard.fxml"));
-        stage.setScene(new Scene(root, 800, 600));
+        stage.getScene().setRoot(root);
     }
 }

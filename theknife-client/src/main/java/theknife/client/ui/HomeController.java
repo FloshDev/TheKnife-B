@@ -70,7 +70,7 @@ public class HomeController {
                 Parent root = loader.load();
                 RisultatiController controller = loader.getController();
                 controller.impostaRisultati(cercaResult);
-                stage.setScene(new Scene(root, 800, 600));
+                stage.getScene().setRoot(root);
             } catch (IOException e) {
                 new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
             }
@@ -99,7 +99,7 @@ public class HomeController {
                 Parent root = loader.load();
                 RisultatiController controller = loader.getController();
                 controller.impostaRisultati(cercaResult);
-                stage.setScene(new Scene(root, 800, 600));
+                stage.getScene().setRoot(root);
             } catch (IOException e) {
                 new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
             }
@@ -116,7 +116,7 @@ public class HomeController {
     @FXML private void handlePreferiti(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/preferiti.fxml"));
-        stage.setScene(new Scene(root, 800, 600));
+        stage.getScene().setRoot(root);
     }
 
     /**
@@ -128,7 +128,7 @@ public class HomeController {
     @FXML private void handleDashboard(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/dashboard.fxml"));
-        stage.setScene(new Scene(root, 800, 600));
+        stage.getScene().setRoot(root);
     }
 
     /**
@@ -146,7 +146,7 @@ public class HomeController {
             try{
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/splash.fxml"));
-                stage.setScene(new Scene(root, 800, 600));
+                stage.getScene().setRoot(root);
             } catch (IOException e) {
                 new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
             }
@@ -163,6 +163,6 @@ public class HomeController {
     @FXML private void handleLogin(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); 
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/login.fxml"));
-        stage.setScene(new Scene(root, 800, 600));
+        stage.getScene().setRoot(root);
     }
 }

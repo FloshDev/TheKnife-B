@@ -1,0 +1,73 @@
+.splash-root {
+    -fx-background-color: #FEF3E2;
+    -fx-alignment: center;
+}
+
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 24;
+    -fx-padding: 48 40 40 40;
+    -fx-spacing: 14;
+    -fx-alignment: CENTER;
+    -fx-effect: dropshadow(gaussian, rgba(44,44,44,0.15), 20, 0, 0, 8);
+    -fx-max-width: 400;
+}
+
+.brand-title {
+    -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 28px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #FA812F;
+}
+
+.localita-label {
+    -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 13px;
+    -fx-font-weight: 500;
+    -fx-text-fill: #b07840;
+}
+
+.campo-testo {
+    -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 15px;
+    -fx-pref-height: 50;
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-border-color: #f0d0a0;
+    -fx-border-radius: 14;
+    -fx-border-width: 1.5;
+    -fx-padding: 0 16 0 16;
+}
+
+.campo-testo:focused {
+    -fx-border-color: #FAB12F;
+}
+
+.bottone-primario {
+    -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: 700;
+    -fx-background-color: #FAB12F;
+    -fx-text-fill: white;
+    -fx-background-radius: 14;
+    -fx-pref-height: 50;
+    -fx-max-width: infinity;
+    -fx-cursor: hand;
+}
+
+.bottone-primario:hover {
+    -fx-background-color: #e09928;
+}
+
+.link-primario {
+    -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-text-fill: #FAB12F;
+    -fx-font-weight: 600;
+    -fx-font-size: 13px;
+}
+
+.link-secondario {
+    -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-text-fill: #b07840;
+    -fx-font-size: 13px;
+}

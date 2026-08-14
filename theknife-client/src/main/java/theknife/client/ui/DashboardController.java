@@ -67,7 +67,7 @@ public class DashboardController {
     @FXML private void handleTornaHome(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/home.fxml"));
-        stage.setScene(new Scene(root, 800, 600)); 
+        stage.getScene().setRoot(root);
     }
 
     /**
@@ -85,7 +85,7 @@ public class DashboardController {
                 try{
                     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                     Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/splash.fxml"));
-                    stage.setScene(new Scene(root, 800, 600));
+                    stage.getScene().setRoot(root);
                 } catch (IOException e) {
                     new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
                 }
@@ -102,7 +102,7 @@ public class DashboardController {
     @FXML private void handleAggiungiNuovoRistorante(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/aggiungiRistorante.fxml"));
-        stage.setScene(new Scene(root, 800, 600));  
+        stage.getScene().setRoot(root);
     }
 
     /**
@@ -114,7 +114,7 @@ public class DashboardController {
     @FXML private void handleAssociaRistorante(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/associaRistorante.fxml"));
-        stage.setScene(new Scene(root, 800, 600));
+        stage.getScene().setRoot(root);
     }
 
     /**
@@ -127,6 +127,6 @@ public class DashboardController {
     @FXML private void handleGestisciRecensioni(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/gestioneRecensione.fxml"));
-        stage.setScene(new Scene(root, 800, 600));
+        stage.getScene().setRoot(root);
     }
 }

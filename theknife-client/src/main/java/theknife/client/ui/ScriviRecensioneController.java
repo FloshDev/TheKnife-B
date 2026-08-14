@@ -59,7 +59,7 @@ public class ScriviRecensioneController {
                 Parent root = loader.load();
                 DettaglioController controller = loader.getController();
                 controller.impostaRistorante(idRistorante);
-                stage.setScene(new Scene(root, 800, 600));
+                stage.getScene().setRoot(root);
             } catch (IOException e) {
                 new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
             }
@@ -79,7 +79,7 @@ public class ScriviRecensioneController {
         Parent root = loader.load();
         DettaglioController controller = loader.getController();
         controller.impostaRistorante(idRistorante);
-        stage.setScene(new Scene(root, 800, 600));
+        stage.getScene().setRoot(root);
     }
 
     /**
