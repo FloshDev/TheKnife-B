@@ -219,7 +219,6 @@ public class RecensioneDAO {
      * @throws DataAccessException se l'accesso al database fallisce
      * @throws ApplicationException se la recensione ha gia' una risposta
      */
-
     public void rispondi (RispondiRecensioneDTO dati)
             throws DataAccessException, ApplicationException {
         String sql = "UPDATE Recensioni SET risposta = ?, data_risposta = CURRENT_TIMESTAMP "
