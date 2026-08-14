@@ -210,19 +210,26 @@ public class RistoranteDAO {
     /**
      * Inserisce un nuovo ristorante associato a un gestore.
      * <p>
-     * ATTENZIONE (punto di attenzione n.1 del verbale): il DTO
-     * {@link AggiungiRistoranteDTO} non espone <code>provincia</code>,
-     * <code>latitudine</code> e <code>longitudine</code>, pertanto queste
-     * colonne vengono inserite come <code>NULL</code>. Da allineare con
-     * Gasparini appena il DTO verra' esteso.
+     * Le coordinate non viaggiano nel DTO: arrivano come
+     * parametri <code>lat</code> e <code>lon</code>, geocodificate dal service
+     * prima della chiamata. Se il geocoding fallisce valgono <code>null</code>
+     * e le colonne <code>latitudine</code> e <code>longitudine</code> restano
+     * <code>NULL</code>: il ristorante viene creato comunque, ma non compare
+     * in <code>CERCA_VICINO</code> finche' qualcuno non lo modifica.
      *
      * @param dati      i dati del ristorante da inserire
      * @param idGestore l'identificativo del gestore che inserisce il
      *                  ristorante
+     * @param lat       la latitudine geocodificata dal service, o
+     *                  <code>null</code> se non determinata
+     * @param lon       la longitudine geocodificata dal service, o
+     *                  <code>null</code> se non determinata
      * @return l'identificativo generato per il nuovo ristorante
      * @throws DataAccessException se l'accesso al database fallisce
      */
-    public long inserisci (AggiungiRistoranteDTO dati, long idGestore) throws DataAccessException {
+
+    public long inserisci (AggiungiRistoranteDTO dati, long idGestore,
+        Double lat, Double lon) throws DataAccessException {
         String sql = "INSERT INTO RistorantiTheKnife "
                    + "(nome, nazione, citta, provincia, indirizzo, latitudine, longitudine, "
                    + " fascia_prezzo, prenotazione_online, consegna_a_domicilio, tipo_cucina, "
@@ -234,10 +241,18 @@ public class RistoranteDAO {
             ps.setString(1, dati.getNome());
             ps.setString(2, dati.getNazione());
             ps.setString(3, dati.getCitta());
-            ps.setNull(4, java.sql.Types.VARCHAR);   // provincia non presente nel DTO
+            ps.setString(4, dati.getProvincia());
             ps.setString(5, dati.getIndirizzo());
-            ps.setNull(6, java.sql.Types.DOUBLE);    // latitudine non presente nel DTO
-            ps.setNull(7, java.sql.Types.DOUBLE);    // longitudine non presente nel DTO
+            if (lat != null) {
+                ps.setDouble(6, lat);
+            } else {
+                 ps.setNull(6, java.sql.Types.DOUBLE);
+            }
+            if (lon != null) {
+                ps.setDouble(7, lon);
+            } else {
+                ps.setNull(7, java.sql.Types.DOUBLE);
+            }
             ps.setInt(8, dati.getFasciaPrezzo());
             ps.setBoolean(9, dati.isPrenotazioneOnline());
             ps.setBoolean(10, dati.isConsegnaADomicilio());
@@ -390,7 +405,9 @@ public class RistoranteDAO {
                 if (rs.next() && rs.getObject("latitudine") != null) {
                     return new PosizioneDTO(
                         rs.getDouble("latitudine"),
-                        rs.getDouble("longitudine"));
+                        rs.getDouble("longitudine"),
+                        luogo
+                    );
                 }
                 return null;
             }
