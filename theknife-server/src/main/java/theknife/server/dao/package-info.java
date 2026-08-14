@@ -10,7 +10,7 @@
  * logica di dominio: legge e scrive righe, impacchettandole nei DTO del
  * modulo <code>theknife-common</code>.
  * <p>
- * Contratto (sessione 04/08, sezione 4): <code>PreparedStatement</code> per
+ * Contratto: <code>PreparedStatement</code> per
  * ogni query, niente stringhe SQL concatenate; le eccezioni SQL non escono
  * mai da questo package; nessun import dal protocollo
  * <code>theknife.common.protocol</code>.
