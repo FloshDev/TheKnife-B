@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -45,7 +44,13 @@ public class ScriviRecensioneController {
     @FXML public void handlePubblica(ActionEvent event) {
         String titolo = titoloField.getText();
         String testo = testoField.getText();
-        int stelle = Integer.parseInt(stelleField.getText());
+        int stelle;
+        try {
+            stelle = Integer.parseInt(stelleField.getText());
+        } catch (NumberFormatException e) {
+            new Alert(Alert.AlertType.ERROR, "Numero di stelle non valido, inserisci un numero da 1 a 5").showAndWait();
+            return;
+        }
 
         AggiungiRecensioneDTO recensioneDTO = new AggiungiRecensioneDTO(idRistorante, titolo, testo, stelle);
 

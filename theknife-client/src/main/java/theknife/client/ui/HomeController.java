@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
@@ -52,7 +51,13 @@ public class HomeController {
         String nome = nomeField.getText();
         String citta = cittaField.getText();
         String tipoCucina = tipoCucinaField.getText();
-        int fasciaPrezzo = Integer.parseInt(fasciaPrezzoField.getText());
+        int fasciaPrezzo;
+        try {
+            fasciaPrezzo = fasciaPrezzoField.getText().isBlank() ? 0 : Integer.parseInt(fasciaPrezzoField.getText());
+        } catch (NumberFormatException e) {
+            new Alert(Alert.AlertType.ERROR, "Fascia di prezzo non valida, inserisci un numero valido").showAndWait();
+            return;
+        }
         boolean prenotazioneOnline = prenotazioneOnlineCheck.isSelected();
         boolean consegnaADomicilio = consegnaADomicilioCheck.isSelected();
 
@@ -86,7 +91,14 @@ public class HomeController {
      * @param event l'evento generato dal click sul bottone "Vicino a me"
      */
     @FXML private void handleVicinoAMe(ActionEvent event) {
-        double raggioKm = Double.parseDouble(raggioKmField.getText());
+        double raggioKm;
+        try {
+            raggioKm = Double.parseDouble(raggioKmField.getText());
+        } catch (NumberFormatException e) {
+            new Alert(Alert.AlertType.ERROR, "Raggio non valido, inserisci un numero valido").showAndWait();
+            return;
+        }
+
         CercaVicinoDTO filtri = new CercaVicinoDTO(raggioKm, null);
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

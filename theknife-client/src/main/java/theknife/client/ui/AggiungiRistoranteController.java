@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
@@ -66,7 +65,13 @@ public class AggiungiRistoranteController {
         String citta = cittaField.getText();
         String provincia = provinciaField.getText();
         String nazione = nazioneField.getText();
-        int fasciaPrezzo = Integer.parseInt(fasciaPrezzoField.getText());
+        int fasciaPrezzo;
+        try {
+            fasciaPrezzo = Integer.parseInt(fasciaPrezzoField.getText());
+        } catch (NumberFormatException e) {
+            new Alert(Alert.AlertType.ERROR, "Fascia di prezzo non valida, inserisci un numero valido").showAndWait();
+            return;
+        }
         String tipoCucina = tipoCucinaField.getText();
         String webSite = webSiteField.getText();
         String telefono = telefonoField.getText();
