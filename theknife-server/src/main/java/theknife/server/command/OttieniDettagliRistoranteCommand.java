@@ -1,57 +1,50 @@
 package theknife.server.command;
 
-import java.util.List;
-
-import theknife.common.dto.CercaRistorantiDTO;
+import theknife.common.dto.IdRistoranteDTO;
 import theknife.common.dto.RistoranteDTO;
 import theknife.common.dto.UtenteDTO;
 import theknife.common.enums.ResponseStatus;
 import theknife.common.protocol.Request;
 import theknife.common.protocol.Response;
+import theknife.server.exception.ApplicationException;
 import theknife.server.exception.DataAccessException;
 import theknife.server.exception.ValidationException;
 import theknife.server.service.RistoranteService;
 
 /**
- * Comando CERCA_RISTORANTI: restituisce i ristoranti che soddisfano i filtri
- * di ricerca. Non richiede autenticazione. Risponde NON_TROVATO, non SUCCESSO
- * con lista vuota, quando nessun ristorante corrisponde ai criteri.
+ * Comando OTTIENI_DETTAGLI_RISTORANTE: restituisce la scheda completa di un
+ * ristorante a partire dal suo identificativo. Non richiede autenticazione.
  *
  * @author Ciani Flavio Angelo, 761581, VA
  */
-public class CercaRistorantiCommand implements Command {
+public class OttieniDettagliRistoranteCommand implements Command {
 
     private final RistoranteService ristoranteService;
 
-    public CercaRistorantiCommand(RistoranteService ristoranteService) {
+    public OttieniDettagliRistoranteCommand(RistoranteService ristoranteService) {
         this.ristoranteService = ristoranteService;
     }
 
     @Override
     public Response execute(Request request, UtenteDTO utente) {
-        if (!(request.getPayload() instanceof CercaRistorantiDTO filtri)) {
+        if (!(request.getPayload() instanceof IdRistoranteDTO id)) {
             return new Response(ResponseStatus.ERRORE_VALIDAZIONE, null,
-                    "Criteri di ricerca mancanti o non validi.");
+                    "Identificativo del ristorante mancante o non valido.");
         }
 
         try {
-            List<RistoranteDTO> ristoranti = ristoranteService.cercaRistoranti(filtri);
-
-            if (ristoranti.isEmpty()) {
-                return new Response(ResponseStatus.NON_TROVATO, ristoranti,
-                        "Nessun ristorante trovato con i criteri specificati.");
-            }
-
-            return new Response(ResponseStatus.SUCCESSO, ristoranti,
-                    "Ristoranti trovati con successo.");
+            RistoranteDTO ristorante = ristoranteService.ottieniDettagli(id);
+            return new Response(ResponseStatus.SUCCESSO, ristorante, "Ristorante trovato.");
 
         } catch (ValidationException e) {
             return new Response(ResponseStatus.ERRORE_VALIDAZIONE, null, e.getMessage());
+        } catch (ApplicationException e) {
+            return new Response(ResponseStatus.NON_TROVATO, null, e.getMessage());
         } catch (DataAccessException e) {
             return new Response(ResponseStatus.ERRORE_SERVER, null, e.getMessage());
         } catch (Exception e) {
             return new Response(ResponseStatus.ERRORE_SERVER, null,
-                    "Errore durante la ricerca dei ristoranti: " + e.getMessage());
+                    "Errore durante il recupero del ristorante: " + e.getMessage());
         }
     }
 }
