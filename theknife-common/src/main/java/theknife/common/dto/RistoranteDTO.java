@@ -8,25 +8,60 @@ import java.util.List;
  */
 
 public class RistoranteDTO implements java.io.Serializable {
+/**
+ * Costante di serializzazione per la compatibilità tra versioni della classe durante la serializzazione e 
+ * deserializzazione.
+ */
     private static final long serialVersionUID = 1L;
+    
+/**
+ * L'identificatore univoco del ristorante.
+ */
     private long idRistorante;
+    
+/**
+ * Il nome del ristorante.
+ */
     private String nome;
+
+/**
+ * L'indirizzo del ristorante.
+ */
     private String indirizzo;
+    
+/**
+ * La città del
+ */
     private String citta;
+    
     private String provincia;
+    
     private String nazione;
+    
     private double latitudine;
+    
     private double longitudine;
+    
     private int fasciaPrezzo;
+    
     private boolean prenotazioneOnline;
+    
     private boolean consegnaADomicilio;
+    
     private String tipoCucina;
+    
     private String website;
+    
     private String telefono;
+    
     private String premi;
+    
     private List<ServizioDTO> servizi;
+    
     private double mediaStelle;
+    
     private int numeroRecensioni;
+    
     private Long idGestore;
 
 //Costruttore
