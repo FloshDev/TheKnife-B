@@ -117,7 +117,7 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
 //Getters e Setters
 /**
  * Restituisce il nome del ristorante da aggiungere.
- * @return nome del ristorante
+ * @return il nome del ristorante
  */
     public String getNome() {
         return nome;
@@ -125,7 +125,7 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
 
 /**
  * Imposta il nome del ristorante da aggiungere.
- * @param nome nome del ristorante
+ * @param nome il nome del ristorante
  */
     public void setNome(String nome) {
         this.nome = nome;
@@ -133,7 +133,7 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
 
 /**
  * Restituisce l'indirizzo del ristorante da aggiungere.
- * @return indirizzo del ristorante
+ * @return l'indirizzo del ristorante
  */
     public String getIndirizzo() {
         return indirizzo;
@@ -141,7 +141,7 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
 
 /**
  * Imposta l'indirizzo del ristorante da aggiungere.
- * @param indirizzo indirizzo del ristorante
+ * @param indirizzo l'indirizzo del ristorante
  */
     public void setIndirizzo(String indirizzo) {
         this.indirizzo = indirizzo;
@@ -149,7 +149,7 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
 
 /**
  * Restituisce la città in cui si trova il ristorante da aggiungere.
- * @return città del ristorante
+ * @return la città del ristorante
  */
     public String getCitta() {
         return citta;
@@ -157,7 +157,7 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
 
 /**
  * Imposta la città in cui si trova il ristorante da aggiungere.
- * @param citta città del ristorante
+ * @param citta la città del ristorante
  */
     public void setCitta(String citta) {
         this.citta = citta;
@@ -165,7 +165,7 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
 
 /**
  * Restituisce la provincia in cui si trova il ristorante da aggiungere.
- * @return provincia del ristorante
+ * @return la provincia del ristorante
  */
     public String getProvincia() {
         return provincia;
@@ -173,7 +173,7 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
 
 /**
  * Imposta la provincia in cui si trova il ristorante da aggiungere.
- * @param provincia provincia del ristorante
+ * @param provincia la provincia del ristorante
  */
     public void setProvincia(String provincia) {
         this.provincia = provincia;
@@ -181,7 +181,7 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
 
 /**
  * Restituisce la nazione in cui si trova il ristorante da aggiungere.
- * @return nazione del ristorante
+ * @return la nazione del ristorante
  */
     public String getNazione() {
         return nazione;
@@ -189,7 +189,7 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
 
 /**
  * Imposta la nazione in cui si trova il ristorante da aggiungere.
- * @param nazione nazione del ristorante
+ * @param nazione la nazione del ristorante
  */
     public void setNazione(String nazione) {
         this.nazione = nazione;
@@ -197,7 +197,7 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
 
 /**
  * Restituisce la fascia di prezzo del ristorante da aggiungere.
- * @return fascia di prezzo del ristorante
+ * @return la fascia di prezzo del ristorante
  */
     public int getFasciaPrezzo() {
         return fasciaPrezzo;
@@ -205,7 +205,7 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
 
 /**
  * Imposta la fascia di prezzo del ristorante da aggiungere.
- * @param fasciaPrezzo fascia di prezzo del ristorante
+ * @param fasciaPrezzo la fascia di prezzo del ristorante
  */
     public void setFasciaPrezzo(int fasciaPrezzo) {
         this.fasciaPrezzo = fasciaPrezzo;
@@ -245,7 +245,7 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
 
 /**
  * Restituisce il tipo di cucina del ristorante da aggiungere.
- * @return tipo di cucina del ristorante
+ * @return il tipo di cucina del ristorante
  */
     public String getTipoCucina() {
         return tipoCucina;
@@ -253,7 +253,7 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
 
 /**
  * Imposta il tipo di cucina del ristorante da aggiungere.
- * @param tipoCucina tipo di cucina del ristorante
+ * @param tipoCucina il tipo di cucina del ristorante
  */
     public void setTipoCucina(String tipoCucina) {
         this.tipoCucina = tipoCucina;
@@ -261,7 +261,7 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
 
 /**
  * Restituisce il sito web del ristorante da aggiungere.
- * @return sito web del ristorante
+ * @return il sito web del ristorante
  */
     public String getWebsite() {
         return website;
@@ -269,7 +269,7 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
 
 /**
  * Imposta il sito web del ristorante da aggiungere.
- * @param website sito web del ristorante
+ * @param website il sito web del ristorante
  */
     public void setWebsite(String website) {
         this.website = website;
@@ -277,7 +277,7 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
 
 /**
  * Restituisce i premi o riconoscimenti del ristorante da aggiungere.
- * @return premi o riconoscimenti del ristorante
+ * @return i premi o riconoscimenti del ristorante
  */
     public String getPremi() {
         return premi;
@@ -285,7 +285,7 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
 
 /**
  * Imposta i premi o riconoscimenti del ristorante da aggiungere.
- * @param premi premi o riconoscimenti del ristorante
+ * @param premi i premi o riconoscimenti del ristorante
  */
     public void setPremi(String premi) {
         this.premi = premi;
@@ -293,7 +293,7 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
 
 /**
  * Restituisce la lista dei servizi offerti dal ristorante da aggiungere.
- * @return lista dei servizi offerti dal ristorante
+ * @return la lista dei servizi offerti dal ristorante
  */
     public List<ServizioDTO> getServizi() {
         return servizi;
@@ -301,7 +301,7 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
 
 /**
  * Imposta la lista dei servizi offerti dal ristorante da aggiungere.
- * @param servizi lista dei servizi offerti dal ristorante
+ * @param servizi la lista dei servizi offerti dal ristorante
  */
     public void setServizi(List<ServizioDTO> servizi) {
         this.servizi = servizi;
@@ -309,7 +309,7 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
 
 /**
  * Restituisce il numero di telefono del ristorante da aggiungere.
- * @return numero di telefono del ristorante
+ * @return il numero di telefono del ristorante
  */
     public String getTelefono() {
         return telefono;
@@ -317,7 +317,7 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
 
 /**
  * Imposta il numero di telefono del ristorante da aggiungere.
- * @param telefono numero di telefono del ristorante
+ * @param telefono il numero di telefono del ristorante
  */
     public void setTelefono(String telefono) {
         this.telefono = telefono;
@@ -326,7 +326,7 @@ public class AggiungiRistoranteDTO implements java.io.Serializable {
 //Metodo toString
 /**
  * Restituisce una rappresentazione testuale dell'oggetto AggiungiRistoranteDTO.
- * @return rappresentazione testuale dell'oggetto
+ * @return la rappresentazione testuale dell'oggetto
  */
     @Override
     public String toString() {

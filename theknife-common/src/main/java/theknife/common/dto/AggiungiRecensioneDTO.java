@@ -32,10 +32,10 @@ public class AggiungiRecensioneDTO implements java.io.Serializable {
 //Costruttore
 /**
  * Crea il DTO per l'aggiunta di una recensione con i dati specificati.
- * @param idRistorante ID del ristorante per cui aggiungere la recensione
- * @param titolo titolo della recensione da aggiungere
- * @param testo testo della recensione da aggiungere
- * @param stelle numero di stelle della recensione da aggiungere
+ * @param idRistorante l'ID del ristorante per cui aggiungere la recensione
+ * @param titolo il titolo della recensione da aggiungere
+ * @param testo il testo della recensione da aggiungere
+ * @param stelle il numero di stelle della recensione da aggiungere
  */
     public AggiungiRecensioneDTO(long idRistorante, String titolo, String testo, int stelle) {
         this.idRistorante = idRistorante;
@@ -47,7 +47,7 @@ public class AggiungiRecensioneDTO implements java.io.Serializable {
 //Getters e Setters
 /**
  * Restituisce l'ID del ristorante per cui aggiungere la recensione.
- * @return ID del ristorante
+ * @return l'ID del ristorante
  */
     public long getIdRistorante() {
         return idRistorante;
@@ -55,7 +55,7 @@ public class AggiungiRecensioneDTO implements java.io.Serializable {
 
 /**
  * Imposta l'ID del ristorante per cui aggiungere la recensione.
- * @param idRistorante ID del ristorante
+ * @param idRistorante l'ID del ristorante
  */
     public void setIdRistorante(long idRistorante) {
         this.idRistorante = idRistorante;
@@ -63,7 +63,7 @@ public class AggiungiRecensioneDTO implements java.io.Serializable {
 
 /**
  * Restituisce il titolo della recensione da aggiungere.
- * @return titolo della recensione
+ * @return il titolo della recensione
  */
     public String getTitolo() {
         return titolo;
@@ -71,7 +71,7 @@ public class AggiungiRecensioneDTO implements java.io.Serializable {
 
 /**
  * Imposta il titolo della recensione da aggiungere.
- * @param titolo titolo della recensione
+ * @param titolo il titolo della recensione
  */
     public void setTitolo(String titolo) {
         this.titolo = titolo;
@@ -79,7 +79,7 @@ public class AggiungiRecensioneDTO implements java.io.Serializable {
 
 /**
  * Restituisce il testo della recensione da aggiungere.
- * @return testo della recensione
+ * @return il testo della recensione
  */
     public String getTesto() {
         return testo;
@@ -87,7 +87,7 @@ public class AggiungiRecensioneDTO implements java.io.Serializable {
 
 /**
  * Imposta il testo della recensione da aggiungere.
- * @param testo testo della recensione
+ * @param testo il testo della recensione
  */
     public void setTesto(String testo) {
         this.testo = testo;
@@ -95,7 +95,7 @@ public class AggiungiRecensioneDTO implements java.io.Serializable {
 
 /**
  * Restituisce il numero di stelle della recensione da aggiungere.
- * @return numero di stelle della recensione
+ * @return il numero di stelle della recensione
  */
     public int getStelle() {
         return stelle;
@@ -103,7 +103,7 @@ public class AggiungiRecensioneDTO implements java.io.Serializable {
 
 /**
  * Imposta il numero di stelle della recensione da aggiungere.
- * @param stelle numero di stelle della recensione
+ * @param stelle il numero di stelle della recensione
  */
     public void setStelle(int stelle) {
         this.stelle = stelle;
@@ -112,7 +112,7 @@ public class AggiungiRecensioneDTO implements java.io.Serializable {
 //Metodo toString
 /**
  * Restituisce una rappresentazione testuale dell'oggetto AggiungiRecensioneDTO.
- * @return rappresentazione testuale dell'oggetto
+ * @return la rappresentazione testuale dell'oggetto
  */
     @Override
     public String toString() {
