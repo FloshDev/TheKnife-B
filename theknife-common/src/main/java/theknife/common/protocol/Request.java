@@ -13,11 +13,13 @@ public class Request implements Serializable{
     private CommandType commandType;
     private Object payload;
     private String sessionToken;
+    private String indirizzoClient;
 //Costruttore
-    public Request(CommandType commandType, Object payload, String sessionToken) {
+    public Request(CommandType commandType, Object payload, String sessionToken, String indirizzoClient) {
         this.commandType = commandType;
         this.payload = payload;
         this.sessionToken = sessionToken;
+        this.indirizzoClient = indirizzoClient;
     }
 //Setters
     public void setCommandType(CommandType x) {
@@ -31,6 +33,10 @@ public class Request implements Serializable{
     public void setSessionToken(String x) {
         this.sessionToken = x;
     }
+
+    public void setIndirizzoClient(String x) {
+        this.indirizzoClient = x;
+    }
 //Getters
     public CommandType getCommandType() {
         return commandType;
@@ -43,10 +49,14 @@ public class Request implements Serializable{
     public String getSessionToken() {
         return sessionToken;
     }
+
+    public String getIndirizzoClient() {
+        return indirizzoClient;
+    }
 //Metodo toString
     @Override
     public String toString() {
         return "Request [commandType=" + commandType + ", payload=" + payload + 
-            ", sessionToken=" + sessionToken + "]";
+            ", sessionToken=" + sessionToken + ", indirizzoClient=" + indirizzoClient + "]";
     }
 }
