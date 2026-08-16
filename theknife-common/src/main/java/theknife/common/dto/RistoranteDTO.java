@@ -30,7 +30,7 @@ public class RistoranteDTO implements java.io.Serializable {
     private String indirizzo;
     
 /**
- * La città del
+ * 
  */
     private String citta;
     

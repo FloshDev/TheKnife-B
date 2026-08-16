@@ -7,8 +7,13 @@ package theknife.common.dto;
  */
 
 public class ServizioDTO implements java.io.Serializable {
+/**
+ * 
+ */
     private static final long serialVersionUID = 1L;
+    
     private long idServizio;
+    
     private String nomeServizio;
 
 //Costruttore
