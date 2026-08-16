@@ -38,6 +38,7 @@ public class AssociaRistoranteController {
     /** Bottone per tornare alla dashboard senza associare nulla. */
     @FXML private Button annullaButton;
 
+    /** Invia al server i comandi sui ristoranti, incluso l'associazione al gestore. */
     private final RistoranteService ristoranteService = new RistoranteService();
 
     /**

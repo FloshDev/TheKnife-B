@@ -38,7 +38,9 @@ public class HomeController {
     @FXML private CheckBox prenotazioneOnlineCheck;
     /** Filtro per i ristoranti che offrono consegna a domicilio. */
     @FXML private CheckBox consegnaADomicilioCheck;
+    /** Invia al server i comandi di ricerca dei ristoranti. */
     private final RistoranteService ristoranteService = new RistoranteService();
+    /** Invia al server i comandi di autenticazione, usato qui per il logout. */
     private final AuthService authService = new AuthService();
 
     /**

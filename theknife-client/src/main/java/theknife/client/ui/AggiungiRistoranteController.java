@@ -48,6 +48,7 @@ public class AggiungiRistoranteController {
     /** Indica se il ristorante offre consegna a domicilio. */
     @FXML private CheckBox consegnaADomicilioCheck;
 
+    /** Invia al server i comandi sui ristoranti, incluso l'inserimento. */
     private final RistoranteService ristoranteService = new RistoranteService();
 
     /**

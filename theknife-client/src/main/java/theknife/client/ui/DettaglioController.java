@@ -58,8 +58,11 @@ public class DettaglioController {
     /** Bottone per eliminare la recensione selezionata nella lista. */
     @FXML private Button eliminaRecensioneButton;
 
+    /** Invia al server i comandi sui ristoranti, incluso l'aggiornamento dei preferiti. */
     private final RistoranteService ristoranteService = new RistoranteService();
+    /** Invia al server i comandi sulle recensioni del ristorante mostrato. */
     private final RecensioneService recensioneService = new RecensioneService();
+    /** Identificativo del ristorante mostrato, valorizzato da {@link #impostaRistorante(long)}. */
     private long idRistorante;
 
     /**

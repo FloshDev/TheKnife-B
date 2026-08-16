@@ -38,6 +38,7 @@ public class PreferitiController {
     /** Bottone per aprire il dettaglio del ristorante selezionato. */
     @FXML private Button vediDettaglioButton;
 
+    /** Invia al server i comandi sui ristoranti preferiti dell'utente. */
     private final RistoranteService ristoranteService = new RistoranteService();
 
     /**

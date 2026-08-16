@@ -27,6 +27,7 @@ import theknife.common.protocol.Response;
 
 public class RistoranteService {
 
+    /** Connessione condivisa al server, unico canale su cui viaggiano le richieste. */
     private final ServerConnection connection = ServerConnection.getInstance();
 
     @SuppressWarnings("unchecked")

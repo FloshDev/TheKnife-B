@@ -21,6 +21,7 @@ import theknife.common.protocol.Response;
  */
 
 public class AuthService {
+    /** Connessione condivisa al server, unico canale su cui viaggiano le richieste. */
     private final ServerConnection connection = ServerConnection.getInstance();
 
     public LoginResultDTO login(String username, String password) throws IOException, ClassNotFoundException {

@@ -32,7 +32,9 @@ public class ScriviRecensioneController {
     /** Area di testo per il corpo della recensione. */
     @FXML private TextArea testoField;
 
+    /** Invia al server la recensione appena scritta. */
     private final RecensioneService recensioneService = new RecensioneService();
+    /** Identificativo del ristorante recensito, ricevuto dalla schermata chiamante. */
     private long idRistorante;
     
     /**

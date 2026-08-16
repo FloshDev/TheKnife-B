@@ -37,6 +37,7 @@ public class GestioneRecensioniController {
     /** Bottone per tornare alla dashboard. */
     @FXML private Button tornaIndietroButton;
 
+    /** Invia al server i comandi sulle recensioni dei ristoranti gestiti. */
     private final RecensioneService recensioneService = new RecensioneService();
 
     /**

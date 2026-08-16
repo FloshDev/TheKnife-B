@@ -39,8 +39,10 @@ Sessioni/               # Verbali delle sessioni di lavoro (il più recente
                         #   indica i task correnti di ciascun membro)
 ```
 
-> **Stato:** progettazione conclusa, scrittura del codice in corso. Lo scaffold
-> Maven è pronto e compila; i moduli sono in fase di sviluppo.
+> **Stato:** client completo (dodici schermate agganciate al server), server cablato per
+> intero — tutti e venti i comandi del protocollo coperti, login end-to-end in
+> collaudo. In corso: rifinitura grafica delle schermate, diagrammi UML, manuali di
+> consegna. Dettaglio nel verbale più recente in `Sessioni/`.
 
 ## Build
 
@@ -56,6 +58,24 @@ Output:
 - `theknife-client/target/clientTK.jar`
 
 Entrambi i jar sono self-contained (includono `theknife-common` e le dipendenze).
+
+## Esecuzione
+
+Database: caricare in ordine `Role.sql`, `Schema.sql`, `Data.sql` (in
+`Progettazione/Scolaro/Database/`) su PostgreSQL.
+
+```bash
+# Server: chiede host, utente e password del DB al prompt.
+# La porta di ascolto è un argomento opzionale, default 9999 se omesso
+java -jar theknife-server/target/serverTK.jar [porta]
+
+# Client: host e porta del server sono argomenti opzionali,
+# default localhost:9999 se omessi
+java -jar theknife-client/target/clientTK.jar [host] [porta]
+```
+
+Porta di default e host di default condivisi da client e server in un solo punto:
+`theknife.common.config.ConfigurazioneServer`.
 
 ## Come contribuire
 
@@ -82,4 +102,4 @@ Durante la progettazione ogni membro lavora **solo nella propria cartella** in
 
 ## Licenza
 
-[CC BY 4.0](LICENSE) — Barlera, Ciani, Gasparini, Scolaro, 2026
+[CC BY 4.0](LICENSE) — [Barlera](https://github.com/ZonatedCord), [Ciani](https://github.com/FloshDev), [Gasparini](https://github.com/Gaspa999), [Scolaro](https://github.com/GabriScola), 2026

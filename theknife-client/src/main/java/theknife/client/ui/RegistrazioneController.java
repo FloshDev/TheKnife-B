@@ -44,6 +44,7 @@ public class RegistrazioneController {
     /** Selezione del ruolo Ristoratore. */
     @FXML private RadioButton ristoratoreRadio;
 
+    /** Invia al server i dati del nuovo utente da registrare. */
     private final AuthService authService = new AuthService();
 
     /**

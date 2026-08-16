@@ -39,7 +39,9 @@ public class DashboardController {
     /** Bottone per effettuare il logout. */
     @FXML private Button logoutButton;
 
+    /** Invia al server i comandi sui ristoranti gestiti dall'utente. */
     private final RistoranteService ristoranteService = new RistoranteService();
+    /** Invia al server i comandi di autenticazione, usato qui per il logout. */
     private final AuthService authService = new AuthService();
     
     /**

@@ -24,6 +24,7 @@ public class SplashController {
     /** Mostra la località rilevata dall'IP della connessione. */
     @FXML private Label localitaLabel;
 
+    /** Invia al server la richiesta di localizzazione iniziale (decisione 18). */
     private final RistoranteService ristoranteService = new RistoranteService();
 
     /**

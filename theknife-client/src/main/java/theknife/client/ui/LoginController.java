@@ -24,6 +24,7 @@ public class LoginController {
     @FXML private TextField usernameField;
     /** Campo per la password, mascherato a schermo. */
     @FXML private PasswordField passwordField;
+    /** Invia al server le credenziali e riceve l'esito dell'autenticazione. */
     private final AuthService authService = new AuthService();
 
     /**

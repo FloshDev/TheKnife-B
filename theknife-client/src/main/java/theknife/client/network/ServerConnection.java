@@ -23,11 +23,16 @@ import theknife.common.protocol.Response;
  */
 
 public class ServerConnection {
+    /** Unica istanza dell'applicazione, creata eagerly al caricamento della classe. */
     private static final ServerConnection instance = new ServerConnection();
 
+    /** Il socket verso il server, aperto da {@link #connect(String, int)}. */
     private Socket socket;
+    /** Stream di scrittura delle Request, condiviso da {@link #inviaRichiesta(Request)}. */
     private ObjectOutputStream out;
+    /** Stream di lettura delle Response, condiviso da {@link #inviaRichiesta(Request)}. */
     private ObjectInputStream in;
+    /** Token della sessione corrente, valorizzato al login e azzerato al logout. */
     private String sessionToken;
 
     /**
