@@ -13,7 +13,7 @@ public class AggiungiRecensioneDTO implements java.io.Serializable {
  */
     private static final long serialVersionUID = 1L;
 /**
- * L'ID del ristorante per cui aggiungere la recensione.
+ * L'identificatore univoco del ristorante per cui aggiungere la recensione.
  */
     private long idRistorante;
 /**
@@ -32,7 +32,7 @@ public class AggiungiRecensioneDTO implements java.io.Serializable {
 //Costruttore
 /**
  * Crea il DTO per l'aggiunta di una recensione con i dati specificati.
- * @param idRistorante l'ID del ristorante per cui aggiungere la recensione
+ * @param idRistorante l'identificatore del ristorante per cui aggiungere la recensione
  * @param titolo il titolo della recensione da aggiungere
  * @param testo il testo della recensione da aggiungere
  * @param stelle il numero di stelle della recensione da aggiungere
@@ -46,16 +46,16 @@ public class AggiungiRecensioneDTO implements java.io.Serializable {
 
 //Getters e Setters
 /**
- * Restituisce l'ID del ristorante per cui aggiungere la recensione.
- * @return l'ID del ristorante
+ * Restituisce l'identificatore del ristorante per cui aggiungere la recensione.
+ * @return l'identificatore del ristorante
  */
     public long getIdRistorante() {
         return idRistorante;
     }
 
 /**
- * Imposta l'ID del ristorante per cui aggiungere la recensione.
- * @param idRistorante l'ID del ristorante
+ * Imposta l'identificatore del ristorante per cui aggiungere la recensione.
+ * @param idRistorante l'identificatore del ristorante
  */
     public void setIdRistorante(long idRistorante) {
         this.idRistorante = idRistorante;

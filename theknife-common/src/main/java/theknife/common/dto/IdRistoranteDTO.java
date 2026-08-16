@@ -14,14 +14,14 @@ public class IdRistoranteDTO implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     
 /**
- * L'ID del ristorante.
+ * L'identificatore univoco del ristorante.
  */
     private long idRistorante;
 
 //Costruttore
 /**
- * Crea il DTO per l'identificatore di un ristorante con l'ID specificato.
- * @param idRistorante l'ID del ristorante
+ * Crea il DTO per l'identificatore di un ristorante con l'identificatore specificato.
+ * @param idRistorante l'identificatore del ristorante
  */
     public IdRistoranteDTO(long idRistorante) {
         this.idRistorante = idRistorante;
@@ -29,16 +29,16 @@ public class IdRistoranteDTO implements java.io.Serializable {
 
 //Getter e Setter
 /**
- * Restituisce l'ID del ristorante.
- * @return l'ID del ristorante
+ * Restituisce l'identificatore del ristorante.
+ * @return l'identificatore del ristorante
  */
     public long getIdRistorante() {
         return idRistorante;
     }
 
 /**
- * Imposta l'ID del ristorante.
- * @param idRistorante l'ID del ristorante
+ * Imposta l'identificatore del ristorante.
+ * @param idRistorante l'identificatore del ristorante
  */
     public void setIdRistorante(long idRistorante) {
         this.idRistorante = idRistorante;
