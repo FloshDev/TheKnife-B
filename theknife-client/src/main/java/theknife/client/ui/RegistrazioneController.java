@@ -1,6 +1,7 @@
 package theknife.client.ui;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,11 +9,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import theknife.client.service.AuthService;
 import theknife.common.dto.RegistrazioneDTO;
 import theknife.common.enums.Ruolo;
@@ -33,30 +38,73 @@ public class RegistrazioneController {
     @FXML private TextField emailField;
     /** Campo di testo per il domicilio, facoltativo. */
     @FXML private TextField domicilioField;
+
     /** Campo per la password, mascherato a schermo. */
     @FXML private PasswordField passwordField;
+    /** Campo gemello di {@link #passwordField}, in chiaro: visibile solo dopo il click sull'occhiolino. */
+    @FXML private TextField passwordFieldVisibile;
+    /** Bottone a forma di occhio che alterna {@link #passwordField} e {@link #passwordFieldVisibile}. */
+    @FXML private Button passwordToggleButton;
+    /** Barra diagonale sull'icona dell'occhio, visibile quando la password è in chiaro. */
+    @FXML private Line occhioBarrato;
+
     /** Campo per la conferma della password, mascherato a schermo. */
     @FXML private PasswordField passwordField2;
+    /** Campo gemello di {@link #passwordField2}, in chiaro: visibile solo dopo il click sull'occhiolino. */
+    @FXML private TextField password2FieldVisibile;
+    /** Bottone a forma di occhio che alterna {@link #passwordField2} e {@link #password2FieldVisibile}. */
+    @FXML private Button password2ToggleButton;
+    /** Barra diagonale sull'icona dell'occhio, visibile quando la conferma password è in chiaro. */
+    @FXML private Line occhioBarrato2;
+
     /** Selettore della data di nascita, facoltativo. */
     @FXML private DatePicker dataNascitaField;
-    /** Selezione del ruolo Cliente. */
-    @FXML private RadioButton clienteRadio;
-    /** Selezione del ruolo Ristoratore. */
-    @FXML private RadioButton ristoratoreRadio;
+    /** Selezione del ruolo Cliente, metà sinistra della pillola Cliente/Ristoratore. */
+    @FXML private ToggleButton clienteRadio;
+    /** Selezione del ruolo Ristoratore, metà destra della pillola Cliente/Ristoratore. */
+    @FXML private ToggleButton ristoratoreRadio;
 
     /** Invia al server i dati del nuovo utente da registrare. */
     private final AuthService authService = new AuthService();
 
     /**
-     * Naviga alla schermata di login, senza registrare nessun utente.
-     *
-     * @param event l'evento generato dal click sul link di login
-     * @throws IOException se il caricamento della schermata fallisce
+     * Collega i campi password in chiaro a quelli mascherati e configura il
+     * {@link DatePicker}: formato di visualizzazione/parsing fisso
+     * {@code dd/MM/yyyy} (non dipendente dal locale di sistema, per il
+     * requisito multipiattaforma), testo segnaposto "gg/mm/aaaa" e
+     * inserimento automatico degli slash mentre si digita.
      */
-    @FXML private void handleLogin(ActionEvent event) throws IOException {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); // Non crei una finestra nuova, riusi quella che già esiste
-        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/login.fxml"));
-        stage.getScene().setRoot(root);
+    @FXML private void initialize() {
+        passwordFieldVisibile.textProperty().bindBidirectional(passwordField.textProperty());
+        password2FieldVisibile.textProperty().bindBidirectional(passwordField2.textProperty());
+
+        dataNascitaField.setConverter(new StringConverter<LocalDate>() {
+            private final DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+            @Override
+            public String toString(LocalDate data) {
+                return data != null ? formato.format(data) : "";
+            }
+
+            @Override
+            public LocalDate fromString(String testo) {
+                return (testo == null || testo.isBlank()) ? null : LocalDate.parse(testo, formato);
+            }
+        });
+        dataNascitaField.getEditor().setPromptText("gg/mm/aaaa");
+
+        dataNascitaField.getEditor().setTextFormatter(new TextFormatter<>(change -> {
+            String testo = change.getControlNewText();
+            if (!testo.matches("[0-9/]*") || testo.length() > 10) {
+                return null;
+            }
+            if (change.isAdded() && (testo.length() == 2 || testo.length() == 5) && !testo.endsWith("/")) {
+                change.setText(change.getText() + "/");
+                change.setCaretPosition(change.getCaretPosition() + 1);
+                change.setAnchor(change.getCaretPosition());
+            }
+            return change;
+        }));
     }
 
     /**
@@ -106,5 +154,50 @@ public class RegistrazioneController {
                 }
             }
         );
+    }
+
+    /**
+     * Alterna {@link #passwordField} e {@link #passwordFieldVisibile}, al
+     * click sul relativo occhiolino.
+     */
+    @FXML private void handleTogglePassword() {
+        alternaVisibilitaPassword(passwordField, passwordFieldVisibile, occhioBarrato);
+    }
+
+    /**
+     * Alterna {@link #passwordField2} e {@link #password2FieldVisibile}, al
+     * click sul relativo occhiolino.
+     */
+    @FXML private void handleTogglePassword2() {
+        alternaVisibilitaPassword(passwordField2, password2FieldVisibile, occhioBarrato2);
+    }
+
+    /**
+     * Naviga alla schermata di login, senza registrare nessun utente.
+     *
+     * @param event l'evento generato dal click sul link di login
+     * @throws IOException se il caricamento della schermata fallisce
+     */
+    @FXML private void handleLogin(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); // Non crei una finestra nuova, riusi quella che già esiste
+        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/login.fxml"));
+        stage.getScene().setRoot(root);
+    }
+
+    /**
+     * Mostra in chiaro un campo password mascherato, o viceversa, tenendo
+     * sincronizzato il testo tramite il binding fatto in {@link #initialize()}.
+     *
+     * @param mascherato il campo mascherato della coppia
+     * @param chiaro     il campo in chiaro della coppia, gemello di {@code mascherato}
+     * @param barra      la barra diagonale dell'icona a occhio della coppia
+     */
+    private void alternaVisibilitaPassword(PasswordField mascherato, TextField chiaro, Line barra) {
+        boolean mostraChiaro = !chiaro.isVisible();
+        mascherato.setVisible(!mostraChiaro);
+        mascherato.setManaged(!mostraChiaro);
+        chiaro.setVisible(mostraChiaro);
+        chiaro.setManaged(mostraChiaro);
+        barra.setVisible(mostraChiaro);
     }
 }

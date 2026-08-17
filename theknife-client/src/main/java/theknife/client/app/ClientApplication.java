@@ -55,7 +55,7 @@ public class ClientApplication extends Application {
         }
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/splash.fxml"));
         Parent root = loader.load();
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, 1280, 920);
         scene.getStylesheets().add(getClass().getResource("/theknife/client/ui/style.css").toExternalForm());
         stage.setScene(scene);
         stage.setTitle("TheKnife");

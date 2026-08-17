@@ -42,6 +42,21 @@ public class SplashController {
     }
 
     /**
+     * Conferma la località rilevata (o corretta a mano) e naviga alla Home.
+     * È il percorso principale della schermata (bottone pieno) e quello
+     * richiesto dalle direttive del docente: il nome del luogo lo digita
+     * l'utente, il sistema non deve indovinarlo.
+     *
+     * @param event l'evento generato dal click sul bottone "Conferma"
+     * @throws IOException se il caricamento della schermata fallisce
+     */
+    @FXML private void handleConferma(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/home.fxml"));
+        stage.getScene().setRoot(root);
+    }
+
+    /**
      * Naviga alla schermata di login.
      *
      * @param event l'evento generato dal click sul link di login
@@ -60,18 +75,6 @@ public class SplashController {
      * @throws IOException se il caricamento della schermata fallisce
      */
     @FXML private void handleGuest(ActionEvent event) throws IOException {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/home.fxml"));
-        stage.getScene().setRoot(root);
-    }
-
-    /**
-     * Conferma la località rilevata (o corretta a mano) e naviga alla Home.
-     *
-     * @param event l'evento generato dal click sul bottone "Conferma"
-     * @throws IOException se il caricamento della schermata fallisce
-     */
-    @FXML private void handleConferma(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/home.fxml"));
         stage.getScene().setRoot(root);

@@ -2,23 +2,55 @@
 <!-- Layout della schermata di registrazione (S03). @author Barlera Marco, 760000, VA -->
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.RegistrazioneController">
+<VBox styleClass="page-root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.RegistrazioneController">
 
-    <fx:define>
+     <fx:define>
         <ToggleGroup fx:id="ruoloGroup" />
     </fx:define>
-    <TextField fx:id="nomeField" promptText="Nome" />
-    <TextField fx:id="cognomeField" promptText="Cognome" />
-    <TextField fx:id="usernameField" promptText="Username" />
-    <TextField fx:id="emailField" promptText="Email" />
-    <TextField fx:id="domicilioField" promptText="Domicilio" />
-    <PasswordField fx:id="passwordField" promptText="Password" />
-    <PasswordField fx:id="passwordField2" promptText="Conferma password" />
-    <DatePicker fx:id="dataNascitaField" />
-    <RadioButton fx:id="clienteRadio" text="Cliente" toggleGroup="$ruoloGroup" />
-    <RadioButton fx:id="ristoratoreRadio" text="Ristoratore" toggleGroup="$ruoloGroup" />
-    <Button text="Crea account" onAction="#handleRegistrazione"/>
-    <Hyperlink text="Hai già un account? Accedi" onAction="#handleLogin"/>
+
+    <VBox styleClass="card">
+        <Label text="Crea account" styleClass="brand-title"/>
+        <TextField fx:id="nomeField" promptText="Nome" styleClass="campo-testo"/>
+        <TextField fx:id="cognomeField" promptText="Cognome" styleClass="campo-testo"/>
+        <TextField fx:id="usernameField" promptText="Username" styleClass="campo-testo"/>
+        <TextField fx:id="emailField" promptText="Email" styleClass="campo-testo"/>
+        <TextField fx:id="domicilioField" promptText="Domicilio" styleClass="campo-testo"/>
+        <StackPane>
+            <PasswordField fx:id="passwordField" promptText="Password" styleClass="campo-testo"/>
+            <TextField fx:id="passwordFieldVisibile" promptText="Password" styleClass="campo-testo" visible="false" managed="false"/>
+            <Button fx:id="passwordToggleButton" onAction="#handleTogglePassword" styleClass="toggle-password" StackPane.alignment="CENTER_RIGHT">
+                <graphic>
+                    <StackPane>
+                        <Ellipse radiusX="10" radiusY="6.5" fill="TRANSPARENT" stroke="#b07840" strokeWidth="1.8"/>
+                        <Circle radius="3" fill="#b07840"/>
+                        <Line fx:id="occhioBarrato" startX="-10" startY="-6.5" endX="10" endY="6.5" stroke="#b07840" strokeWidth="1.8" visible="false"/>
+                    </StackPane>
+                </graphic>
+            </Button>
+        </StackPane>
+        <StackPane>
+            <PasswordField fx:id="passwordField2" promptText="Conferma password" styleClass="campo-testo"/>
+            <TextField fx:id="password2FieldVisibile" promptText="Conferma password" styleClass="campo-testo" visible="false" managed="false"/>
+            <Button fx:id="password2ToggleButton" onAction="#handleTogglePassword2" styleClass="toggle-password" StackPane.alignment="CENTER_RIGHT">
+                <graphic>
+                    <StackPane>
+                        <Ellipse radiusX="10" radiusY="6.5" fill="TRANSPARENT" stroke="#b07840" strokeWidth="1.8"/>
+                        <Circle radius="3" fill="#b07840"/>
+                        <Line fx:id="occhioBarrato2" startX="-10" startY="-6.5" endX="10" endY="6.5" stroke="#b07840" strokeWidth="1.8" visible="false"/>
+                    </StackPane>
+                </graphic>
+            </Button>
+        </StackPane>
+        <DatePicker fx:id="dataNascitaField"/>
+        <HBox styleClass="selettore-ruolo" alignment="CENTER">
+            <ToggleButton fx:id="clienteRadio" text="Cliente" toggleGroup="$ruoloGroup" styleClass="opzione-ruolo, opzione-ruolo-sx" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+            <Region styleClass="divisore-ruolo"/>
+            <ToggleButton fx:id="ristoratoreRadio" text="Ristoratore" toggleGroup="$ruoloGroup" styleClass="opzione-ruolo, opzione-ruolo-dx" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+        </HBox>
+        <Button text="Crea account" onAction="#handleRegistrazione" styleClass="bottone-primario"/>
+        <Hyperlink text="Hai già un account? Accedi" onAction="#handleLogin" styleClass="link-primario"/>
+    </VBox>
 
 </VBox>
