@@ -18,6 +18,34 @@ package theknife.common.enums;
  */
 
 public enum ResponseStatus {
-	SUCCESSO, ERRORE_VALIDAZIONE, NON_AUTORIZZATO, 
-	NON_TROVATO, ERRORE_SERVER, ERRORE
+/**
+ * Stato di una risposta in seguito ad un'operazione completata con successo.
+ */
+	SUCCESSO, 
+	
+/**
+ * Stato di una risposta in seguito ad un'operazione fallita a causa di dati della richiesta non validi.
+ */
+	ERRORE_VALIDAZIONE, 
+	
+/**
+ * Stato di una risposta in seguito ad un'operazione fallita a causa di un'autenticazione non avvenuta o
+ * della mancanza dei permessi necessari.
+ */
+	NON_AUTORIZZATO, 
+
+/**
+ * Stato di una risposta in seguito ad un'operazione fallita a causa di una risorsa non trovata.
+ */
+	NON_TROVATO, 
+	
+/**
+ * Stato di una risposta in seguito ad un'operazione fallita a causa di un errore tecnico interno del server.
+ */
+	ERRORE_SERVER, 
+	
+/**
+ * Stato di una risposta in seguito ad un'operazione fallita a causa di un errore di dominio applicativo.
+ */
+	ERRORE
 }

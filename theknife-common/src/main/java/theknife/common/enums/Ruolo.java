@@ -7,5 +7,13 @@ package theknife.common.enums;
  */
 
 public enum Ruolo {
-    CLIENTE, RISTORATORE
+/**
+ * Il ruolo di un utente autenticato come cliente.
+ */
+    CLIENTE, 
+    
+/**
+ * Il ruolo di un utente autenticato come ristoratore.
+ */
+    RISTORATORE
 }
