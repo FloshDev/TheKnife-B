@@ -14,12 +14,15 @@ public class Request implements Serializable{
     private Object payload;
     private String sessionToken;
     private String indirizzoClient;
-//Costruttore
+//Costruttori
     public Request(CommandType commandType, Object payload, String sessionToken, String indirizzoClient) {
         this.commandType = commandType;
         this.payload = payload;
         this.sessionToken = sessionToken;
         this.indirizzoClient = indirizzoClient;
+    }
+    public Request(CommandType commandType, Object payload, String sessionToken) {
+        this(commandType, payload, sessionToken, null);
     }
 //Setters
     public void setCommandType(CommandType x) {
