@@ -2,6 +2,7 @@ package theknife.client.ui;
 
 import java.io.IOException;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,8 +10,11 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import theknife.client.network.ServerConnection;
 import theknife.client.service.AuthService;
 import theknife.client.service.RistoranteService;
 import theknife.common.dto.CercaRistorantiDTO;
@@ -21,9 +25,11 @@ import theknife.common.dto.CercaVicinoDTO;
  *
  * @author Barlera Marco, 760000, VA
  */
-
 public class HomeController {
-    
+
+    /** Contenitore radice, usato solo per togliere il focus dal primo campo all'apertura. */
+    @FXML private VBox root;
+
     /** Campo di testo per filtrare per nome del ristorante. */
     @FXML private TextField nomeField;
     /** Campo di testo per filtrare per città. */
@@ -38,10 +44,40 @@ public class HomeController {
     @FXML private CheckBox prenotazioneOnlineCheck;
     /** Filtro per i ristoranti che offrono consegna a domicilio. */
     @FXML private CheckBox consegnaADomicilioCheck;
+
+    /** Link "Vai al Login", visibile solo da guest. */
+    @FXML private Hyperlink loginLink;
+    /** Link "Logout", visibile solo da utente autenticato. */
+    @FXML private Hyperlink logoutLink;
+    /** Link "Preferiti", nascosto da guest (decisione 24: filtro cosmetico, non sostituisce il controllo lato server). */
+    @FXML private Hyperlink preferitiLink;
+    /** Link "Dashboard", nascosto da guest (decisione 24: filtro cosmetico, non sostituisce il controllo lato server). */
+    @FXML private Hyperlink dashboardLink;
+
     /** Invia al server i comandi di ricerca dei ristoranti. */
     private final RistoranteService ristoranteService = new RistoranteService();
     /** Invia al server i comandi di autenticazione, usato qui per il logout. */
     private final AuthService authService = new AuthService();
+
+    /**
+     * Toglie il focus dal primo campo di testo (altrimenti JavaFX lo assegna
+     * automaticamente all'apertura della schermata) e mostra solo i link
+     * coerenti con lo stato di autenticazione corrente: "Vai al Login" da
+     * guest, "Logout"/"Preferiti"/"Dashboard" da utente autenticato.
+     */
+    @FXML private void initialize() {
+        Platform.runLater(() -> root.requestFocus());
+
+        boolean ospite = ServerConnection.getInstance().getUtenteCorrente() == null;
+        loginLink.setVisible(ospite);
+        loginLink.setManaged(ospite);
+        logoutLink.setVisible(!ospite);
+        logoutLink.setManaged(!ospite);
+        preferitiLink.setVisible(!ospite);
+        preferitiLink.setManaged(!ospite);
+        dashboardLink.setVisible(!ospite);
+        dashboardLink.setManaged(!ospite);
+    }
 
     /**
      * Cerca i ristoranti che rispettano i filtri del form e mostra i
@@ -67,7 +103,7 @@ public class HomeController {
             nome, citta, tipoCucina, prenotazioneOnline, fasciaPrezzo, consegnaADomicilio, null
         );
 
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); 
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
         TaskRunner.run(
         () -> ristoranteService.cercaRistoranti(filtri),
@@ -122,26 +158,14 @@ public class HomeController {
     }
 
     /**
-     * Naviga alla schermata dei preferiti.
+     * Naviga alla schermata di login.
      *
-     * @param event l'evento generato dal click sul link "Preferiti"
+     * @param event l'evento generato dal click sul link di login
      * @throws IOException se il caricamento della schermata fallisce
      */
-    @FXML private void handlePreferiti(ActionEvent event) throws IOException {
+    @FXML private void handleLogin(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/preferiti.fxml"));
-        stage.getScene().setRoot(root);
-    }
-
-    /**
-     * Naviga alla dashboard del ristoratore.
-     *
-     * @param event l'evento generato dal click sul link "Dashboard"
-     * @throws IOException se il caricamento della schermata fallisce
-     */
-    @FXML private void handleDashboard(ActionEvent event) throws IOException {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/dashboard.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/login.fxml"));
         stage.getScene().setRoot(root);
     }
 
@@ -167,16 +191,28 @@ public class HomeController {
         }
         );
     }
-    
+
     /**
-     * Naviga alla schermata di login.
+     * Naviga alla schermata dei preferiti.
      *
-     * @param event l'evento generato dal click sul link di login
+     * @param event l'evento generato dal click sul link "Preferiti"
      * @throws IOException se il caricamento della schermata fallisce
      */
-    @FXML private void handleLogin(ActionEvent event) throws IOException {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); 
-        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/login.fxml"));
+    @FXML private void handlePreferiti(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/preferiti.fxml"));
+        stage.getScene().setRoot(root);
+    }
+
+    /**
+     * Naviga alla dashboard del ristoratore.
+     *
+     * @param event l'evento generato dal click sul link "Dashboard"
+     * @throws IOException se il caricamento della schermata fallisce
+     */
+    @FXML private void handleDashboard(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/dashboard.fxml"));
         stage.getScene().setRoot(root);
     }
 }

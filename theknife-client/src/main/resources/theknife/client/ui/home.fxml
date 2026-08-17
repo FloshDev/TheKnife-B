@@ -3,23 +3,26 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.HomeController">
+<VBox styleClass="page-root" fx:id="root" focusTraversable="true" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.HomeController">
 
-    <TextField fx:id="nomeField" promptText="Nome Ristorante"/>
-    <TextField fx:id="cittaField" promptText="Citta"/>
-    <TextField fx:id="tipoCucinaField" promptText="Tipo di cucina"/>
-    <TextField fx:id="fasciaPrezzoField" promptText="Fascia Prezzo"/>
-    <TextField fx:id="raggioKmField" promptText="Raggio di ricerca (km)"/>
-    
-    <CheckBox fx:id="prenotazioneOnlineCheck" text="Prenotazione Online"/>
-    <CheckBox fx:id="consegnaADomicilioCheck" text="Consegna a domicilio"/>
-    
-    <Button text="Vicino a me" onAction="#handleVicinoAMe"/>
-    <Button text="Cerca" onAction="#handleCerca"/>
+    <VBox styleClass="card">
+        <Label text="Cerca ristoranti" styleClass="brand-title"/>
+        <TextField fx:id="nomeField" promptText="Nome ristorante" styleClass="campo-testo"/>
+        <TextField fx:id="cittaField" promptText="Città" styleClass="campo-testo"/>
+        <TextField fx:id="tipoCucinaField" promptText="Tipo di cucina" styleClass="campo-testo"/>
+        <TextField fx:id="fasciaPrezzoField" promptText="Fascia prezzo (1-4)" styleClass="campo-testo"/>
+        <TextField fx:id="raggioKmField" promptText="Raggio di ricerca (km)" styleClass="campo-testo"/>
 
-    <Hyperlink text="Vai al Login" onAction="#handleLogin"/>
-    <Hyperlink text="Logout" onAction="#handleLogout"/>
-    <Hyperlink text="Preferiti" onAction="#handlePreferiti"/>
-    <Hyperlink text="Dashboard" onAction="#handleDashboard"/>
+        <CheckBox fx:id="prenotazioneOnlineCheck" text="Prenotazione online"/>
+        <CheckBox fx:id="consegnaADomicilioCheck" text="Consegna a domicilio"/>
+
+        <Button text="Cerca" onAction="#handleCerca" styleClass="bottone-primario"/>
+        <Button text="Vicino a me" onAction="#handleVicinoAMe" styleClass="bottone-secondario"/>
+
+        <Hyperlink fx:id="loginLink" text="Vai al Login" onAction="#handleLogin" styleClass="link-secondario"/>
+        <Hyperlink fx:id="logoutLink" text="Logout" onAction="#handleLogout" styleClass="link-secondario"/>
+        <Hyperlink fx:id="preferitiLink" text="Preferiti" onAction="#handlePreferiti" styleClass="link-secondario"/>
+        <Hyperlink fx:id="dashboardLink" text="Dashboard" onAction="#handleDashboard" styleClass="link-secondario"/>
+    </VBox>
 
 </VBox>

@@ -184,3 +184,43 @@
     -fx-pref-height: 50;
     -fx-max-height: infinity;
 }
+.bottone-secondario {
+    -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 16px;
+    -fx-font-weight: 700;
+    -fx-background-color: white;
+    -fx-text-fill: #FAB12F;
+    -fx-border-color: #FAB12F;
+    -fx-border-width: 2;
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-pref-height: 50;
+    -fx-max-width: infinity;
+    -fx-cursor: hand;
+}
+.bottone-secondario:hover {
+    -fx-background-color: #fff5e8;
+}
+
+.check-box {
+    -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 14px;
+    -fx-text-fill: #b07840;
+}
+.check-box:selected {
+    -fx-text-fill: #2C2C2C;
+}
+.check-box > .box {
+    -fx-background-color: white;
+    -fx-border-color: #f0d0a0;
+    -fx-border-width: 2;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+}
+.check-box:selected > .box {
+    -fx-background-color: #FAB12F;
+    -fx-border-color: #FAB12F;
+}
+.check-box:selected > .box > .mark {
+    -fx-background-color: white;
+}
