@@ -71,4 +71,16 @@ public class LoginController {
         stage.getScene().setRoot(root);
     }
 
+    /**
+    * Naviga alla Home senza autenticarsi.
+    *
+    * @param event l'evento generato dal click sul link "Continua come ospite"
+     * @throws IOException se il caricamento della schermata fallisce
+    */
+    @FXML private void handleGuest(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/home.fxml"));
+        stage.getScene().setRoot(root);
+    }
+
 }

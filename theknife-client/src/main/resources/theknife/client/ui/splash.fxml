@@ -6,7 +6,7 @@
 <?import javafx.scene.image.ImageView?>
 
 
-<VBox styleClass="splash-root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.SplashController">
+<VBox styleClass="page-root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.SplashController">
 
     <VBox styleClass="card"> 
 

@@ -3,10 +3,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.LoginController">
+<VBox styleClass="page-root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.LoginController">
 
-    <TextField fx:id="usernameField" promptText="Username" />
-    <PasswordField fx:id="passwordField" promptText="Password" />
-    <Button text="Accedi" onAction="#handleLogin"/>
-    <Button text="Registrati" onAction="#handleRegistrazione"/>
+    <VBox styleClass="card">
+        <Label text="Accedi" styleClass="brand-title"/>
+        <TextField fx:id="usernameField" promptText="Username" styleClass="campo-testo"/>
+        <PasswordField fx:id="passwordField" promptText="Password" styleClass="campo-testo"/>
+        <Button text="Accedi" onAction="#handleLogin" styleClass="bottone-primario"/>
+        <Hyperlink text="Non hai un account? Registrati" onAction="#handleRegistrazione" styleClass="link-primario"/>
+        <Hyperlink text="Continua come ospite" onAction="#handleGuest" styleClass="link-secondario"/>
+    </VBox>
+
 </VBox>
