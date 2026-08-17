@@ -8,12 +8,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import theknife.common.dto.RistoranteDTO;
 
@@ -83,13 +83,23 @@ public class RisultatiController {
         risultatiListView.getItems().setAll(risultati);
 
         risultatiListView.setCellFactory(lv -> new ListCell<RistoranteDTO>() {
-        @Override
+            private final Label nomeLabel = new Label();
+            private final Label infoLabel = new Label();
+            private final VBox contenuto = new VBox(nomeLabel, infoLabel);
+            {
+                nomeLabel.getStyleClass().add("risultato-nome");
+                infoLabel.getStyleClass().add("risultato-info");
+            }
+
+            @Override
             protected void updateItem(RistoranteDTO item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null) {
-                    setText(null);
+                    setGraphic(null);
                 } else {
-                    setText(item.getNome() + " - " + item.getCitta() + " - " + item.getTipoCucina());
+                    nomeLabel.setText(item.getNome());
+                    infoLabel.setText(item.getCitta() + " · " + item.getTipoCucina());
+                    setGraphic(contenuto);
                 }
             }
         });

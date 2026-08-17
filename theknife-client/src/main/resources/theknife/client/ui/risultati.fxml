@@ -3,12 +3,13 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.RisultatiController">
+<VBox styleClass="page-root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.RisultatiController">
 
-    <Label text="Risultati" fx:id="risultatiLabel"/>
-    <ListView fx:id="risultatiListView"/>
-    
-    <Button fx:id="dettaglioButton" text="Vedi dettaglio" onAction="#handleDettaglio"/>
-    <Button fx:id="tornaIndietroButton" text="Torna Indietro" onAction="#handleTornaIndietro"/>
-    
+    <VBox styleClass="card, card-lista">
+        <Label text="Risultati ricerca" fx:id="risultatiLabel" styleClass="brand-title"/>
+        <ListView fx:id="risultatiListView" styleClass="lista-risultati" VBox.vgrow="ALWAYS"/>
+        
+        <Button fx:id="dettaglioButton" text="Vedi dettaglio" onAction="#handleDettaglio" styleClass="bottone-primario"/>
+        <Button fx:id="tornaIndietroButton" text="Torna Indietro" onAction="#handleTornaIndietro" styleClass="bottone-secondario"   />
+    </VBox>
 </VBox>

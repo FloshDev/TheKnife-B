@@ -224,3 +224,45 @@
 .check-box:selected > .box > .mark {
     -fx-background-color: white;
 }
+
+.card-lista {
+    -fx-max-width: 480;
+}
+
+.lista-risultati {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+    -fx-pref-height: 320;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+.lista-risultati .list-cell {
+    -fx-background-color: white;
+    -fx-padding: 14 16;
+    -fx-border-color: transparent transparent #f0d0a0 transparent;
+    -fx-border-width: 0 0 2 0;
+}
+.lista-risultati .list-cell:empty {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+}
+.lista-risultati .list-cell:filled:hover {
+    -fx-background-color: #fff5e8;
+}
+.lista-risultati .list-cell:filled:selected {
+    -fx-background-color: #fdeacb;
+}
+
+.risultato-nome {
+    -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 15px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #2C2C2C;
+}
+.risultato-info {
+    -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: #b07840;
+}
