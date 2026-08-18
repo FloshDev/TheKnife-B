@@ -226,7 +226,7 @@
 }
 
 .card-lista {
-    -fx-max-width: 480;
+    -fx-max-width: 600;
 }
 
 .lista-risultati {
@@ -234,9 +234,30 @@
     -fx-background-insets: 0;
     -fx-border-color: transparent;
     -fx-padding: 0;
-    -fx-pref-height: 320;
+    -fx-pref-height: 380;
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
+}
+.lista-risultati .scroll-bar:vertical {
+    -fx-pref-width: 8;
+    -fx-background-color: transparent;
+}
+.lista-risultati .scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+    -fx-opacity: 0;
+}
+.lista-risultati .scroll-bar:vertical .thumb {
+    -fx-background-color: #f0d0a0;
+    -fx-background-radius: 6;
+}
+.lista-risultati .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #FAB12F;
+}
+.lista-risultati .scroll-bar:vertical .increment-button,
+.lista-risultati .scroll-bar:vertical .decrement-button {
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
+    -fx-opacity: 0;
 }
 .lista-risultati .list-cell {
     -fx-background-color: white;
@@ -265,4 +286,36 @@
     -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
     -fx-font-size: 13px;
     -fx-text-fill: #b07840;
+}
+
+.dettaglio-info {
+    -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 13px;
+    -fx-font-weight: 500;
+    -fx-text-fill: #b07840;
+}
+
+.bottone-piccolo {
+    -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-background-color: white;
+    -fx-text-fill: #b07840;
+    -fx-border-color: #f0d0a0;
+    -fx-border-width: 1.5;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-padding: 0 12 0 12;
+    -fx-pref-height: 32;
+    -fx-cursor: hand;
+}
+.bottone-piccolo:hover {
+    -fx-background-color: #fff5e8;
+}
+
+.recensione-risposta {
+    -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 12px;
+    -fx-font-style: italic;
+    -fx-text-fill: #FA812F;
 }

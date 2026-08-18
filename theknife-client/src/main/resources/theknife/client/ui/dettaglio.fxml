@@ -3,21 +3,26 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.DettaglioController">
+<VBox styleClass="page-root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.DettaglioController">
 
-    <Label fx:id="nomeLabel" text="Nome"/>
-    <Label fx:id="tipoCucinaLabel" text="Tipo di cucina"/>
-    <Label fx:id="indirizzoLabel" text="Indirizzo"/>
-    <Label fx:id="fasciaPrezzoLabel" text="Fascia Prezzo"/>
-    <Label fx:id="mediaStelleLabel" text="Media Stelle"/>
+    <VBox styleClass="card, card-lista">
+        <Label fx:id="nomeLabel" text="Nome" styleClass="brand-title"/>
+        <Label fx:id="tipoCucinaLabel" text="Tipo di cucina" styleClass="dettaglio-info"/>
+        <Label fx:id="indirizzoLabel" text="Indirizzo" styleClass="dettaglio-info"/>
+        <Label fx:id="fasciaPrezzoLabel" text="Fascia Prezzo" styleClass="dettaglio-info"/>
+        <Label fx:id="mediaStelleLabel" text="Media Stelle" styleClass="dettaglio-info"/>
 
-    <Button fx:id="preferitiButton" text="Aggiungi ai preferiti" onAction="#handlePreferiti"/>
-    <Button fx:id="scriviRecensioneButton" text="Scrivi Recensione" onAction="#handleScriviRecensione"/>
-    <Button fx:id="rispondiRecensioneButton" text="Rispondi Recensione" onAction="#handleRispondiRecensione"/>
-    <Button fx:id="tornaIndietroButton" text="Torna Indietro" onAction="#handleTornaIndietro"/>   
-    <Button fx:id="modificaRecensioneButton" text="Modifica Recensione" onAction="#handleModificaRecensione"/>
-    <Button fx:id="eliminaRecensioneButton" text="Elimina Recensione" onAction="#handleEliminaRecensione"/>
+        <ListView fx:id="recensioniListView" styleClass="lista-risultati" VBox.vgrow="ALWAYS"/>
 
-    <ListView fx:id="recensioniListView"/>
+        <Button fx:id="scriviRecensioneButton" text="Scrivi Recensione" onAction="#handleScriviRecensione" styleClass="bottone-primario"/>
+        <Button fx:id="preferitiButton" text="Aggiungi ai preferiti" onAction="#handlePreferiti" styleClass="bottone-secondario"/>
+        <HBox alignment="CENTER" spacing="8">
+            <Button fx:id="rispondiRecensioneButton" text="Rispondi Recensione" onAction="#handleRispondiRecensione" styleClass="bottone-piccolo"/>
+            <Button fx:id="modificaRecensioneButton" text="Modifica Recensione" onAction="#handleModificaRecensione" styleClass="bottone-piccolo"/>
+            <Button fx:id="eliminaRecensioneButton" text="Elimina Recensione" onAction="#handleEliminaRecensione" styleClass="bottone-piccolo"/>
+        </HBox>
+        <Button fx:id="tornaIndietroButton" text="Torna Indietro" onAction="#handleTornaIndietro" styleClass="bottone-secondario"/> 
+
+    </VBox>
 
 </VBox>

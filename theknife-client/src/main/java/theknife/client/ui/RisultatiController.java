@@ -50,6 +50,7 @@ public class RisultatiController {
                 Parent root = loader.load();
                 DettaglioController controller = loader.getController();
                 controller.impostaRistorante(selectedRistorante.getIdRistorante());
+                controller.impostaRisultatiPrecedenti(risultatiListView.getItems());
                 stage.getScene().setRoot(root);
             } catch (IOException e) {
                 new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();

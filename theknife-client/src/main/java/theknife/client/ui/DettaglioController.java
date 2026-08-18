@@ -1,6 +1,7 @@
 package theknife.client.ui;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import javafx.event.ActionEvent;
@@ -14,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import theknife.client.network.ServerConnection;
 import theknife.client.service.RecensioneService;
@@ -64,6 +66,13 @@ public class DettaglioController {
     private final RecensioneService recensioneService = new RecensioneService();
     /** Identificativo del ristorante mostrato, valorizzato da {@link #impostaRistorante(long)}. */
     private long idRistorante;
+    /**
+     * Lista di ristoranti mostrata da Risultati prima di aprire questo
+     * dettaglio, valorizzata da {@link #impostaRisultatiPrecedenti(List)}.
+     * Ripassata a Risultati da {@link #handleTornaIndietro(ActionEvent)},
+     * così "Torna Indietro" non riparte da una lista vuota.
+     */
+    private List<RistoranteDTO> risultatiPrecedenti;
 
     /**
      * Se il ristorante corrente è già nei preferiti dell'utente loggato
@@ -162,7 +171,10 @@ public class DettaglioController {
      */
     @FXML private void handleTornaIndietro(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/risultati.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/risultati.fxml"));
+        Parent root = loader.load();
+        RisultatiController controller = loader.getController();
+        controller.impostaRisultati(risultatiPrecedenti);
         stage.getScene().setRoot(root);
     }
 
@@ -237,6 +249,17 @@ public class DettaglioController {
     }
 
     /**
+     * Registra la lista di ristoranti da cui si arriva, così
+     * {@link #handleTornaIndietro(ActionEvent)} può riproporla a Risultati
+     * invece di ricaricare la schermata vuota.
+     *
+     * @param risultati i ristoranti mostrati dalla schermata di provenienza
+     */
+    public void impostaRisultatiPrecedenti(List<RistoranteDTO> risultati) {
+        this.risultatiPrecedenti = risultati;
+    }
+
+    /**
      * Carica dal server i dettagli e le recensioni del ristorante indicato e
      * popola la schermata. Le due chiamate sono indipendenti: ognuna
      * aggiorna la propria parte di schermo quando la sua risposta arriva.
@@ -248,8 +271,12 @@ public class DettaglioController {
      * finché non è selezionata una recensione propria. Il filtro è solo
      * cosmetico: l'autorizzazione vera è demandata al server.
      *
-     * <p>Chiede anche la lista dei preferiti dell'utente per determinare se
-     * il ristorante corrente ne fa già parte, aggiornando di conseguenza
+     * <p>Nasconde {@code preferitiButton} e {@code scriviRecensioneButton} da
+     * guest (RF08/RF09/RF10 richiedono login; filtro cosmetico, controllo
+     * vero lato server) — risolve anche S39, l'errore incomprensibile che il
+     * guest otteneva provando a scrivere una recensione. Da autenticato,
+     * chiede anche la lista dei preferiti dell'utente per determinare se il
+     * ristorante corrente ne fa già parte, aggiornando di conseguenza
      * {@link #preferito} e il testo di {@code preferitiButton} (RF08/RF09).
      *
      * <p>Mostra {@code rispondiRecensioneButton} solo se l'utente corrente è
@@ -265,6 +292,11 @@ public class DettaglioController {
         modificaRecensioneButton.setVisible(false);
         eliminaRecensioneButton.setVisible(false);
         rispondiRecensioneButton.setVisible(false);
+        boolean ospite = ServerConnection.getInstance().getUtenteCorrente() == null;
+        preferitiButton.setVisible(!ospite);
+        preferitiButton.setManaged(!ospite);
+        scriviRecensioneButton.setVisible(!ospite);
+        scriviRecensioneButton.setManaged(!ospite);
         recensioniListView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 UtenteDTO utente = ServerConnection.getInstance().getUtenteCorrente();
@@ -290,18 +322,19 @@ public class DettaglioController {
             }
         );
 
-        TaskRunner.run(
-            () -> ristoranteService.ottieniPreferiti(),
-            preferito -> {
-                for (RistoranteDTO r : preferito) {
-                    if (r.getIdRistorante() == idRistorante) {
-                        this.preferito = true;
-                        break;
+        if(ServerConnection.getInstance().getUtenteCorrente() != null)
+            TaskRunner.run(
+                () -> ristoranteService.ottieniPreferiti(),
+                preferito -> {
+                    for (RistoranteDTO r : preferito) {
+                        if (r.getIdRistorante() == idRistorante) {
+                            this.preferito = true;
+                            break;
+                        }
                     }
+                    aggiornaTestoPreferiti();
                 }
-                aggiornaTestoPreferiti();
-            }
-        );
+            );
 
         caricaRecensioni();
     }
@@ -312,14 +345,30 @@ public class DettaglioController {
         recensioni -> {
             recensioniListView.getItems().setAll(recensioni);
             recensioniListView.setCellFactory(lv -> new ListCell<RecensioneDTO>() {
+                private final Label titoloLabel = new Label();
+                private final Label testoLabel = new Label();
+                private final Label rispostaLabel = new Label();
+                private final VBox contenuto = new VBox(titoloLabel, testoLabel, rispostaLabel);
+                {
+                    titoloLabel.getStyleClass().add("risultato-nome");
+                    testoLabel.getStyleClass().add("risultato-info");
+                    rispostaLabel.getStyleClass().add("recensione-risposta");
+                }
                 @Override
                 protected void updateItem(RecensioneDTO item, boolean empty) {
                     super.updateItem(item, empty);
                     if (empty || item == null) {
-                        setText(null);
+                        setGraphic(null);
                     } else {
-                        String base = item.getStelle() + "★ - " + item.getTesto();
-                        setText(item.getRisposta() == null ? base : base + " [risposto]");
+                        titoloLabel.setText(item.getStelle() + "★ " + item.getTitolo());
+                        testoLabel.setText(item.getTesto());
+                        boolean haRisposta = item.getRisposta() != null;
+                        rispostaLabel.setVisible(haRisposta);
+                        rispostaLabel.setManaged(haRisposta);
+                        if (haRisposta) {
+                            rispostaLabel.setText("Risposta del gestore: " + item.getRisposta());
+                        }
+                        setGraphic(contenuto);
                     }
                 }
             });
