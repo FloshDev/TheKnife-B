@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import theknife.client.network.ServerConnection;
+import theknife.client.ui.Toast;
 import theknife.common.config.ConfigurazioneServer;
 
 /**
@@ -42,14 +43,18 @@ public class ClientApplication extends Application {
         try {
             porta = args.size() >= 2 ? Integer.parseInt(args.get(1)) : ConfigurazioneServer.PORTA_DEFAULT;
         } catch (NumberFormatException e) {
-            new Alert(Alert.AlertType.ERROR, "Errore nella configurazione del server: " + e.getMessage()).showAndWait();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Errore nella configurazione del server: " + e.getMessage());
+            Toast.stilizza(alert);
+            alert.showAndWait();
             Platform.exit();
             return;
         }
         try {
             ServerConnection.getInstance().connect(host, porta);
         } catch (IOException e) {
-            new Alert(Alert.AlertType.ERROR, "Impossibile connettersi a " + host + ":" + porta + ". Verifica che il server sia avviato e riprova con: java -jar clientTK.jar [host] [porta]").showAndWait();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Impossibile connettersi a " + host + ":" + porta + ". Verifica che il server sia avviato e riprova con: java -jar clientTK.jar [host] [porta]");
+            Toast.stilizza(alert);
+            alert.showAndWait();
             Platform.exit();
             return;
         }

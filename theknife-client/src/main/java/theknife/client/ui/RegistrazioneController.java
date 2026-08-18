@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.PasswordField;
@@ -127,16 +126,16 @@ public class RegistrazioneController {
         Ruolo ruolo = clienteRadio.isSelected() ? Ruolo.CLIENTE : (ristoratoreRadio.isSelected() ? Ruolo.RISTORATORE : null);
 
         if(password.isEmpty() || password2.isEmpty())  {
-            new Alert(Alert.AlertType.ERROR, "Inserisci una password").showAndWait();
+            Toast.errore("Inserisci una password");
             return;
         }
         if(!password.equals(password2)) {
-            new Alert(Alert.AlertType.ERROR, "Le password non coincidono").showAndWait();
+            Toast.errore("Le password non coincidono");
             return;
         }
 
         if(ruolo == null) {
-            new Alert(Alert.AlertType.ERROR, "Seleziona un ruolo").showAndWait();
+            Toast.errore("Seleziona un ruolo");
             return;
         }
         RegistrazioneDTO dati = new RegistrazioneDTO(nome, cognome, username, password, email, ruolo, dataNascita, domicilio);
@@ -150,7 +149,7 @@ public class RegistrazioneController {
                     Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/login.fxml"));
                     stage.getScene().setRoot(root);
                 }catch (IOException e) {
-                    new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
+                    Toast.errore("Errore nel caricamento della schermata: " + e.getMessage());
                 }
             }
         );

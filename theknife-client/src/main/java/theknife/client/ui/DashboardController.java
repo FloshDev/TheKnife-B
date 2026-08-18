@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -89,7 +88,7 @@ public class DashboardController {
     @FXML private void handleVediDettaglio(ActionEvent event) {
         RistoranteDTO selezionato = ristorantiGestiti.getSelectionModel().getSelectedItem();
         if (selezionato == null) {
-            new Alert(Alert.AlertType.ERROR, "Nessun ristorante selezionato").showAndWait();
+            Toast.errore("Nessun ristorante selezionato");
             return;
         }
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -101,7 +100,7 @@ public class DashboardController {
             controller.impostaProvenienzaDashboard();
             stage.getScene().setRoot(root);
         } catch (IOException e) {
-            new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
+            Toast.errore("Errore nel caricamento della schermata: " + e.getMessage());
         }
     }
 
@@ -159,7 +158,7 @@ public class DashboardController {
                     Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/splash.fxml"));
                     stage.getScene().setRoot(root);
                 } catch (IOException e) {
-                    new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
+                    Toast.errore("Errore nel caricamento della schermata: " + e.getMessage());
                 }
             }
         );

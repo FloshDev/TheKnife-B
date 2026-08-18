@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -86,7 +85,7 @@ public class ScriviRecensioneController {
         String titolo = titoloField.getText();
         String testo = testoField.getText();
         if (stelleSelezionate == 0) {
-            new Alert(Alert.AlertType.ERROR, "Seleziona un voto da 1 a 5 stelle").showAndWait();
+            Toast.errore("Seleziona un voto da 1 a 5 stelle");
             return;
         }
         int stelle = stelleSelezionate;
@@ -190,7 +189,7 @@ public class ScriviRecensioneController {
             controller.impostaRisultatiPrecedenti(risultatiPrecedenti);
             stage.getScene().setRoot(root);
         } catch (IOException e) {
-            new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
+            Toast.errore("Errore nel caricamento della schermata: " + e.getMessage());
         }
     }
 }

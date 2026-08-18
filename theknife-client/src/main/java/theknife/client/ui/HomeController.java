@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
@@ -101,7 +100,7 @@ public class HomeController {
         try {
             fasciaPrezzo = fasciaPrezzoField.getText().isBlank() ? 0 : Integer.parseInt(fasciaPrezzoField.getText());
         } catch (NumberFormatException e) {
-            new Alert(Alert.AlertType.ERROR, "Fascia di prezzo non valida, inserisci un numero valido").showAndWait();
+            Toast.errore("Fascia di prezzo non valida, inserisci un numero valido");
             return;
         }
         boolean prenotazioneOnline = prenotazioneOnlineCheck.isSelected();
@@ -123,7 +122,7 @@ public class HomeController {
                 controller.impostaRisultati(cercaResult);
                 stage.getScene().setRoot(root);
             } catch (IOException e) {
-                new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
+                Toast.errore("Errore nel caricamento della schermata: " + e.getMessage());
             }
         }
         );
@@ -143,7 +142,7 @@ public class HomeController {
         try {
             raggioKm = Double.parseDouble(raggioKmField.getText());
         } catch (NumberFormatException e) {
-            new Alert(Alert.AlertType.ERROR, "Raggio non valido, inserisci un numero valido").showAndWait();
+            Toast.errore("Raggio non valido, inserisci un numero valido");
             return;
         }
 
@@ -153,7 +152,7 @@ public class HomeController {
             luogo = utente != null ? utente.getDomicilio() : null;
         }
         if (luogo == null || luogo.isBlank()) {
-            new Alert(Alert.AlertType.ERROR, "Inserisci una città o effettua il login").showAndWait();
+            Toast.errore("Inserisci una città o effettua il login");
             return;
         }
 
@@ -171,7 +170,7 @@ public class HomeController {
                 controller.impostaRisultati(cercaResult);
                 stage.getScene().setRoot(root);
             } catch (IOException e) {
-                new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
+                Toast.errore("Errore nel caricamento della schermata: " + e.getMessage());
             }
         }
         );
@@ -206,7 +205,7 @@ public class HomeController {
                 Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/splash.fxml"));
                 stage.getScene().setRoot(root);
             } catch (IOException e) {
-                new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
+                Toast.errore("Errore nel caricamento della schermata: " + e.getMessage());
             }
         }
         );

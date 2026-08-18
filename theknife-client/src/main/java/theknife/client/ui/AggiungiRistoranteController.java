@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -70,7 +69,7 @@ public class AggiungiRistoranteController {
         try {
             fasciaPrezzo = Integer.parseInt(fasciaPrezzoField.getText());
         } catch (NumberFormatException e) {
-            new Alert(Alert.AlertType.ERROR, "Fascia di prezzo non valida, inserisci un numero valido").showAndWait();
+            Toast.errore("Fascia di prezzo non valida, inserisci un numero valido");
             return;
         }
         String tipoCucina = tipoCucinaField.getText();
@@ -95,7 +94,7 @@ public class AggiungiRistoranteController {
                     controller.impostaProvenienzaDashboard();
                     stage.getScene().setRoot(root);
                 } catch (IOException e) {
-                    new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
+                    Toast.errore("Errore nel caricamento della schermata: " + e.getMessage());
                 }
             }
         );

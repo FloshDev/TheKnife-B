@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -67,11 +66,11 @@ public class PreferitiController {
                 controller.impostaProvenienzaPreferiti();
                 stage.getScene().setRoot(root);
             } catch (IOException e) {
-                new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
+                Toast.errore("Errore nel caricamento della schermata: " + e.getMessage());
             }
         }
         else {
-            new Alert(Alert.AlertType.ERROR, "Nessun ristorante selezionato").showAndWait();
+            Toast.errore("Nessun ristorante selezionato");
         }
     }
 
@@ -91,12 +90,12 @@ public class PreferitiController {
                     },
                 result -> {
                     caricaPreferiti();
-                    new Alert(Alert.AlertType.INFORMATION, "Ristorante rimosso dai preferiti").showAndWait();
+                    Toast.successo("Ristorante rimosso dai preferiti");
                 }
             );
         }
         else {
-            new Alert(Alert.AlertType.ERROR, "Nessun ristorante selezionato").showAndWait();
+            Toast.errore("Nessun ristorante selezionato");
         }
     }
 

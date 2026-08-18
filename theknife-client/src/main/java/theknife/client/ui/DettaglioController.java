@@ -118,7 +118,7 @@ public class DettaglioController {
                 esito -> {
                     preferito = false;
                     aggiornaPreferitiButton();
-                    new Alert(Alert.AlertType.INFORMATION, "Ristorante rimosso dai preferiti.").showAndWait();
+                    Toast.successo("Ristorante rimosso dai preferiti.");
                 }
             );
         }
@@ -131,7 +131,7 @@ public class DettaglioController {
                 esito -> {
                     preferito = true;
                     aggiornaPreferitiButton();
-                    new Alert(Alert.AlertType.INFORMATION, "Ristorante aggiunto ai preferiti.").showAndWait();
+                    Toast.successo("Ristorante aggiunto ai preferiti.");
                 }
             );
         }
@@ -154,7 +154,7 @@ public class DettaglioController {
             controller.impostaRisultatiPrecedenti(risultatiPrecedenti);
             stage.getScene().setRoot(root);
         } catch (IOException e) {
-            new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
+            Toast.errore("Errore nel caricamento della schermata: " + e.getMessage());
         }
 
     }
@@ -167,7 +167,7 @@ public class DettaglioController {
     @FXML private void handleRispondiRecensione() {
         RecensioneDTO selezionata = recensioniListView.getSelectionModel().getSelectedItem();
         if(selezionata == null) {
-            new Alert(Alert.AlertType.WARNING, "Seleziona una recensione a cui rispondere.").showAndWait();
+            Toast.avviso("Seleziona una recensione a cui rispondere.");
         }
         else {
             TextInputDialog dialog = new TextInputDialog();
@@ -192,7 +192,7 @@ public class DettaglioController {
      * per ora mostra solo un avviso invece di fingere di funzionare.
      */
     @FXML private void handleEliminaRistorante() {
-        new Alert(Alert.AlertType.INFORMATION, "Funzionalità in arrivo").showAndWait();
+        Toast.successo("Funzionalità in arrivo");
     }
 
     /**
@@ -235,7 +235,7 @@ public class DettaglioController {
     @FXML private void handleModificaRecensione(ActionEvent event) {
         RecensioneDTO selezionata = recensioniListView.getSelectionModel().getSelectedItem();
         if (selezionata == null) {
-            new Alert(Alert.AlertType.WARNING, "Seleziona una recensione da modificare.").showAndWait();
+            Toast.avviso("Seleziona una recensione da modificare.");
             return;
         }
 
@@ -249,7 +249,7 @@ public class DettaglioController {
             controller.impostaRecensioneDaModificare(selezionata);
             stage.getScene().setRoot(root);
         } catch (IOException e) {
-            new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
+            Toast.errore("Errore nel caricamento della schermata: " + e.getMessage());
         }
     }
 
@@ -261,10 +261,11 @@ public class DettaglioController {
     @FXML private void handleEliminaRecensione() {
         RecensioneDTO selezionata = recensioniListView.getSelectionModel().getSelectedItem();
         if(selezionata == null) {
-            new Alert(Alert.AlertType.WARNING, "Seleziona una recensione da eliminare.").showAndWait();
+            Toast.avviso("Seleziona una recensione da eliminare.");
         }
         else {
             Alert conferma = new Alert(Alert.AlertType.CONFIRMATION, "Sei sicuro di voler eliminare la recensione selezionata?");
+            Toast.stilizza(conferma);
             Optional<ButtonType> result = conferma.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 TaskRunner.run(

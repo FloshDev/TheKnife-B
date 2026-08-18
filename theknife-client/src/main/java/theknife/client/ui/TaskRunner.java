@@ -6,14 +6,13 @@ import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
 import javafx.concurrent.Task;
-import javafx.scene.control.Alert;
 
 /**
  * Esegue un'operazione bloccante (tipicamente una chiamata a un service, che a
  * sua volta parla col server) fuori dall'Application Thread di JavaFX, così che
  * la finestra resti reattiva durante l'attesa. Il risultato viene riconsegnato
  * al chiamante sul thread della UI, dove è sicuro toccare i nodi della
- * schermata; gli errori diventano un Alert, mai uno stack trace a video.
+ * schermata; gli errori diventano un {@link Toast}, mai uno stack trace a video.
  *
  * <p>Le operazioni sono servite da un <b>unico</b> thread di servizio, quindi
  * una alla volta e in ordine di arrivo. È voluto: {@code ServerConnection}
@@ -48,8 +47,8 @@ public class TaskRunner {
     /**
      * Esegue l'operazione in background e, a buon fine, ne consegna il risultato
      * al chiamante sull'Application Thread di JavaFX. In caso di errore mostra
-     * un Alert col messaggio dell'eccezione e {@code alSuccesso} non viene
-     * eseguito.
+     * un {@link Toast} col messaggio dell'eccezione e {@code alSuccesso} non
+     * viene eseguito.
      *
      * @param <T> tipo del risultato prodotto dall'operazione
      * @param operazione chiamata bloccante da eseguire fuori dal thread della UI
@@ -62,15 +61,15 @@ public class TaskRunner {
             if (messaggio == null) {
                 messaggio = "Si è verificato un errore sconosciuto.";
             }
-            new Alert(Alert.AlertType.ERROR, messaggio).showAndWait();
+            Toast.errore(messaggio);
         });
     }
 
     /**
      * Come {@link #run(Callable, Consumer)}, ma lascia al chiamante decidere
-     * cosa fare in caso di fallimento invece di mostrare sempre un Alert —
-     * serve quando l'errore va gestito in silenzio (es. geolocalizzazione
-     * iniziale, decisione 18).
+     * cosa fare in caso di fallimento invece di mostrare sempre un
+     * {@link Toast} — serve quando l'errore va gestito in silenzio (es.
+     * geolocalizzazione iniziale, decisione 18).
      *
      * @param <T> tipo del risultato prodotto dall'operazione
      * @param operazione chiamata bloccante da eseguire fuori dal thread della UI

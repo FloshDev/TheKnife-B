@@ -353,3 +353,57 @@
     -fx-font-style: italic;
     -fx-text-fill: #FA812F;
 }
+
+.toast {
+    -fx-background-radius: 14;
+    -fx-padding: 16 20;
+    -fx-effect: dropshadow(gaussian, rgba(44,44,44,0.3), 20, 0, 0, 6);
+}
+.toast .label {
+    -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-text-fill: white;
+}
+.toast-errore {
+    -fx-background-color: #e63946;
+}
+.toast-avviso {
+    -fx-background-color: #FAB12F;
+}
+.toast-successo {
+    -fx-background-color: #2a9d5c;
+}
+
+.dialog-app {
+    -fx-background-color: #FEF3E2;
+}
+.dialog-app > .header-panel {
+    -fx-background-color: #FEF3E2;
+}
+.dialog-app .content.label {
+    -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: #2C2C2C;
+}
+.dialog-app .button-bar .button {
+    -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-weight: 700;
+    -fx-font-size: 13px;
+    -fx-background-color: #FAB12F;
+    -fx-text-fill: white;
+    -fx-background-radius: 10;
+    -fx-padding: 8 20 8 20;
+    -fx-cursor: hand;
+}
+.dialog-app .button-bar .button:hover {
+    -fx-background-color: #e09928;
+}
+.dialog-app .button-bar .button:cancel {
+    -fx-background-color: white;
+    -fx-text-fill: #b07840;
+    -fx-border-color: #f0d0a0;
+    -fx-border-width: 2;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}

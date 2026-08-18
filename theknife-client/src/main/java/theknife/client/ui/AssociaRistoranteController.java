@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -95,18 +94,18 @@ public class AssociaRistoranteController {
                         return null;
                     },
                 result -> {
-                    new Alert(Alert.AlertType.INFORMATION, "Ristorante associato con successo").showAndWait();
+                    Toast.successo("Ristorante associato con successo");
                     try {
                         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/dashboard.fxml"));
                         stage.getScene().setRoot(root);
                     } catch (IOException e) {
-                        new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
+                        Toast.errore("Errore nel caricamento della schermata: " + e.getMessage());
                     }
                 }
             );
         } else {
-            new Alert(Alert.AlertType.WARNING, "Seleziona un ristorante dalla lista").showAndWait();
+            Toast.avviso("Seleziona un ristorante dalla lista");
         }
     }
     /**

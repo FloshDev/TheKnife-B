@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -59,14 +58,14 @@ public class GestioneRecensioniController {
                         return null;
                     },
                 result -> {
-                    new Alert(Alert.AlertType.INFORMATION, "Risposta inviata con successo").showAndWait();
+                    Toast.successo("Risposta inviata con successo");
                     rispostaField.clear();
                     caricaRecensioni();
                 }
             );
         }
         else {
-            new Alert(Alert.AlertType.ERROR, "Nessuna recensione selezionata").showAndWait();
+            Toast.errore("Nessuna recensione selezionata");
         }
     }
 
