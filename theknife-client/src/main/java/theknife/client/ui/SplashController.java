@@ -29,15 +29,21 @@ public class SplashController {
 
     /**
      * Tenta di rilevare la posizione dell'utente dall'IP della connessione
-     * (decisione 18). Il fallimento è silenzioso e non mostra nulla: su IP
-     * locale o di rete privata la geolocalizzazione fallisce sistematicamente,
-     * e l'utente corregge a mano con {@code modificaLocalitaField}.
+     * (decisione 18). Su IP locale o di rete privata la geolocalizzazione
+     * fallisce sistematicamente (decisione 30): in quel caso, come in ogni
+     * errore, {@code localitaLabel} guida l'utente a scrivere la località a
+     * mano in {@code modificaLocalitaField} invece di restare vuota.
      */
     @FXML private void initialize() {
         TaskRunner.run(
             () -> ristoranteService.ottieniLocalitaIniziale(),
-            posizione -> localitaLabel.setText(posizione.getLatitudine() + ", " + posizione.getLongitudine()),
-            eccezione -> { /* silenzioso: fallisce sempre su IP locale/LAN, decisione 18 */ }
+            posizione -> {
+                String luogo = posizione.getLuogo();
+                localitaLabel.setText(luogo != null && !luogo.isBlank()
+                    ? "Sembri trovarti a " + luogo
+                    : "Non siamo riusciti a rilevare la tua posizione: scrivila qui sotto");
+            },
+            eccezione -> localitaLabel.setText("Non siamo riusciti a rilevare la tua posizione: scrivila qui sotto")
         );
     }
 

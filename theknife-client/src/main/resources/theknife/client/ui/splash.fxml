@@ -18,7 +18,7 @@
 
         <Label text="The Knife" fx:id="theKnifeLabel" styleClass="brand-title"/>
         <Label fx:id="localitaLabel" text="" styleClass="localita-label"/>
-        <TextField fx:id="modificaLocalitaField" promptText="Modifica località" styleClass="campo-testo"/>
+        <TextField fx:id="modificaLocalitaField" promptText="Es. Milano" styleClass="campo-testo"/>
         <Button text="Conferma" onAction="#handleConferma" styleClass="bottone-primario"/>
         <Hyperlink text="Vai al Login" onAction="#handleLogin" styleClass="link-primario"/>
         <Hyperlink text="Continua come ospite" onAction="#handleGuest" styleClass="link-secondario"/>
