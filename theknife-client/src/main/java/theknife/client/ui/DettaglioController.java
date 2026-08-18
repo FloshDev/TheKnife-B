@@ -29,6 +29,7 @@ import theknife.common.dto.RecensioneDTO;
 import theknife.common.dto.RispondiRecensioneDTO;
 import theknife.common.dto.RistoranteDTO;
 import theknife.common.dto.UtenteDTO;
+import theknife.common.enums.Ruolo;
 
 /**
  * Controller della schermata di dettaglio (S06).
@@ -356,11 +357,12 @@ public class DettaglioController {
         Label nessunaRecensione = new Label("Nessuna recensione ancora. Scrivi la prima!");
         nessunaRecensione.getStyleClass().add("risultato-info");
         recensioniListView.setPlaceholder(nessunaRecensione);
-        boolean ospite = ServerConnection.getInstance().getUtenteCorrente() == null;
-        preferitiButton.setVisible(!ospite);
-        preferitiButton.setManaged(!ospite);
-        scriviRecensioneButton.setVisible(!ospite);
-        scriviRecensioneButton.setManaged(!ospite);
+        UtenteDTO utenteCorrente = ServerConnection.getInstance().getUtenteCorrente();
+        boolean cliente = utenteCorrente != null && utenteCorrente.getRuolo() == Ruolo.CLIENTE;
+        preferitiButton.setVisible(cliente);
+        preferitiButton.setManaged(cliente);
+        scriviRecensioneButton.setVisible(cliente);
+        scriviRecensioneButton.setManaged(cliente);
         recensioniListView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 UtenteDTO utente = ServerConnection.getInstance().getUtenteCorrente();
@@ -382,8 +384,8 @@ public class DettaglioController {
                 nomeLabel.setText(ristorante.getNome());
                 tipoCucinaLabel.setText(ristorante.getTipoCucina());
                 indirizzoLabel.setText(ristorante.getIndirizzo());
-                fasciaPrezzoLabel.setText("€".repeat(ristorante.getFasciaPrezzo()));
-                mediaStelleLabel.setText("★ " + ristorante.getMediaStelle());
+                fasciaPrezzoLabel.setText("Fascia di prezzo: " + "€".repeat(ristorante.getFasciaPrezzo()));
+                mediaStelleLabel.setText("Valutazione: ★ " + ristorante.getMediaStelle());
                 UtenteDTO utente = ServerConnection.getInstance().getUtenteCorrente();
                 boolean isGestore = utente != null && ristorante.getIdGestore() != null && ristorante.getIdGestore() == utente.getIdUtente();
                 rispondiRecensioneButton.setVisible(isGestore);
@@ -393,7 +395,7 @@ public class DettaglioController {
             }
         );
 
-        if(ServerConnection.getInstance().getUtenteCorrente() != null)
+        if(cliente)
             TaskRunner.run(
                 () -> ristoranteService.ottieniPreferiti(),
                 preferito -> {

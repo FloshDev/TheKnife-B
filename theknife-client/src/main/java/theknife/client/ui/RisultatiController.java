@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import theknife.common.dto.RistoranteDTO;
@@ -40,6 +41,11 @@ public class RisultatiController {
      */
     @FXML private void initialize() {
         Responsive.aggancia(card, 0.6, 480, 700);
+        risultatiListView.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
+                apriDettaglio((Stage) risultatiListView.getScene().getWindow());
+            }
+        });
     }
 
     /**
@@ -49,26 +55,9 @@ public class RisultatiController {
      * @param event l'evento generato dal click sul bottone "Vedi dettaglio"
      */
     @FXML private void handleDettaglio(ActionEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-        RistoranteDTO selectedRistorante = risultatiListView.getSelectionModel().getSelectedItem();
-        if (selectedRistorante != null) {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/dettaglio.fxml"));
-                Parent root = loader.load();
-                DettaglioController controller = loader.getController();
-                controller.impostaRistorante(selectedRistorante.getIdRistorante());
-                controller.impostaRisultatiPrecedenti(risultatiListView.getItems());
-                stage.getScene().setRoot(root);
-            } catch (IOException e) {
-                Toast.errore("Errore nel caricamento della schermata: " + e.getMessage());
-            }
-        }
-        else {
-            Toast.errore("Nessun ristorante selezionato");
-        }
+        apriDettaglio((Stage) ((Node) event.getSource()).getScene().getWindow());
     }
-    
+
     /**
      * Naviga alla schermata Home.
      *
@@ -119,5 +108,29 @@ public class RisultatiController {
             }
         });
     }
-    
+
+    /**
+     * Apre il dettaglio del ristorante selezionato nella lista, chiamato sia
+     * dal bottone "Vedi dettaglio" che dal doppio click su una riga. Mostra
+     * un avviso se nessun elemento è selezionato.
+     *
+     * @param stage la finestra su cui sostituire la schermata
+     */
+    private void apriDettaglio(Stage stage) {
+        RistoranteDTO selectedRistorante = risultatiListView.getSelectionModel().getSelectedItem();
+        if (selectedRistorante == null) {
+            Toast.errore("Nessun ristorante selezionato");
+            return;
+        }
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/dettaglio.fxml"));
+            Parent root = loader.load();
+            DettaglioController controller = loader.getController();
+            controller.impostaRistorante(selectedRistorante.getIdRistorante());
+            controller.impostaRisultatiPrecedenti(risultatiListView.getItems());
+            stage.getScene().setRoot(root);
+        } catch (IOException e) {
+            Toast.errore("Errore nel caricamento della schermata: " + e.getMessage());
+        }
+    }
 }
