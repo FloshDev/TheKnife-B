@@ -11,9 +11,13 @@
  *   <li>{@link theknife.server.exception.DataAccessException} - il database
  *       non risponde o la query fallisce: colpa del sistema, l'utente non puo'
  *       farci nulla.</li>
- *   <li>{@link theknife.server.exception.UnauthorizedException} - permessi
- *       insufficienti.</li>
  * </ul>
+ * <p>
+ * I permessi non hanno un'eccezione propria (decisione 31): per la decisione
+ * 20 il ruolo lo verifica
+ * {@link theknife.server.handler.CommandDispatcher} e la proprieta' delle
+ * risorse il singolo Command, e chi rifiuta risponde direttamente
+ * {@code NON_AUTORIZZATO} senza passare da un lancio.
  *
  * @author Ciani Flavio Angelo, 761581, VA
  */
