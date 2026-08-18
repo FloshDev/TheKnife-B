@@ -19,12 +19,29 @@ import theknife.server.service.RistoranteService;
  */
 public class VediRistorantiGestitiCommand implements Command {
 
+    /**
+     * Service dei ristoranti, a cui il comando delega la logica di dominio.
+     */
     private final RistoranteService ristoranteService;
 
+    /**
+     * Costruisce il comando sul service dei ristoranti.
+     *
+     * @param ristoranteService il service dei ristoranti
+     */
     public VediRistorantiGestitiCommand(RistoranteService ristoranteService) {
         this.ristoranteService = ristoranteService;
     }
 
+    /**
+     * Restituisce i ristoranti gestiti dal ristoratore di sessione.
+     *
+     * @param request la richiesta, priva di payload
+     * @param utente  il ristoratore autenticato, di cui si usa l'identificativo
+     *                per selezionare i ristoranti
+     * @return SUCCESSO con la lista dei {@link RistoranteDTO} gestiti,
+     *         eventualmente vuota, ERRORE_SERVER se l'accesso al database fallisce
+     */
     @Override
     public Response execute(Request request, UtenteDTO utente) {
         try {

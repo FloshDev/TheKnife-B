@@ -32,13 +32,25 @@ import theknife.server.external.LocalizzazioneIpClient;
  */
 public class RistoranteService {
 
+    /** Accesso alla tabella dei ristoranti. */
     private final RistoranteDAO ristoranteDAO;
+
+    /** Accesso ai preferiti dei clienti. */
     private final PreferitoDAO preferitoDAO;
+
+    /** Accesso ai servizi associati ai ristoranti. */
     private final ServizioDAO servizioDAO;
+
+    /** Traduzione fra indirizzi e coordinate, delegata al servizio esterno. */
     private final GeocodingClient geocoding;
+
+    /** Stima della posizione da indirizzo IP, per la localita' iniziale. */
     private final LocalizzazioneIpClient localizzazione;
 
     /**
+     * Costruisce il service sui tre DAO e sui due client esterni che gli
+     * servono.
+     *
      * @param ristoranteDAO  accesso ai ristoranti
      * @param preferitoDAO   accesso ai preferiti dei clienti
      * @param servizioDAO    accesso ai servizi offerti dai ristoranti

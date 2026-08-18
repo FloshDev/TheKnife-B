@@ -34,10 +34,15 @@ public class ClientHandler implements Runnable {
       + "java.lang.**;java.util.**;java.time.**;java.math.**;"
       + "!*";
 
+    /** Connessione con il client servito da questo thread. */
     private final Socket socket;
+
+    /** Instradatore delle richieste, condiviso da tutti i thread client. */
     private final CommandDispatcher dispatcher;
 
     /**
+     * Costruisce il gestore della conversazione con un client.
+     *
      * @param socket     la connessione col client, gia' accettata
      * @param dispatcher l'instradatore condiviso da tutti i thread client
      */

@@ -42,12 +42,20 @@ public class Server {
     /** Numero massimo di client serviti contemporaneamente. */
     private static final int THREAD_MASSIMI = 20;
 
+    /** Tentativi concessi per la connessione al database prima di rinunciare. */
     private static final int TENTATIVI_DB = 3;
 
+    /** Parametri di connessione al database, letti da terminale all'avvio. */
     private final ConfigurazioneDB config;
+
+    /** Porta su cui il server accetta le connessioni dei client. */
     private final int porta;
 
     /**
+     * Costruisce il server sui parametri indicati, senza aprire nulla: la
+     * connessione al database e il socket di ascolto nascono in
+     * {@link #avvia()}.
+     *
      * @param config i parametri di connessione al database
      * @param porta  la porta di ascolto del server
      */

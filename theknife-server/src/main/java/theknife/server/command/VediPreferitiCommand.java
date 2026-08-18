@@ -19,12 +19,29 @@ import theknife.server.service.RistoranteService;
  */
 public class VediPreferitiCommand implements Command {
 
+    /**
+     * Service dei ristoranti, a cui il comando delega la logica di dominio.
+     */
     private final RistoranteService ristoranteService;
 
+    /**
+     * Costruisce il comando sul service dei ristoranti.
+     *
+     * @param ristoranteService il service dei ristoranti
+     */
     public VediPreferitiCommand(RistoranteService ristoranteService) {
         this.ristoranteService = ristoranteService;
     }
 
+    /**
+     * Restituisce i ristoranti preferiti del cliente di sessione.
+     *
+     * @param request la richiesta, priva di payload
+     * @param utente  il cliente autenticato, di cui si usa l'identificativo per
+     *                selezionare i preferiti
+     * @return SUCCESSO con la lista dei {@link RistoranteDTO} preferiti,
+     *         eventualmente vuota, ERRORE_SERVER se l'accesso al database fallisce
+     */
     @Override
     public Response execute(Request request, UtenteDTO utente) {
         try {

@@ -8,8 +8,14 @@ package theknife.server.exception;
  */
 public class ValidationException extends Exception {
 
+    /** Versione della classe ai fini della serializzazione. */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Crea l'eccezione con il messaggio che descrive il dato non valido.
+     *
+     * @param messaggio la descrizione dell'errore di validazione
+     */
     public ValidationException(String messaggio) {
         super(messaggio);
     }

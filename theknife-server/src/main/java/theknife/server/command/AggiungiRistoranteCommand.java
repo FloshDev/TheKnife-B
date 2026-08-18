@@ -24,12 +24,29 @@ import theknife.server.service.RistoranteService;
  */
 public class AggiungiRistoranteCommand implements Command {
 
+    /**
+     * Service dei ristoranti, a cui il comando delega la logica di dominio.
+     */
     private final RistoranteService ristoranteService;
 
+    /**
+     * Costruisce il comando sul service dei ristoranti.
+     *
+     * @param ristoranteService il service dei ristoranti
+     */
     public AggiungiRistoranteCommand(RistoranteService ristoranteService) {
         this.ristoranteService = ristoranteService;
     }
 
+    /**
+     * Inserisce il ristorante contenuto nel payload a nome del ristoratore di sessione.
+     *
+     * @param request la richiesta, con un {@link AggiungiRistoranteDTO} come payload
+     * @param utente  il ristoratore autenticato, che diventa gestore del ristorante
+     * @return SUCCESSO con il {@link RistoranteDTO} appena creato,
+     *         ERRORE_VALIDAZIONE se un campo obbligatorio manca, ERRORE se il
+     *         ristorante non e' rileggibile dopo l'inserimento, ERRORE_SERVER se l'accesso al database fallisce
+     */
     @Override
     public Response execute(Request request, UtenteDTO utente) {
         if (!(request.getPayload() instanceof AggiungiRistoranteDTO dati)) {

@@ -26,12 +26,30 @@ import theknife.server.service.RistoranteService;
  */
 public class AssociaRistoranteCommand implements Command {
 
+    /**
+     * Service dei ristoranti, a cui il comando delega la logica di dominio.
+     */
     private final RistoranteService ristoranteService;
 
+    /**
+     * Costruisce il comando sul service dei ristoranti.
+     *
+     * @param ristoranteService il service dei ristoranti
+     */
     public AssociaRistoranteCommand(RistoranteService ristoranteService) {
         this.ristoranteService = ristoranteService;
     }
 
+    /**
+     * Assegna al ristoratore di sessione un ristorante gia' presente in catalogo.
+     *
+     * @param request la richiesta, con un {@link IdRistoranteDTO} come payload
+     * @param utente  il ristoratore autenticato che richiede l'associazione
+     * @return SUCCESSO senza payload, ERRORE se il ristorante e' gia' fra quelli
+     *         gestiti dall'utente, NON_AUTORIZZATO se e' gestito da un altro,
+     *         NON_TROVATO se l'identificativo non esiste, ERRORE_VALIDAZIONE se
+     *         il payload e' di tipo errato, ERRORE_SERVER se l'accesso al database fallisce
+     */
     @Override
     public Response execute(Request request, UtenteDTO utente) {
         if (!(request.getPayload() instanceof IdRistoranteDTO id)) {

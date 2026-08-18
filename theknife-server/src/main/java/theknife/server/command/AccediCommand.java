@@ -26,12 +26,30 @@ import theknife.server.service.UtenteService;
  */
 public class AccediCommand implements Command {
 
+    /**
+     * Service degli utenti, a cui il comando delega autenticazione e sessioni.
+     */
     private final UtenteService utenteService;
 
+    /**
+     * Costruisce il comando sul service degli utenti.
+     *
+     * @param utenteService il service degli utenti
+     */
     public AccediCommand(UtenteService utenteService) {
         this.utenteService = utenteService;
     }
 
+    /**
+     * Verifica le credenziali contenute nel payload e apre una sessione.
+     *
+     * @param request la richiesta, con un {@link LoginDTO} come payload
+     * @param utente  ignorato: il comando non richiede autenticazione
+     * @return SUCCESSO con il {@link LoginResultDTO} della sessione aperta,
+     *         ERRORE_VALIDAZIONE se il payload manca o e' di tipo errato,
+     *         ERRORE se le credenziali non corrispondono ad alcun utente,
+     *         ERRORE_SERVER se l'accesso al database fallisce
+     */
     @Override
     public Response execute(Request request, UtenteDTO utente) {
         if (!(request.getPayload() instanceof LoginDTO credenziali)) {

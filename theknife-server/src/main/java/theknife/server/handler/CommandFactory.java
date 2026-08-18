@@ -44,9 +44,17 @@ import theknife.server.service.UtenteService;
  */
 public class CommandFactory {
 
+    /**
+     * Registro dei Command, uno per CommandType. Popolato nel costruttore e
+     * mai piu' modificato: la sola lettura concorrente non richiede
+     * sincronizzazione.
+     */
     private final Map<CommandType, Command> comandi = new EnumMap<>(CommandType.class);
 
     /**
+     * Costruisce i venti Command sui service indicati e li registra nella
+     * mappa.
+     *
      * @param ristoranteService logica di dominio di ristoranti e preferiti
      * @param recensioneService logica di dominio delle recensioni
      * @param utenteService     logica di autenticazione e registrazione

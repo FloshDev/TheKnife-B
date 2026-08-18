@@ -31,28 +31,49 @@ import theknife.common.dto.PosizioneDTO;
  */
 public class GeocodingClient {
 
+    /** Endpoint del geocoding diretto: da indirizzo a coordinate. */
     private static final String BASE_RICERCA = "https://nominatim.openstreetmap.org/search";
+
+    /** Endpoint del reverse geocoding: da coordinate a nome del luogo. */
     private static final String BASE_REVERSE = "https://nominatim.openstreetmap.org/reverse";
 
     /** Richiesto dalla policy di Nominatim: le richieste anonime vengono rifiutate. */
     private static final String USER_AGENT =
         "TheKnife/1.0 (Laboratorio Interdisciplinare B - progetto universitario)";
 
+    /**
+     * Timeout di connessione e di risposta. Volutamente breve: il geocoding e'
+     * un ramo migliorativo, un servizio lento non deve far attendere il client.
+     */
     private static final Duration TIMEOUT = Duration.ofSeconds(2);
 
     /** Intervallo minimo fra due richieste, in millisecondi (policy: 1 req/s). */
     private static final long INTERVALLO_MINIMO_MS = 1000;
 
+    /** Espressione regolare che isola la latitudine nella risposta JSON. */
     private static final Pattern CAMPO_LAT = Pattern.compile("\"lat\"\\s*:\\s*\"([^\"]+)\"");
+
+    /** Espressione regolare che isola la longitudine nella risposta JSON. */
     private static final Pattern CAMPO_LON = Pattern.compile("\"lon\"\\s*:\\s*\"([^\"]+)\"");
+
+    /**
+     * Espressione regolare che isola il nome del luogo nella risposta JSON.
+     * Tiene conto delle sequenze di escape, che nei nomi di luogo compaiono
+     * spesso.
+     */
     private static final Pattern CAMPO_NOME =
         Pattern.compile("\"display_name\"\\s*:\\s*\"((?:[^\"\\\\]|\\\\.)*)\"");
 
     /** Istante dell'ultima richiesta inviata, condiviso fra tutti i thread. */
     private static long ultimaRichiesta = 0;
 
+    /** Client HTTP del JDK, riusato per tutte le richieste dell'istanza. */
     private final HttpClient http;
 
+    /**
+     * Costruisce il client con il timeout e la gestione dei redirect previsti
+     * dalla policy di Nominatim.
+     */
     public GeocodingClient() {
         this.http = HttpClient.newBuilder()
             .connectTimeout(TIMEOUT)

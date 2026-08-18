@@ -23,12 +23,30 @@ import theknife.server.service.RecensioneService;
  */
 public class EliminaRecensioneCommand implements Command {
 
+    /**
+     * Service delle recensioni, a cui il comando delega la logica di dominio.
+     */
     private final RecensioneService recensioneService;
 
+    /**
+     * Costruisce il comando sul service delle recensioni.
+     *
+     * @param recensioneService il service delle recensioni
+     */
     public EliminaRecensioneCommand(RecensioneService recensioneService) {
         this.recensioneService = recensioneService;
     }
 
+    /**
+     * Cancella la recensione indicata, dopo aver verificato che appartenga al cliente di sessione.
+     *
+     * @param request la richiesta, con un {@link IdRecensioneDTO} come payload
+     * @param utente  il cliente autenticato, di cui si confronta l'identificativo
+     *                con l'autore della recensione
+     * @return SUCCESSO senza payload, NON_AUTORIZZATO se la recensione e' di un
+     *         altro utente, NON_TROVATO se non esiste, ERRORE_VALIDAZIONE se
+     *         l'identificativo manca o e' di tipo errato, ERRORE_SERVER se l'accesso al database fallisce
+     */
     @Override
     public Response execute(Request request, UtenteDTO utente) {
         if (!(request.getPayload() instanceof IdRecensioneDTO id)) {

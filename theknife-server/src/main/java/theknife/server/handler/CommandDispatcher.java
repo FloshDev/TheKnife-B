@@ -21,18 +21,57 @@ import theknife.server.service.SessionManager;
  */
 public class CommandDispatcher {
 
+    /**
+     * Livello di accesso richiesto da un comando. Riproduce la colonna
+     * "accesso" della tabella di autorizzazione del contratto: i quattro valori
+     * coprono tutti e venti i CommandType, quindi ogni comando ha un requisito
+     * e nessuno resta implicitamente aperto.
+     */
     private enum Requisito {
-        NESSUNO, AUTENTICATO, CLIENTE, RISTORATORE
+
+        /** Comando pubblico: eseguibile anche senza sessione. */
+        NESSUNO,
+
+        /** Richiede una sessione valida, di qualunque ruolo. */
+        AUTENTICATO,
+
+        /** Riservato agli utenti con ruolo Cliente. */
+        CLIENTE,
+
+        /** Riservato agli utenti con ruolo Ristoratore. */
+        RISTORATORE
     }
 
+    /** Registro dei Command, uno per CommandType, condiviso da tutti i thread. */
     private CommandFactory commandFactory;
+
+    /** Registro delle sessioni attive, usato per risolvere il token in utente. */
     private final SessionManager sessionManager;
 
+    /**
+     * Costruisce il dispatcher sui due registri che gli servono.
+     *
+     * @param commandFactory la factory che risolve il CommandType nel Command
+     * @param sessionManager il registro delle sessioni attive
+     */
     public CommandDispatcher(CommandFactory commandFactory, SessionManager sessionManager) {
         this.commandFactory = commandFactory;
         this.sessionManager = sessionManager;
     }
 
+    /**
+     * Instrada la richiesta al Command che la esegue, dopo il gate di
+     * autorizzazione. Non propaga eccezioni: ogni esito, compreso l'errore,
+     * torna al client come Response, perche' un'eccezione qui lascerebbe il
+     * client in attesa di una risposta che non arriva.
+     *
+     * @param request la richiesta letta dal socket, eventualmente
+     *                <code>null</code> o priva di comando
+     * @return la risposta da inviare al client: quella prodotta dal Command,
+     *         oppure NON_AUTORIZZATO se il ruolo non soddisfa il requisito del
+     *         comando, ERRORE_VALIDAZIONE se la richiesta e' priva di comando,
+     *         ERRORE_SERVER se il comando non e' registrato
+     */
     public Response dispatch(Request request) {
         try {
             if (request == null || request.getCommandType() == null) {
@@ -54,6 +93,16 @@ public class CommandDispatcher {
         }
     }
 
+    /**
+     * Confronta il requisito di accesso del comando con l'utente della
+     * sessione. Un utente assente - token mancante, scaduto o mai emesso -
+     * supera solo il requisito NESSUNO.
+     *
+     * @param comando il tipo di comando richiesto
+     * @param utente  l'utente della sessione, oppure <code>null</code> se la
+     *                richiesta non e' autenticata
+     * @return <code>true</code> se l'utente puo' eseguire quel comando
+     */
     private boolean accessoConsentito(CommandType comando, UtenteDTO utente) {
         return switch (requisitoDi(comando)) {
             case NESSUNO      -> true;
@@ -63,6 +112,15 @@ public class CommandDispatcher {
         };
     }
 
+    /**
+     * Restituisce il livello di accesso richiesto da un comando, secondo la
+     * tabella di autorizzazione del contratto. Lo switch e' esaustivo
+     * sull'enum: aggiungere un CommandType senza classificarlo qui e' un
+     * errore di compilazione, non un comando lasciato aperto per distrazione.
+     *
+     * @param comando il tipo di comando da classificare
+     * @return il requisito di accesso corrispondente
+     */
     private Requisito requisitoDi(CommandType comando) {
         return switch (comando) {
             case CERCA_RISTORANTI,

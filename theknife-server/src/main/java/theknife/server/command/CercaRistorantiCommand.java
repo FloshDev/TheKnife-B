@@ -21,12 +21,30 @@ import theknife.server.service.RistoranteService;
  */
 public class CercaRistorantiCommand implements Command {
 
+    /**
+     * Service dei ristoranti, a cui il comando delega la logica di dominio.
+     */
     private final RistoranteService ristoranteService;
 
+    /**
+     * Costruisce il comando sul service dei ristoranti.
+     *
+     * @param ristoranteService il service dei ristoranti
+     */
     public CercaRistorantiCommand(RistoranteService ristoranteService) {
         this.ristoranteService = ristoranteService;
     }
 
+    /**
+     * Cerca i ristoranti che soddisfano i filtri contenuti nel payload.
+     *
+     * @param request la richiesta, con un {@link CercaRistorantiDTO} come payload
+     * @param utente  ignorato: il comando non richiede autenticazione
+     * @return SUCCESSO con la lista dei {@link RistoranteDTO} trovati,
+     *         NON_TROVATO con lista vuota se nessuno corrisponde ai criteri,
+     *         ERRORE_VALIDAZIONE se i criteri mancano o sono di tipo errato,
+     *         ERRORE_SERVER se l'accesso al database fallisce
+     */
     @Override
     public Response execute(Request request, UtenteDTO utente) {
         if (!(request.getPayload() instanceof CercaRistorantiDTO filtri)) {

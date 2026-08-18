@@ -24,12 +24,29 @@ import theknife.server.service.RecensioneService;
  */
 public class AggiungiRecensioneCommand implements Command {
 
+    /**
+     * Service delle recensioni, a cui il comando delega la logica di dominio.
+     */
     private final RecensioneService recensioneService;
 
+    /**
+     * Costruisce il comando sul service delle recensioni.
+     *
+     * @param recensioneService il service delle recensioni
+     */
     public AggiungiRecensioneCommand(RecensioneService recensioneService) {
         this.recensioneService = recensioneService;
     }
 
+    /**
+     * Pubblica la recensione contenuta nel payload a nome del cliente di sessione.
+     *
+     * @param request la richiesta, con un {@link AggiungiRecensioneDTO} come payload
+     * @param utente  il cliente autenticato, autore della recensione
+     * @return SUCCESSO senza payload, ERRORE_VALIDAZIONE se i dati mancano o
+     *         sono fuori scala, ERRORE se il cliente ha gia' recensito quel
+     *         ristorante, ERRORE_SERVER se l'accesso al database fallisce
+     */
     @Override
     public Response execute(Request request, UtenteDTO utente) {
         if (!(request.getPayload() instanceof AggiungiRecensioneDTO dati)) {

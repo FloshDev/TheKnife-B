@@ -28,12 +28,18 @@ import theknife.server.exception.ValidationException;
  */
 public class RecensioneService {
 
+    /** Voto minimo ammesso, come il vincolo <code>CHECK</code> sulla tabella. */
     private static final int STELLE_MINIME = 1;
+
+    /** Voto massimo ammesso, come il vincolo <code>CHECK</code> sulla tabella. */
     private static final int STELLE_MASSIME = 5;
 
+    /** Accesso alla tabella delle recensioni. */
     private final RecensioneDAO recensioneDAO;
 
     /**
+     * Costruisce il service sul DAO delle recensioni.
+     *
      * @param recensioneDAO accesso alle recensioni
      */
     public RecensioneService(RecensioneDAO recensioneDAO) {

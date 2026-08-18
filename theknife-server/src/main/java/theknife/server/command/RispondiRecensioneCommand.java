@@ -30,15 +30,39 @@ import theknife.server.service.RistoranteService;
  */
 public class RispondiRecensioneCommand implements Command {
 
+    /**
+     * Service delle recensioni, a cui il comando delega la logica di dominio.
+     */
     private final RecensioneService recensioneService;
+
+    /**
+     * Service dei ristoranti, usato per risalire al gestore del ristorante recensito.
+     */
     private final RistoranteService ristoranteService;
 
+    /**
+     * Costruisce il comando sui due service coinvolti nel controllo di proprieta'.
+     *
+     * @param recensioneService il service delle recensioni
+     * @param ristoranteService il service dei ristoranti
+     */
     public RispondiRecensioneCommand(RecensioneService recensioneService,
                                      RistoranteService ristoranteService) {
         this.recensioneService = recensioneService;
         this.ristoranteService = ristoranteService;
     }
 
+    /**
+     * Registra la risposta del ristoratore di sessione a una recensione di un suo ristorante.
+     *
+     * @param request la richiesta, con un {@link RispondiRecensioneDTO} come payload
+     * @param utente  il ristoratore autenticato, confrontato con il gestore del
+     *                ristorante recensito
+     * @return SUCCESSO senza payload, NON_AUTORIZZATO se il ristorante e'
+     *         gestito da un altro utente, ERRORE se la recensione ha gia' una
+     *         risposta, ERRORE_VALIDAZIONE se i dati mancano o sono di tipo
+     *         errato, ERRORE_SERVER se l'accesso al database fallisce
+     */
     @Override
     public Response execute(Request request, UtenteDTO utente) {
         if (!(request.getPayload() instanceof RispondiRecensioneDTO dati)) {

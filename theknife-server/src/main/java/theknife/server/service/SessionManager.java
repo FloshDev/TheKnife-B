@@ -16,8 +16,20 @@ import theknife.common.dto.UtenteDTO;
  */
 public class SessionManager {
 
+    /**
+     * Sessioni attive, indicizzate per token. La mappa e' concorrente perche'
+     * un thread per client la legge a ogni richiesta e la scrive a ogni login
+     * o logout.
+     */
     private final ConcurrentHashMap<String, UtenteDTO> sessioni
         = new ConcurrentHashMap<>();
+
+    /**
+     * Costruisce un registro vuoto: all'avvio del server nessuna sessione e'
+     * attiva, perche' le sessioni non sopravvivono al riavvio.
+     */
+    public SessionManager() {
+    }
 
     /**
      * Registra una nuova sessione attiva.

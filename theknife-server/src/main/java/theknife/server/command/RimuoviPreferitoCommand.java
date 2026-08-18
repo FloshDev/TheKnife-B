@@ -18,12 +18,29 @@ import theknife.server.service.RistoranteService;
  */
 public class RimuoviPreferitoCommand implements Command {
 
+    /**
+     * Service dei ristoranti, a cui il comando delega la logica di dominio.
+     */
     private final RistoranteService ristoranteService;
 
+    /**
+     * Costruisce il comando sul service dei ristoranti.
+     *
+     * @param ristoranteService il service dei ristoranti
+     */
     public RimuoviPreferitoCommand(RistoranteService ristoranteService) {
         this.ristoranteService = ristoranteService;
     }
 
+    /**
+     * Rimuove il ristorante indicato dai preferiti del cliente di sessione.
+     *
+     * @param request la richiesta, con un {@link IdRistoranteDTO} come payload
+     * @param utente  il cliente autenticato, garantito non <code>null</code> dal
+     *                gate del dispatcher
+     * @return SUCCESSO senza payload, ERRORE_VALIDAZIONE se l'identificativo
+     *         manca o e' di tipo errato, ERRORE_SERVER se l'accesso al database fallisce
+     */
     @Override
     public Response execute(Request request, UtenteDTO utente) {
         if (!(request.getPayload() instanceof IdRistoranteDTO id)) {

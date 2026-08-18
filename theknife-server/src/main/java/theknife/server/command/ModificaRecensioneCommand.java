@@ -25,12 +25,30 @@ import theknife.server.service.RecensioneService;
  */
 public class ModificaRecensioneCommand implements Command {
 
+    /**
+     * Service delle recensioni, a cui il comando delega la logica di dominio.
+     */
     private final RecensioneService recensioneService;
 
+    /**
+     * Costruisce il comando sul service delle recensioni.
+     *
+     * @param recensioneService il service delle recensioni
+     */
     public ModificaRecensioneCommand(RecensioneService recensioneService) {
         this.recensioneService = recensioneService;
     }
 
+    /**
+     * Aggiorna la recensione indicata, dopo aver verificato che appartenga al cliente di sessione.
+     *
+     * @param request la richiesta, con un {@link ModificaRecensioneDTO} come payload
+     * @param utente  il cliente autenticato, di cui si confronta l'identificativo
+     *                con l'autore della recensione
+     * @return SUCCESSO senza payload, NON_AUTORIZZATO se la recensione e' di un
+     *         altro utente, NON_TROVATO se non esiste, ERRORE_VALIDAZIONE se i
+     *         dati mancano o sono fuori scala, ERRORE_SERVER se l'accesso al database fallisce
+     */
     @Override
     public Response execute(Request request, UtenteDTO utente) {
         if (!(request.getPayload() instanceof ModificaRecensioneDTO dati)) {

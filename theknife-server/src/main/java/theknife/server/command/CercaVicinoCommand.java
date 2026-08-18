@@ -22,12 +22,31 @@ import theknife.server.service.RistoranteService;
  */
 public class CercaVicinoCommand implements Command {
 
+    /**
+     * Service dei ristoranti, a cui il comando delega la logica di dominio.
+     */
     private final RistoranteService ristoranteService;
 
+    /**
+     * Costruisce il comando sul service dei ristoranti.
+     *
+     * @param ristoranteService il service dei ristoranti
+     */
     public CercaVicinoCommand(RistoranteService ristoranteService) {
         this.ristoranteService = ristoranteService;
     }
 
+    /**
+     * Cerca i ristoranti entro il raggio indicato dal luogo richiesto.
+     *
+     * @param request la richiesta, con un {@link CercaVicinoDTO} come payload
+     * @param utente  ignorato: il comando non richiede autenticazione
+     * @return SUCCESSO con la lista dei {@link RistoranteDTO} trovati,
+     *         NON_TROVATO con lista vuota se nessuno rientra nel raggio, ERRORE
+     *         se le coordinate del luogo non sono determinabili,
+     *         ERRORE_VALIDAZIONE se luogo o raggio non sono validi,
+     *         ERRORE_SERVER se l'accesso al database fallisce
+     */
     @Override
     public Response execute(Request request, UtenteDTO utente) {
         if (!(request.getPayload() instanceof CercaVicinoDTO filtri)) {

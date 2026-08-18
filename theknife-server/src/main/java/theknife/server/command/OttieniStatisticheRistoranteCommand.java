@@ -26,12 +26,31 @@ import theknife.server.service.RistoranteService;
  */
 public class OttieniStatisticheRistoranteCommand implements Command {
 
+    /**
+     * Service dei ristoranti, a cui il comando delega la logica di dominio.
+     */
     private final RistoranteService ristoranteService;
 
+    /**
+     * Costruisce il comando sul service dei ristoranti.
+     *
+     * @param ristoranteService il service dei ristoranti
+     */
     public OttieniStatisticheRistoranteCommand(RistoranteService ristoranteService) {
         this.ristoranteService = ristoranteService;
     }
 
+    /**
+     * Restituisce il riepilogo delle recensioni di un ristorante del ristoratore di sessione.
+     *
+     * @param request la richiesta, con un {@link IdRistoranteDTO} come payload
+     * @param utente  il ristoratore autenticato, confrontato con il gestore del
+     *                ristorante richiesto
+     * @return SUCCESSO con le {@link StatisticheRistoranteDTO} del ristorante,
+     *         NON_AUTORIZZATO se il ristorante e' gestito da un altro utente,
+     *         NON_TROVATO se non esiste, ERRORE_VALIDAZIONE se l'identificativo
+     *         manca o e' di tipo errato, ERRORE_SERVER se l'accesso al database fallisce
+     */
     @Override
     public Response execute(Request request, UtenteDTO utente) {
         if (!(request.getPayload() instanceof IdRistoranteDTO id)) {

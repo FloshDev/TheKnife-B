@@ -32,17 +32,34 @@ import theknife.common.dto.PosizioneDTO;
  */
 public class LocalizzazioneIpClient {
 
+    /**
+     * Endpoint del servizio, con la lista dei soli campi che servono: chiedere
+     * meno dati riduce la risposta e non espone informazioni inutili.
+     */
     private static final String ENDPOINT = "http://ip-api.com/json/?fields=status,lat,lon,city";
 
+    /**
+     * Timeout di connessione e di risposta. Breve per la stessa ragione del
+     * geocoding: la stima e' un suggerimento, non deve far attendere il client.
+     */
     private static final Duration TIMEOUT = Duration.ofSeconds(2);
 
+    /** Espressione regolare che isola l'esito della chiamata nella risposta JSON. */
     private static final Pattern CAMPO_STATO = Pattern.compile("\"status\"\\s*:\\s*\"([^\"]+)\"");
+
+    /** Espressione regolare che isola la latitudine nella risposta JSON. */
     private static final Pattern CAMPO_LAT = Pattern.compile("\"lat\"\\s*:\\s*(-?[0-9.]+)");
+
+    /** Espressione regolare che isola la longitudine nella risposta JSON. */
     private static final Pattern CAMPO_LON = Pattern.compile("\"lon\"\\s*:\\s*(-?[0-9.]+)");
+
+    /** Espressione regolare che isola il nome della citta' nella risposta JSON. */
     private static final Pattern CAMPO_CITTA = Pattern.compile("\"city\"\\s*:\\s*\"([^\"]*)\"");
 
+    /** Client HTTP del JDK, riusato per tutte le richieste dell'istanza. */
     private final HttpClient http;
 
+    /** Costruisce il client con il timeout breve previsto per questa stima. */
     public LocalizzazioneIpClient() {
         this.http = HttpClient.newBuilder()
             .connectTimeout(TIMEOUT)

@@ -19,12 +19,29 @@ import theknife.server.service.UtenteService;
  */
 public class RegistratiCommand implements Command {
 
+    /**
+     * Service degli utenti, a cui il comando delega autenticazione e sessioni.
+     */
     private final UtenteService utenteService;
 
+    /**
+     * Costruisce il comando sul service degli utenti.
+     *
+     * @param utenteService il service degli utenti
+     */
     public RegistratiCommand(UtenteService utenteService) {
         this.utenteService = utenteService;
     }
 
+    /**
+     * Crea il nuovo utente descritto dal payload.
+     *
+     * @param request la richiesta, con un {@link RegistrazioneDTO} come payload
+     * @param utente  ignorato: il comando non richiede autenticazione
+     * @return SUCCESSO senza payload, ERRORE_VALIDAZIONE se un campo
+     *         obbligatorio manca, ERRORE se lo username e' gia' in uso,
+     *         ERRORE_SERVER se l'accesso al database fallisce
+     */
     @Override
     public Response execute(Request request, UtenteDTO utente) {
         if (!(request.getPayload() instanceof RegistrazioneDTO dati)) {

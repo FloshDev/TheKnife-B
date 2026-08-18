@@ -19,12 +19,29 @@ import theknife.server.service.RistoranteService;
  */
 public class OttieniDettagliRistoranteCommand implements Command {
 
+    /**
+     * Service dei ristoranti, a cui il comando delega la logica di dominio.
+     */
     private final RistoranteService ristoranteService;
 
+    /**
+     * Costruisce il comando sul service dei ristoranti.
+     *
+     * @param ristoranteService il service dei ristoranti
+     */
     public OttieniDettagliRistoranteCommand(RistoranteService ristoranteService) {
         this.ristoranteService = ristoranteService;
     }
 
+    /**
+     * Restituisce la scheda completa del ristorante indicato.
+     *
+     * @param request la richiesta, con un {@link IdRistoranteDTO} come payload
+     * @param utente  ignorato: il comando non richiede autenticazione
+     * @return SUCCESSO con il {@link RistoranteDTO} richiesto, NON_TROVATO se
+     *         l'identificativo non esiste, ERRORE_VALIDAZIONE se manca o e' di
+     *         tipo errato, ERRORE_SERVER se l'accesso al database fallisce
+     */
     @Override
     public Response execute(Request request, UtenteDTO utente) {
         if (!(request.getPayload() instanceof IdRistoranteDTO id)) {

@@ -26,13 +26,28 @@ import theknife.server.exception.ValidationException;
  */
 public class UtenteService {
 
+    /**
+     * Fattore di costo di BCrypt: il numero di iterazioni cresce come
+     * 2<sup>12</sup>, abbastanza da rendere impraticabile la forza bruta su un
+     * hash rubato senza appesantire in modo percettibile il login.
+     */
     private static final int COSTO_BCRYPT = 12;
+
+    /**
+     * Messaggio unico per username inesistente e password errata: distinguere
+     * i due casi rivelerebbe quali username sono registrati.
+     */
     private static final String CREDENZIALI_NON_VALIDE = "Username o password non validi.";
 
+    /** Accesso alla tabella degli utenti. */
     private final UtenteDAO utenteDAO;
+
+    /** Registro delle sessioni attive, aggiornato da accesso e uscita. */
     private final SessionManager sessionManager;
 
     /**
+     * Costruisce il service sulle sue due dipendenze.
+     *
      * @param utenteDAO      accesso agli utenti
      * @param sessionManager registro delle sessioni attive
      */

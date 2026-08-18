@@ -17,6 +17,12 @@ import theknife.server.network.Server;
 public class TheKnifeServer {
 
     /**
+     * Classe di solo avvio: non ha stato e non va istanziata.
+     */
+    private TheKnifeServer() {
+    }
+
+    /**
      * Avvia il server.
      *
      * @param args opzionalmente la porta di ascolto come primo argomento

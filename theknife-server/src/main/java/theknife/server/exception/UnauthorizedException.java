@@ -8,8 +8,14 @@ package theknife.server.exception;
  */
 public class UnauthorizedException extends Exception {
 
+    /** Versione della classe ai fini della serializzazione. */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Crea l'eccezione con il messaggio che descrive il permesso mancante.
+     *
+     * @param messaggio la descrizione dell'operazione non consentita
+     */
     public UnauthorizedException(String messaggio) {
         super(messaggio);
     }

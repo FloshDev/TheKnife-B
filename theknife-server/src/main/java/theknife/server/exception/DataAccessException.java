@@ -15,6 +15,7 @@ package theknife.server.exception;
    */
   public class DataAccessException extends Exception {
 
+      /** Versione della classe ai fini della serializzazione. */
       private static final long serialVersionUID = 1L;
 
       /**

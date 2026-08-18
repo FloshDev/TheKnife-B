@@ -20,12 +20,29 @@ import theknife.server.service.RecensioneService;
  */
 public class LeggiRecensioniRistorantiGestitiCommand implements Command {
 
+    /**
+     * Service delle recensioni, a cui il comando delega la logica di dominio.
+     */
     private final RecensioneService recensioneService;
 
+    /**
+     * Costruisce il comando sul service delle recensioni.
+     *
+     * @param recensioneService il service delle recensioni
+     */
     public LeggiRecensioniRistorantiGestitiCommand(RecensioneService recensioneService) {
         this.recensioneService = recensioneService;
     }
 
+    /**
+     * Restituisce le recensioni di tutti i ristoranti del ristoratore di sessione.
+     *
+     * @param request la richiesta, priva di payload
+     * @param utente  il ristoratore autenticato, di cui si usa l'identificativo
+     *                per selezionare i ristoranti
+     * @return SUCCESSO con la lista dei {@link RecensioneDTO} trovati,
+     *         eventualmente vuota, ERRORE_SERVER se l'accesso al database fallisce
+     */
     @Override
     public Response execute(Request request, UtenteDTO utente) {
         try {

@@ -17,8 +17,14 @@ import theknife.server.ConfigurazioneDB;
  */
 public class DatabaseManager {
 
+    /** Parametri di connessione letti all'avvio del server. */
     private final ConfigurazioneDB config;
 
+    /**
+     * Costruisce il gestore sulla configurazione indicata.
+     *
+     * @param config i parametri di connessione al database
+     */
     public DatabaseManager (ConfigurazioneDB config) {
         this.config = config;
     }
