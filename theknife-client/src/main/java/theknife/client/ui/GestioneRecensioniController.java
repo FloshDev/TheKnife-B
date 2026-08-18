@@ -7,13 +7,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import theknife.client.service.RecensioneService;
 import theknife.common.dto.RecensioneDTO;
@@ -26,8 +26,6 @@ import theknife.common.dto.RispondiRecensioneDTO;
  */
 
 public class GestioneRecensioniController {
-    /** Nome del ristorante a cui appartiene la recensione selezionata. */
-    @FXML private Label nomeRistoranteLabel;
     /** Lista delle recensioni di tutti i ristoranti gestiti. */
     @FXML private ListView<RecensioneDTO> recensioniListView;
     /** Area di testo per la risposta alla recensione selezionata. */
@@ -39,31 +37,6 @@ public class GestioneRecensioniController {
 
     /** Invia al server i comandi sulle recensioni dei ristoranti gestiti. */
     private final RecensioneService recensioneService = new RecensioneService();
-
-    /**
-     * Carica dal server le recensioni di tutti i ristoranti gestiti
-     * dall'utente e le mostra, sostituendo il contenuto attuale della lista.
-     */
-    private void caricaRecensioni() {
-        TaskRunner.run(
-            () -> recensioneService.leggiRecensioniRistorantiGestiti(),
-            recensioni -> {
-                recensioniListView.getItems().setAll(recensioni);
-                recensioniListView.setCellFactory(lv -> new ListCell<RecensioneDTO>() {
-                    @Override
-                    protected void updateItem(RecensioneDTO item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty || item == null) {
-                            setText(null);
-                        } else {
-                            String base = item.getTitolo() + " - " + item.getStelle() + "★ (ristorante #" + item.getIdRistorante() + ")";
-                            setText(item.getRisposta() == null ? base : base + " [risposto]");
-                        }
-                    }
-                });
-            }
-        );
-    }
 
     /**
      * Carica le recensioni all'apertura della schermata.
@@ -107,5 +80,40 @@ public class GestioneRecensioniController {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/dashboard.fxml"));
         stage.getScene().setRoot(root);
+    }
+
+    /**
+     * Carica dal server le recensioni di tutti i ristoranti gestiti
+     * dall'utente e le mostra, sostituendo il contenuto attuale della lista.
+     */
+    private void caricaRecensioni() {
+        TaskRunner.run(
+            () -> recensioneService.leggiRecensioniRistorantiGestiti(),
+            recensioni -> {
+                recensioniListView.getItems().setAll(recensioni);
+                recensioniListView.setCellFactory(lv -> new ListCell<RecensioneDTO>() {
+                    private final Label titoloLabel = new Label();
+                    private final Label infoLabel = new Label();
+                    private final VBox contenuto = new VBox(titoloLabel, infoLabel);
+                    {
+                        titoloLabel.getStyleClass().add("risultato-nome");
+                        infoLabel.getStyleClass().add("risultato-info");
+                    }
+
+                    @Override
+                    protected void updateItem(RecensioneDTO item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty || item == null) {
+                            setGraphic(null);
+                        } else {
+                            titoloLabel.setText(item.getStelle() + "★ " + item.getTitolo());
+                            infoLabel.setText("Ristorante #" + item.getIdRistorante()
+                                + (item.getRisposta() != null ? " · risposto" : " · da rispondere"));
+                            setGraphic(contenuto);
+                        }
+                    }
+                });
+            }
+        );
     }
 }

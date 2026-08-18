@@ -3,15 +3,17 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.GestioneRecensioniController">
+<VBox styleClass="page-root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.GestioneRecensioniController">
 
-    <Label fx:id="nomeRistoranteLabel" text="Nome Ristorante"/>
+    <VBox styleClass="card, card-lista">
+        <Label text="Gestione recensione" styleClass="brand-title"/>
 
-    <ListView fx:id="recensioniListView" />
+        <ListView fx:id="recensioniListView" styleClass="lista-risultati" VBox.vgrow="ALWAYS"/>
 
-    <TextArea fx:id="rispostaField" promptText="Scrivi la risposta"/>
+        <TextArea fx:id="rispostaField" promptText="Scrivi la risposta" styleClass="area-testo"/>
 
-    <Button fx:id="rispondiButton" text="Rispondi" onAction="#handleRispondi"/>
-    <Button fx:id="tornaIndietroButton" text="Torna Indietro" onAction="#handleTornaIndietro"/>
+        <Button fx:id="rispondiButton" text="Rispondi" onAction="#handleRispondi" styleClass="bottone-primario"/>
+        <Button fx:id="tornaIndietroButton" text="Torna Indietro" onAction="#handleTornaIndietro" styleClass="bottone-secondario"/>
+    </VBox>
 
 </VBox>

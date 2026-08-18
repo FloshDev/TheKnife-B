@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -16,6 +17,8 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import theknife.client.service.RecensioneService;
 import theknife.common.dto.AggiungiRecensioneDTO;
+import theknife.common.dto.ModificaRecensioneDTO;
+import theknife.common.dto.RecensioneDTO;
 import theknife.common.dto.RistoranteDTO;
 
 /**
@@ -26,6 +29,8 @@ import theknife.common.dto.RistoranteDTO;
 
 public class ScriviRecensioneController {
 
+    /** Titolo della schermata: "Scrivi una recensione" o, in modifica, "Modifica recensione". */
+    @FXML private Label titoloSchermataLabel;
     /** Nome del ristorante che si sta recensendo. */
     @FXML private Label nomeRistoranteLabel;
     /** Campo di testo per il titolo della recensione. */
@@ -34,8 +39,10 @@ public class ScriviRecensioneController {
     @FXML private HBox stelleBox;
     /** Area di testo per il corpo della recensione. */
     @FXML private TextArea testoField;
+    /** Bottone di conferma: "Pubblica" o, in modifica, "Salva modifiche". */
+    @FXML private Button pubblicaButton;
 
-    /** Invia al server la recensione appena scritta. */
+    /** Invia al server la recensione appena scritta o modificata. */
     private final RecensioneService recensioneService = new RecensioneService();
     /** Identificativo del ristorante recensito, ricevuto dalla schermata chiamante. */
     private long idRistorante;
@@ -43,6 +50,12 @@ public class ScriviRecensioneController {
     private List<RistoranteDTO> risultatiPrecedenti;
     /** Numero di stelle scelto dall'utente (0 = nessuna selezione ancora). */
     private int stelleSelezionate = 0;
+    /**
+     * La recensione da modificare, se la schermata è stata aperta in modalità
+     * modifica da {@link #impostaRecensioneDaModificare(RecensioneDTO)}, o
+     * {@code null} se si sta scrivendone una nuova.
+     */
+    private RecensioneDTO recensioneDaModificare;
     
     /**
      * Costruisce le 5 stelle cliccabili in {@code stelleBox}: ognuna, al
@@ -63,10 +76,11 @@ public class ScriviRecensioneController {
     }
 
     /**
-     * Pubblica la recensione scritta nel form e, al successo, torna al
-     * dettaglio del ristorante con i dati aggiornati.
+     * Pubblica la recensione scritta nel form, o salva le modifiche se la
+     * schermata è in modalità modifica ({@link #recensioneDaModificare}), e
+     * al successo torna al dettaglio del ristorante con i dati aggiornati.
      *
-     * @param event l'evento generato dal click sul bottone "Pubblica"
+     * @param event l'evento generato dal click sul bottone "Pubblica"/"Salva modifiche"
      */
     @FXML public void handlePubblica(ActionEvent event) {
         String titolo = titoloField.getText();
@@ -77,41 +91,31 @@ public class ScriviRecensioneController {
         }
         int stelle = stelleSelezionate;
 
-        AggiungiRecensioneDTO recensioneDTO = new AggiungiRecensioneDTO(idRistorante, titolo, testo, stelle);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); 
-        
-        TaskRunner.run(
-        () -> {recensioneService.aggiungiRecensione(recensioneDTO); return null;},
-        recensionePubblicata -> {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/dettaglio.fxml"));
-                Parent root = loader.load();
-                DettaglioController controller = loader.getController();
-                controller.impostaRistorante(idRistorante);
-                controller.impostaRisultatiPrecedenti(risultatiPrecedenti);
-                stage.getScene().setRoot(root);
-            } catch (IOException e) {
-                new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
-            }
+        if (recensioneDaModificare != null) {
+            ModificaRecensioneDTO modificaDTO = new ModificaRecensioneDTO(recensioneDaModificare.getIdRecensione(), titolo, testo, stelle);
+            TaskRunner.run(
+                () -> { recensioneService.modificaRecensione(modificaDTO); return null; },
+                esito -> tornaAlDettaglio(stage)
+            );
+        } else {
+            AggiungiRecensioneDTO recensioneDTO = new AggiungiRecensioneDTO(idRistorante, titolo, testo, stelle);
+            TaskRunner.run(
+                () -> { recensioneService.aggiungiRecensione(recensioneDTO); return null; },
+                esito -> tornaAlDettaglio(stage)
+            );
         }
-    );
     }
-    
+
     /**
-     * Torna al dettaglio del ristorante senza pubblicare la recensione.
+     * Torna al dettaglio del ristorante senza salvare.
      *
      * @param event l'evento generato dal click sul bottone "Annulla"
-     * @throws IOException se il caricamento della schermata fallisce
      */
-    @FXML public void handleAnnulla(ActionEvent event) throws IOException {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/dettaglio.fxml"));
-        Parent root = loader.load();
-        DettaglioController controller = loader.getController();
-        controller.impostaRistorante(idRistorante);
-        controller.impostaRisultatiPrecedenti(risultatiPrecedenti);
-        stage.getScene().setRoot(root);
+    @FXML public void handleAnnulla(ActionEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        tornaAlDettaglio(stage);
     }
 
     /**
@@ -137,6 +141,25 @@ public class ScriviRecensioneController {
     }
 
     /**
+     * Mette la schermata in modalità modifica: pre-riempie titolo, stelle e
+     * testo con i valori della recensione indicata, cambia il titolo della
+     * schermata e il testo del bottone di conferma. Da chiamare dopo
+     * {@link #impostaRistorante(long, String)}, che resta invariato — id e
+     * nome del ristorante servono comunque per tornare al dettaglio giusto.
+     *
+     * @param recensione la recensione da modificare
+     */
+    public void impostaRecensioneDaModificare(RecensioneDTO recensione) {
+        this.recensioneDaModificare = recensione;
+        titoloSchermataLabel.setText("Modifica recensione");
+        pubblicaButton.setText("Salva modifiche");
+        titoloField.setText(recensione.getTitolo());
+        testoField.setText(recensione.getTesto());
+        stelleSelezionate = recensione.getStelle();
+        aggiornaStelle();
+    }
+
+    /**
      * Ridisegna il riempimento delle 5 stelle in base a
      * {@link #stelleSelezionate}: piene fino al voto scelto, vuote dopo.
      */
@@ -147,6 +170,27 @@ public class ScriviRecensioneController {
             if (piena) {
                 stelleBox.getChildren().get(i).getStyleClass().add("stella-piena");
             }
+        }
+    }
+
+    /**
+     * Torna al dettaglio del ristorante corrente, con la lista di
+     * provenienza ripassata come sempre (S40) — usato sia da
+     * {@link #handlePubblica(ActionEvent)} al successo sia da
+     * {@link #handleAnnulla(ActionEvent)}.
+     *
+     * @param stage la finestra su cui sostituire la schermata
+     */
+    private void tornaAlDettaglio(Stage stage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/dettaglio.fxml"));
+            Parent root = loader.load();
+            DettaglioController controller = loader.getController();
+            controller.impostaRistorante(idRistorante);
+            controller.impostaRisultatiPrecedenti(risultatiPrecedenti);
+            stage.getScene().setRoot(root);
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
         }
     }
 }

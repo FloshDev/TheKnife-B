@@ -11,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -24,7 +25,6 @@ import theknife.client.service.RecensioneService;
 import theknife.client.service.RistoranteService;
 import theknife.common.dto.IdRecensioneDTO;
 import theknife.common.dto.IdRistoranteDTO;
-import theknife.common.dto.ModificaRecensioneDTO;
 import theknife.common.dto.RecensioneDTO;
 import theknife.common.dto.RispondiRecensioneDTO;
 import theknife.common.dto.RistoranteDTO;
@@ -225,47 +225,31 @@ public class DettaglioController {
     }
 
     /**
-     * Chiede titolo, stelle e testo aggiornati per la recensione selezionata
-     * nella lista e li invia al server. Ogni campo è pre-riempito col valore
-     * attuale nel rispettivo dialog; se l'utente annulla il dialog del
-     * titolo non invia nulla, mentre gli altri due, se annullati, mantengono
-     * il valore attuale (stelle) o il testo attuale (RF12).
+     * Naviga alla schermata di ScriviRecensione in modalità modifica,
+     * pre-riempita con i valori della recensione selezionata nella lista —
+     * stessa card, stesse stelle cliccabili, invece di dialog nativi in
+     * sequenza. Mostra un avviso se nessun elemento è selezionato.
+     *
+     * @param event l'evento generato dal click sul bottone "Modifica Recensione"
      */
-    @FXML private void handleModificaRecensione() {
+    @FXML private void handleModificaRecensione(ActionEvent event) {
         RecensioneDTO selezionata = recensioniListView.getSelectionModel().getSelectedItem();
-        if(selezionata == null) {
+        if (selezionata == null) {
             new Alert(Alert.AlertType.WARNING, "Seleziona una recensione da modificare.").showAndWait();
+            return;
         }
-        else {
-            TextInputDialog dialog = new TextInputDialog(selezionata.getTitolo());
-            dialog.setHeaderText("Modifica il titolo");
-            Optional<String> titoloModificato = dialog.showAndWait();
 
-            TextInputDialog dialog2 = new TextInputDialog(String.valueOf(selezionata.getStelle()));
-            dialog2.setHeaderText("Modifica le stelle");
-            Optional<String> stelleModificate = dialog2.showAndWait();
-
-            TextInputDialog dialog3 = new TextInputDialog(selezionata.getTesto());
-            dialog3.setHeaderText("Modifica il testo");
-            Optional<String> testoModificato = dialog3.showAndWait();
-
-            titoloModificato.ifPresent(nuovoTitolo -> {
-                int nuoveStelle;
-                try {
-                    nuoveStelle = stelleModificate.isPresent() ? Integer.parseInt(stelleModificate.get()) : selezionata.getStelle();
-                } catch (NumberFormatException e) {
-                    new Alert(Alert.AlertType.WARNING, "Le stelle devono essere un numero intero.").showAndWait();
-                    return;
-                }
-
-                TaskRunner.run(
-                    () -> {
-                        recensioneService.modificaRecensione(new ModificaRecensioneDTO(selezionata.getIdRecensione(), nuovoTitolo, testoModificato.orElse(selezionata.getTesto()), nuoveStelle));
-                        return null;
-                    },
-                    esito -> caricaRecensioni()
-                );
-            });
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/scriviRecensione.fxml"));
+            Parent root = loader.load();
+            ScriviRecensioneController controller = loader.getController();
+            controller.impostaRistorante(idRistorante, nomeLabel.getText());
+            controller.impostaRisultatiPrecedenti(risultatiPrecedenti);
+            controller.impostaRecensioneDaModificare(selezionata);
+            stage.getScene().setRoot(root);
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
         }
     }
 
@@ -281,8 +265,8 @@ public class DettaglioController {
         }
         else {
             Alert conferma = new Alert(Alert.AlertType.CONFIRMATION, "Sei sicuro di voler eliminare la recensione selezionata?");
-            Optional<javafx.scene.control.ButtonType> result = conferma.showAndWait();
-            if (result.isPresent() && result.get() == javafx.scene.control.ButtonType.OK) {
+            Optional<ButtonType> result = conferma.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
                 TaskRunner.run(
                     () -> {
                         recensioneService.eliminaRecensione(new IdRecensioneDTO(selezionata.getIdRecensione()));
@@ -352,9 +336,13 @@ public class DettaglioController {
     public void impostaRistorante(long idRistorante) {
         this.idRistorante = idRistorante;
         modificaRecensioneButton.setVisible(false);
+        modificaRecensioneButton.setManaged(false);
         eliminaRecensioneButton.setVisible(false);
+        eliminaRecensioneButton.setManaged(false);
         rispondiRecensioneButton.setVisible(false);
+        rispondiRecensioneButton.setManaged(false);
         eliminaRistoranteButton.setVisible(false);
+        eliminaRistoranteButton.setManaged(false);
         boolean ospite = ServerConnection.getInstance().getUtenteCorrente() == null;
         preferitiButton.setVisible(!ospite);
         preferitiButton.setManaged(!ospite);
@@ -365,10 +353,14 @@ public class DettaglioController {
                 UtenteDTO utente = ServerConnection.getInstance().getUtenteCorrente();
                 boolean isProprietario = utente != null && newSelection.getIdUtente() == utente.getIdUtente();
                 modificaRecensioneButton.setVisible(isProprietario);
+                modificaRecensioneButton.setManaged(isProprietario);
                 eliminaRecensioneButton.setVisible(isProprietario);
+                eliminaRecensioneButton.setManaged(isProprietario);
             } else {
                 modificaRecensioneButton.setVisible(false);
+                modificaRecensioneButton.setManaged(false);
                 eliminaRecensioneButton.setVisible(false);
+                eliminaRecensioneButton.setManaged(false);
             }
         });
         TaskRunner.run(
@@ -382,7 +374,9 @@ public class DettaglioController {
                 UtenteDTO utente = ServerConnection.getInstance().getUtenteCorrente();
                 boolean isGestore = utente != null && ristorante.getIdGestore() != null && ristorante.getIdGestore() == utente.getIdUtente();
                 rispondiRecensioneButton.setVisible(isGestore);
+                rispondiRecensioneButton.setManaged(isGestore);
                 eliminaRistoranteButton.setVisible(isGestore);
+                eliminaRistoranteButton.setManaged(isGestore);
             }
         );
 
