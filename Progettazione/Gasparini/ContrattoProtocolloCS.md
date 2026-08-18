@@ -11,7 +11,7 @@ OTTIENI_LOCALITA_INIZIALE, ACCEDI, REGISTRATI,
 AGGIUNGI_PREFERITO, RIMUOVI_PREFERITO, VEDI_PREFERITI, AGGIUNGI_RECENSIONE, MODIFICA_RECENSIONE, 
 ELIMINA_RECENSIONE,
 // RISTORATORE 
-AGGIUNGI_RISTORANTE, VEDI_RISTORANTI_GESTITI, LEGGI_RECENSIONI_RISTORANTI_GESTITI, 
+AGGIUNGI_RISTORANTE, ELIMINA_RISTORANTE, VEDI_RISTORANTI_GESTITI, LEGGI_RECENSIONI_RISTORANTI_GESTITI, 
 OTTIENI_STATISTICHE_RISTORANTE, RISPONDI_RECENSIONE, ASSOCIA_RISTORANTE,
 // CLIENTE E RISTORATORE
 ESCI
@@ -33,6 +33,7 @@ ESCI
 | CERCA_VICINO                        | CercaVicinoDTO         | `List<RistoranteDTO>`     |no    |non serve
 | ESCI (DISCONNETTITI)                | null                   | R. senza payload          |sì    |serve
 | AGGIUNGI_RISTORANTE                 | AggiungiRistoranteDTO  | RistoranteDTO             |sì    |serve
+| ELIMINA_RISTORANTE                  | IdRistoranteDTO        | R. senza payload          |sì    |serve
 | VEDI_RISTORANTI_GESTITI             | null                   | `List<RistoranteDTO>`     |sì    |serve
 | LEGGI_RECENSIONI_RISTORANTI_GESTITI | null                   | `List<RecensioneDTO>`     |sì    |serve
 | OTTIENI_STATISTICHE_RISTORANTE      | IdRistoranteDTO        | StatisticheRistoranteDTO  |sì    |serve
@@ -57,6 +58,7 @@ ESCI
 | tutti                 | CERCA_VICINO                        | sì-geoloc.     | lista                   |
 | cliente/ristoratore   | ESCI (DISCONNETTITI)                | no             | conferma                |
 | ristoratore           | AGGIUNGI_RISTORANTE                 | sì             | conferma                |
+| ristoratore           | ELIMINA_RISTORANTE                  | sì             | conferma                |
 | ristoratore           | VEDI_RISTORANTI_GESTITI             | no             | lista                   |
 | ristoratore           | LEGGI_RECENSIONI_RISTORANTI_GESTITI | no             | lista                   |
 | ristoratore           | OTTIENI_STATISTICHE_RISTORANTE      | sì             | sì                      |

@@ -83,6 +83,11 @@ ELIMINA_RECENSIONE,
 AGGIUNGI_RISTORANTE, 
 
 /**
+ * Costante che rappresenta il comando corrispondente alla richiesta di eliminazione di un ristorante.
+ */
+ELIMINA_RISTORANTE,
+
+/**
  * Costante che rappresenta il comando corrispondente alla richiesta di visualizzazione dei ristoranti gestiti.
  */
 VEDI_RISTORANTI_GESTITI, 
