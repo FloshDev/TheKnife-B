@@ -2,13 +2,26 @@
 <!-- Layout della schermata di login (S02). @author Barlera Marco, 760000, VA -->
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 
 <VBox styleClass="page-root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.LoginController">
 
     <VBox styleClass="card">
         <Label text="Accedi" styleClass="brand-title"/>
         <TextField fx:id="usernameField" promptText="Username" styleClass="campo-testo"/>
-        <PasswordField fx:id="passwordField" promptText="Password" styleClass="campo-testo"/>
+        <StackPane>
+            <PasswordField fx:id="passwordField" promptText="Password" styleClass="campo-testo"/>
+            <TextField fx:id="passwordFieldVisibile" promptText="Password" styleClass="campo-testo" visible="false" managed="false"/>
+            <Button fx:id="passwordToggleButton" onAction="#handleTogglePassword" styleClass="toggle-password" StackPane.alignment="CENTER_RIGHT">
+                <graphic>
+                    <StackPane>
+                        <Ellipse radiusX="10" radiusY="6.5" fill="TRANSPARENT" stroke="#b07840" strokeWidth="1.8"/>
+                        <Circle radius="3" fill="#b07840"/>
+                        <Line fx:id="occhioBarrato" startX="-10" startY="-6.5" endX="10" endY="6.5" stroke="#b07840" strokeWidth="1.8" visible="false"/>
+                    </StackPane>
+                </graphic>
+            </Button>
+        </StackPane>
         <Button text="Accedi" onAction="#handleLogin" styleClass="bottone-primario"/>
         <Hyperlink text="Non hai un account? Registrati" onAction="#handleRegistrazione" styleClass="link-primario"/>
         <Hyperlink text="Continua come ospite" onAction="#handleGuest" styleClass="link-secondario"/>

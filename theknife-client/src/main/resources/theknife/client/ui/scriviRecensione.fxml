@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Layout della schermata recensione (S07). @author Barlera Marco, 760000, VA -->
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox styleClass="page-root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.ScriviRecensioneController">
+
+    <VBox styleClass="card">
+        <Label text="Scrivi una recensione" styleClass="brand-title"/>
+        <Label fx:id="nomeRistoranteLabel" text="Nome Ristorante" styleClass="localita-label"/>
+    
+        <TextField fx:id="titoloField" promptText="Titolo" styleClass="campo-testo"/>
+        <HBox fx:id="stelleBox" alignment="CENTER" spacing="4">
+
+        </HBox>
+
+        <TextArea fx:id="testoField" promptText="Scrivi la tua recensione" styleClass="area-testo"/>
+        
+        <Button fx:id="pubblicaButton" text="Pubblica" onAction="#handlePubblica" styleClass="bottone-primario"/>
+        <Button fx:id="annullaButton" text="Annulla" onAction="#handleAnnulla" styleClass="bottone-secondario"/>
+    </VBox>
+
+</VBox>

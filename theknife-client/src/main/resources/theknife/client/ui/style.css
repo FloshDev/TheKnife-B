@@ -43,6 +43,37 @@
     -fx-border-color: #FAB12F;
 }
 
+.area-testo {
+    -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 13px;
+    -fx-pref-height: 120;
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-border-color: #f0d0a0;
+    -fx-border-radius: 14;
+    -fx-border-width: 2;
+}
+.area-testo .content {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-padding: 10 14 10 14;
+}
+.area-testo:focused {
+    -fx-border-color: #FAB12F;
+}
+
+.stella {
+    -fx-font-size: 32px;
+    -fx-text-fill: #f0d0a0;
+    -fx-cursor: hand;
+}
+.stella:hover {
+    -fx-text-fill: #FAB12F;
+}
+.stella-piena {
+    -fx-text-fill: #FAB12F;
+}
+
 .bottone-primario {
     -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
     -fx-font-size: 16px;

@@ -6,10 +6,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import theknife.client.service.AuthService;
 import theknife.common.enums.Ruolo;
@@ -24,8 +25,23 @@ public class LoginController {
     @FXML private TextField usernameField;
     /** Campo per la password, mascherato a schermo. */
     @FXML private PasswordField passwordField;
+    /** Campo gemello di {@link #passwordField}, in chiaro: visibile solo dopo il click sull'occhiolino. */
+    @FXML private TextField passwordFieldVisibile;
+    /** Bottone a forma di occhio che alterna {@link #passwordField} e {@link #passwordFieldVisibile}. */
+    @FXML private Button passwordToggleButton;
+    /** Barra diagonale sull'icona dell'occhio, visibile quando la password è in chiaro. */
+    @FXML private Line occhioBarrato;
+
     /** Invia al server le credenziali e riceve l'esito dell'autenticazione. */
     private final AuthService authService = new AuthService();
+
+    /**
+     * Collega il campo password in chiaro a quello mascherato, tenendoli
+     * sincronizzati per l'occhiolino di visibilità.
+     */
+    @FXML private void initialize() {
+        passwordFieldVisibile.textProperty().bindBidirectional(passwordField.textProperty());
+    }
 
     /**
      * Autentica l'utente con le credenziali inserite e, al successo, naviga
@@ -57,6 +73,19 @@ public class LoginController {
                 }
             }
         );
+    }
+
+    /**
+     * Alterna {@link #passwordField} e {@link #passwordFieldVisibile}, al
+     * click sul relativo occhiolino.
+     */
+    @FXML private void handleTogglePassword() {
+        boolean mostraChiaro = !passwordFieldVisibile.isVisible();
+        passwordField.setVisible(!mostraChiaro);
+        passwordField.setManaged(!mostraChiaro);
+        passwordFieldVisibile.setVisible(mostraChiaro);
+        passwordFieldVisibile.setManaged(mostraChiaro);
+        occhioBarrato.setVisible(mostraChiaro);
     }
 
     /**

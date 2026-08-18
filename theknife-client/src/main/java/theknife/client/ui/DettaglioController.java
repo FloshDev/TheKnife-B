@@ -125,10 +125,11 @@ public class DettaglioController {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/recensione.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/scriviRecensione.fxml"));
             Parent root = loader.load();
             ScriviRecensioneController controller = loader.getController();
             controller.impostaRistorante(idRistorante, nomeLabel.getText());
+            controller.impostaRisultatiPrecedenti(risultatiPrecedenti);
             stage.getScene().setRoot(root);
         } catch (IOException e) {
             new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
@@ -382,6 +383,6 @@ public class DettaglioController {
      * invece di restare fisso su "Aggiungi ai preferiti".
      */
     private void aggiornaTestoPreferiti() {
-        preferitiButton.setText(preferito ? "Nei preferiti" : "Aggiungi ai preferiti");
+        preferitiButton.setText(preferito ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti");
     }
 }
