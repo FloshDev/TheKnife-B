@@ -255,6 +255,30 @@ public class RistoranteService {
     }
 
     /**
+     * Cancella un ristorante dal catalogo, con tutto cio' che vi e' collegato
+     * (servizi, recensioni, preferiti: la cascata e' nello schema). La verifica
+     * che il ristorante sia gestito da chi lo cancella non sta qui ma nel
+     * comando, come per le statistiche (decisione 32): il service non conosce
+     * l'utente di sessione.
+     *
+     * @param id l'identificativo del ristorante da cancellare
+     * @throws ValidationException  se l'identificativo e' <code>null</code>
+     * @throws ApplicationException se nessun ristorante ha quell'identificativo
+     * @throws DataAccessException  se l'accesso al database fallisce
+     */
+    public void elimina (IdRistoranteDTO id)
+            throws ValidationException, ApplicationException, DataAccessException {
+
+        if (id == null) {
+            throw new ValidationException("Identificativo del ristorante mancante.");
+        }
+
+        if (!ristoranteDAO.elimina(id.getIdRistorante())) {
+            throw new ApplicationException("Ristorante non trovato.");
+        }
+    }
+
+    /**
      * Aggiunge un ristorante ai preferiti di un cliente.
      *
      * @param idCliente l'identificativo del cliente

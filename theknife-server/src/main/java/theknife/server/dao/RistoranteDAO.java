@@ -296,6 +296,30 @@ public class RistoranteDAO {
     }
 
     /**
+     * Cancella un ristorante dal catalogo. Le righe collegate - servizi,
+     * recensioni e preferiti - se ne vanno con lui: i tre vincoli di chiave
+     * esterna verso <code>RistorantiTheKnife</code> sono dichiarati
+     * <code>ON DELETE CASCADE</code> nello schema, quindi la cancellazione e'
+     * una sola istruzione e non serve una transazione esplicita.
+     *
+     * @param idRistorante l'identificativo del ristorante da cancellare
+     * @return <code>true</code> se una riga e' stata cancellata,
+     *         <code>false</code> se nessun ristorante aveva quell'identificativo
+     * @throws DataAccessException se l'accesso al database fallisce
+     */
+    public boolean elimina (long idRistorante) throws DataAccessException {
+        String sql = "DELETE FROM RistorantiTheKnife WHERE id_ristorante = ?";
+        try (Connection conn = db.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, idRistorante);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new DataAccessException("Errore nella cancellazione del ristorante: "
+                + e.getMessage());
+        }
+    }
+
+    /**
      * Calcola le statistiche di un ristorante: media delle stelle e numero di
      * recensioni ricevute.
      *

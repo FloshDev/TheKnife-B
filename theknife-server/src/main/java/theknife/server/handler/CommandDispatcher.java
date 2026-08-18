@@ -24,7 +24,7 @@ public class CommandDispatcher {
     /**
      * Livello di accesso richiesto da un comando. Riproduce la colonna
      * "accesso" della tabella di autorizzazione del contratto: i quattro valori
-     * coprono tutti e venti i CommandType, quindi ogni comando ha un requisito
+     * coprono tutti e ventuno i CommandType, quindi ogni comando ha un requisito
      * e nessuno resta implicitamente aperto.
      */
     private enum Requisito {
@@ -141,6 +141,7 @@ public class CommandDispatcher {
                  ELIMINA_RECENSIONE                  -> Requisito.CLIENTE;
 
             case AGGIUNGI_RISTORANTE,
+                 ELIMINA_RISTORANTE,
                  VEDI_RISTORANTI_GESTITI,
                  LEGGI_RECENSIONI_RISTORANTI_GESTITI,
                  OTTIENI_STATISTICHE_RISTORANTE,

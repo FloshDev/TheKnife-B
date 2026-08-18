@@ -13,6 +13,7 @@ import theknife.server.command.CercaRistorantiCommand;
 import theknife.server.command.CercaVicinoCommand;
 import theknife.server.command.Command;
 import theknife.server.command.EliminaRecensioneCommand;
+import theknife.server.command.EliminaRistoranteCommand;
 import theknife.server.command.EsciCommand;
 import theknife.server.command.LeggiRecensioniCommand;
 import theknife.server.command.LeggiRecensioniRistorantiGestitiCommand;
@@ -36,7 +37,7 @@ import theknife.server.service.UtenteService;
  * mai piu' modificata, il che la rende sicura in lettura concorrente senza
  * sincronizzazione.
  * <p>
- * La mappa copre tutti e venti i CommandType del contratto: un comando che
+ * La mappa copre tutti e ventuno i CommandType del contratto: un comando che
  * non risulta registrato indica un errore di programmazione, non una
  * richiesta non valida.
  *
@@ -52,7 +53,7 @@ public class CommandFactory {
     private final Map<CommandType, Command> comandi = new EnumMap<>(CommandType.class);
 
     /**
-     * Costruisce i venti Command sui service indicati e li registra nella
+     * Costruisce i ventuno Command sui service indicati e li registra nella
      * mappa.
      *
      * @param ristoranteService logica di dominio di ristoranti e preferiti
@@ -96,6 +97,8 @@ public class CommandFactory {
         // Riservati al Ristoratore
         comandi.put(CommandType.AGGIUNGI_RISTORANTE,
                 new AggiungiRistoranteCommand(ristoranteService));
+        comandi.put(CommandType.ELIMINA_RISTORANTE,
+                new EliminaRistoranteCommand(ristoranteService));
         comandi.put(CommandType.VEDI_RISTORANTI_GESTITI,
                 new VediRistorantiGestitiCommand(ristoranteService));
         comandi.put(CommandType.LEGGI_RECENSIONI_RISTORANTI_GESTITI,
