@@ -6,7 +6,7 @@
 <?import javafx.scene.image.ImageView?>
 
 
-<VBox styleClass="page-root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.SplashController">
+<VBox styleClass="page-root" fx:id="root" focusTraversable="true" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.SplashController">
 
     <VBox styleClass="card"> 
 
@@ -19,7 +19,7 @@
         <Label text="The Knife" fx:id="theKnifeLabel" styleClass="brand-title"/>
         <Label fx:id="localitaLabel" text="" styleClass="localita-label"/>
         <TextField fx:id="modificaLocalitaField" promptText="Es. Milano" styleClass="campo-testo"/>
-        <Button text="Conferma" onAction="#handleConferma" styleClass="bottone-primario"/>
+        <Button text="Conferma" onAction="#handleConferma" styleClass="bottone-primario" defaultButton="true"/>
         <Hyperlink text="Vai al Login" onAction="#handleLogin" styleClass="link-primario"/>
         <Hyperlink text="Continua come ospite" onAction="#handleGuest" styleClass="link-secondario"/>
     </VBox>

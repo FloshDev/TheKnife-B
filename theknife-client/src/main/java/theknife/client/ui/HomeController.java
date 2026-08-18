@@ -19,6 +19,7 @@ import theknife.client.service.AuthService;
 import theknife.client.service.RistoranteService;
 import theknife.common.dto.CercaRistorantiDTO;
 import theknife.common.dto.CercaVicinoDTO;
+import theknife.common.dto.UtenteDTO;
 
 /**
  * Controller della schermata Home (S04).
@@ -122,9 +123,11 @@ public class HomeController {
     }
 
     /**
-     * Cerca i ristoranti entro il raggio indicato, usando il domicilio
-     * dell'utente loggato per risolvere la posizione (decisione 14; il
-     * campo luogo resta nullo, non c'è un flusso guest su questa schermata).
+     * Cerca i ristoranti entro il raggio indicato dal luogo di riferimento
+     * (decisione 14): {@code cittaField} se compilato, altrimenti il
+     * domicilio dell'utente loggato. Se nessuno dei due è disponibile (guest
+     * senza aver scritto una città) mostra subito un avviso, invece di far
+     * arrivare l'errore dal server.
      *
      * @param event l'evento generato dal click sul bottone "Vicino a me"
      */
@@ -137,7 +140,17 @@ public class HomeController {
             return;
         }
 
-        CercaVicinoDTO filtri = new CercaVicinoDTO(raggioKm, null);
+        String luogo = cittaField.getText();
+        if (luogo == null || luogo.isBlank()) {
+            UtenteDTO utente = ServerConnection.getInstance().getUtenteCorrente();
+            luogo = utente != null ? utente.getDomicilio() : null;
+        }
+        if (luogo == null || luogo.isBlank()) {
+            new Alert(Alert.AlertType.ERROR, "Inserisci una città o effettua il login").showAndWait();
+            return;
+        }
+
+        CercaVicinoDTO filtri = new CercaVicinoDTO(raggioKm, luogo);
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 

@@ -2,14 +2,15 @@ package theknife.client.ui;
 
 import java.io.IOException;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import theknife.client.service.RistoranteService;
 
@@ -19,6 +20,8 @@ import theknife.client.service.RistoranteService;
  * @author Barlera Marco, 760000, VA
  */
 public class SplashController {
+    /** Contenitore radice, usato solo per togliere il focus dal campo di testo all'apertura. */
+    @FXML private VBox root;
     /** Campo di testo per correggere a mano la località rilevata. */
     @FXML private TextField modificaLocalitaField;
     /** Mostra la località rilevata dall'IP della connessione. */
@@ -28,13 +31,17 @@ public class SplashController {
     private final RistoranteService ristoranteService = new RistoranteService();
 
     /**
-     * Tenta di rilevare la posizione dell'utente dall'IP della connessione
-     * (decisione 18). Su IP locale o di rete privata la geolocalizzazione
-     * fallisce sistematicamente (decisione 30): in quel caso, come in ogni
-     * errore, {@code localitaLabel} guida l'utente a scrivere la località a
-     * mano in {@code modificaLocalitaField} invece di restare vuota.
+     * Toglie il focus dal campo di testo (altrimenti JavaFX lo assegna
+     * automaticamente all'apertura, coprendo il segnaposto) e tenta di
+     * rilevare la posizione dell'utente dall'IP della connessione (decisione
+     * 18). Su IP locale o di rete privata la geolocalizzazione fallisce
+     * sistematicamente (decisione 30): in quel caso, come in ogni errore,
+     * {@code localitaLabel} guida l'utente a scrivere la località a mano in
+     * {@code modificaLocalitaField} invece di restare vuota.
      */
     @FXML private void initialize() {
+        Platform.runLater(() -> root.requestFocus());
+
         TaskRunner.run(
             () -> ristoranteService.ottieniLocalitaIniziale(),
             posizione -> {

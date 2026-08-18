@@ -92,6 +92,7 @@ public class AggiungiRistoranteController {
                     Parent root = loader.load();
                     DettaglioController controller = loader.getController();
                     controller.impostaRistorante(result.getIdRistorante());
+                    controller.impostaProvenienzaDashboard();
                     stage.getScene().setRoot(root);
                 } catch (IOException e) {
                     new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();

@@ -73,6 +73,14 @@ public class DettaglioController {
      * così "Torna Indietro" non riparte da una lista vuota.
      */
     private List<RistoranteDTO> risultatiPrecedenti;
+    /**
+     * Se si arriva a questa schermata da Aggiungi Ristorante invece che da
+     * Risultati, valorizzato da {@link #impostaProvenienzaDashboard()}.
+     * {@link #handleTornaIndietro(ActionEvent)} torna alla Dashboard invece
+     * che a Risultati quando vale {@code true} — non esiste una ricerca da
+     * riproporre in quel percorso (S40).
+     */
+    private boolean vieneDaDashboard = false;
 
     /**
      * Se il ristorante corrente è già nei preferiti dell'utente loggato
@@ -165,18 +173,24 @@ public class DettaglioController {
     }
 
     /**
-     * Naviga alla schermata dei risultati di ricerca.
+     * Naviga alla schermata dei risultati di ricerca, o alla Dashboard se si
+     * era arrivati da Aggiungi Ristorante (S40, {@link #vieneDaDashboard}).
      *
      * @param event l'evento generato dal click sul bottone "Torna indietro"
      * @throws IOException se il caricamento della schermata fallisce
      */
     @FXML private void handleTornaIndietro(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/risultati.fxml"));
-        Parent root = loader.load();
-        RisultatiController controller = loader.getController();
-        controller.impostaRisultati(risultatiPrecedenti);
-        stage.getScene().setRoot(root);
+        if (vieneDaDashboard) {
+            Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/dashboard.fxml"));
+            stage.getScene().setRoot(root);
+        } else {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/risultati.fxml"));
+            Parent root = loader.load();
+            RisultatiController controller = loader.getController();
+            controller.impostaRisultati(risultatiPrecedenti);
+            stage.getScene().setRoot(root);
+        }
     }
 
     /**
@@ -258,6 +272,14 @@ public class DettaglioController {
      */
     public void impostaRisultatiPrecedenti(List<RistoranteDTO> risultati) {
         this.risultatiPrecedenti = risultati;
+    }
+
+    /**
+     * Segnala che si arriva a questa schermata da Aggiungi Ristorante: "Torna
+     * Indietro" andrà alla Dashboard invece che a Risultati (S40).
+     */
+    public void impostaProvenienzaDashboard() {
+        this.vieneDaDashboard = true;
     }
 
     /**

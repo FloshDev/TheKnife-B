@@ -78,10 +78,12 @@ public class RisultatiController {
      * cell factory per mostrarli in forma leggibile (nome, città, cucina)
      * invece del {@code toString()} grezzo del DTO.
      *
-     * @param risultati i ristoranti da mostrare
+     * @param risultati i ristoranti da mostrare, o {@code null} per svuotare
+     *                   la lista (es. si arriva a Dettaglio da una schermata
+     *                   senza una ricerca precedente, S40)
      */
     public void impostaRisultati(List<RistoranteDTO> risultati) {
-        risultatiListView.getItems().setAll(risultati);
+        risultatiListView.getItems().setAll(risultati == null ? List.of() : risultati);
 
         risultatiListView.setCellFactory(lv -> new ListCell<RistoranteDTO>() {
             private final Label nomeLabel = new Label();

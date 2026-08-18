@@ -22,7 +22,7 @@
                 </graphic>
             </Button>
         </StackPane>
-        <Button text="Accedi" onAction="#handleLogin" styleClass="bottone-primario"/>
+        <Button text="Accedi" onAction="#handleLogin" styleClass="bottone-primario" defaultButton="true"/>
         <Hyperlink text="Non hai un account? Registrati" onAction="#handleRegistrazione" styleClass="link-primario"/>
         <Hyperlink text="Continua come ospite" onAction="#handleGuest" styleClass="link-secondario"/>
     </VBox>

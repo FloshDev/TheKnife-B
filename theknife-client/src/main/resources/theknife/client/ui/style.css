@@ -25,6 +25,8 @@
     -fx-font-size: 13px;
     -fx-font-weight: 500;
     -fx-text-fill: #b07840;
+    -fx-wrap-text: true;
+    -fx-text-alignment: center;
 }
 
 .campo-testo {
@@ -37,6 +39,7 @@
     -fx-border-radius: 14;
     -fx-border-width: 2;
     -fx-padding: 0 16 0 16;
+    -fx-prompt-text-fill: #b0906c;
 }
 
 .campo-testo:focused {
