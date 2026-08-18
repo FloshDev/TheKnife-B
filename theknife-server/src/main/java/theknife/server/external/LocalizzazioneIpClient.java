@@ -11,18 +11,22 @@ import java.util.regex.Pattern;
 import theknife.common.dto.PosizioneDTO;
 
 /**
- * Ricava una posizione approssimata dall'indirizzo IP pubblico della macchina
- * su cui gira il server, per precompilare il campo localita' dello splash
- * (decisione 18).
+ * Ricava una posizione approssimata da un indirizzo IP, per precompilare il
+ * campo localita' dello splash (decisione 18).
  * <p>
- * <b>Limite noto e accettato.</b> Il servizio geolocalizza il chiamante, cioe'
- * il <i>server</i>, non il client: coincide quando client e server girano
- * sulla stessa macchina o sulla stessa rete, cioe' lo scenario di demo e di
- * collaudo. Su postazioni remote il suggerimento indica la zona del server. La
- * decisione 18 registra gia' che questo valore e' solo un suggerimento
- * precompilato e che il percorso valido resta la digitazione manuale del
- * luogo: se la stima e' assente o sbagliata, l'utente la corregge e
- * l'applicazione funziona identica.
+ * <b>Quale indirizzo (decisione 30, soluzione B).</b> Si geolocalizza l'IP del
+ * <i>client</i>, non quello del server: l'indirizzo del peer TCP viene scritto
+ * nella {@code Request} da {@code ClientHandler} e arriva fin qui. La variante
+ * senza indirizzo - il servizio geolocalizza il chiamante, cioe' la macchina
+ * del server - resta come ripiego per le richieste che non lo portano, come
+ * quelle di un client non ancora aggiornato.
+ * <p>
+ * <b>Limite noto e accettato.</b> Un indirizzo privato o dietro CGNAT non e'
+ * geolocalizzabile: in rete locale, che e' lo scenario di demo e di collaudo,
+ * la stima manca. La decisione 18 registra gia' che questo valore e' solo un
+ * suggerimento precompilato e che il percorso valido resta la digitazione
+ * manuale del luogo: se la stima e' assente o sbagliata, l'utente la corregge
+ * e l'applicazione funziona identica.
  * <p>
  * Come tutto il package, non lancia mai: restituisce <code>null</code> quando
  * il servizio non risponde. Su rete privata o senza uscita verso Internet il
@@ -33,10 +37,16 @@ import theknife.common.dto.PosizioneDTO;
 public class LocalizzazioneIpClient {
 
     /**
-     * Endpoint del servizio, con la lista dei soli campi che servono: chiedere
-     * meno dati riduce la risposta e non espone informazioni inutili.
+     * Radice dell'endpoint. Senza indirizzo il servizio geolocalizza il
+     * chiamante, cioe' il server; con l'indirizzo in coda geolocalizza quello.
      */
-    private static final String ENDPOINT = "http://ip-api.com/json/?fields=status,lat,lon,city";
+    private static final String BASE_ENDPOINT = "http://ip-api.com/json/";
+
+    /**
+     * Lista dei soli campi che servono: chiedere meno dati riduce la risposta
+     * e non espone informazioni inutili.
+     */
+    private static final String CAMPI = "?fields=status,lat,lon,city";
 
     /**
      * Timeout di connessione e di risposta. Breve per la stessa ragione del
@@ -68,16 +78,38 @@ public class LocalizzazioneIpClient {
     }
 
     /**
-     * Stima la posizione corrente a partire dall'indirizzo IP pubblico.
+     * Stima la posizione della macchina su cui gira il server, a partire dal
+     * suo indirizzo IP pubblico. E' il ripiego per le richieste che non
+     * portano l'indirizzo del client.
      *
      * @return la posizione stimata con il nome della citta', oppure
      *         <code>null</code> se il servizio non risponde, non riconosce
      *         l'indirizzo o la macchina non ha accesso a Internet
      */
     public PosizioneDTO posizioneStimata () {
+        return posizioneStimata(null);
+    }
+
+    /**
+     * Stima la posizione corrispondente all'indirizzo IP indicato
+     * (decisione 30). Un indirizzo assente riporta al comportamento senza
+     * indirizzo, cioe' alla stima sulla macchina del server.
+     *
+     * @param ip l'indirizzo IP da geolocalizzare, eventualmente
+     *           <code>null</code> o vuoto
+     * @return la posizione stimata con il nome della citta', oppure
+     *         <code>null</code> se il servizio non risponde, non riconosce
+     *         l'indirizzo - come accade con gli indirizzi privati e dietro
+     *         CGNAT - o la macchina non ha accesso a Internet
+     */
+    public PosizioneDTO posizioneStimata (String ip) {
+        String endpoint = (ip == null || ip.isBlank())
+            ? BASE_ENDPOINT + CAMPI
+            : BASE_ENDPOINT + ip + CAMPI;
+
         try {
             HttpRequest richiesta = HttpRequest.newBuilder()
-                .uri(URI.create(ENDPOINT))
+                .uri(URI.create(endpoint))
                 .header("Accept", "application/json")
                 .timeout(TIMEOUT)
                 .GET()

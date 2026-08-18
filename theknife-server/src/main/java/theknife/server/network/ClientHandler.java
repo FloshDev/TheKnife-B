@@ -79,6 +79,11 @@ public class ClientHandler implements Runnable {
                 Request request = (Request) in.readObject();
                 System.out.println("Richiesta ricevuta: " + request.getCommandType());
 
+                // L'indirizzo lo scrive il server, non il client: e' quello del
+                // peer TCP gia' accettato, quindi non e' falsificabile dal
+                // payload (decisione 30).
+                request.setIndirizzoClient(socket.getInetAddress().getHostAddress());
+
                 Response response = dispatcher.dispatch(request);
                 out.writeObject(response);
                 out.flush();

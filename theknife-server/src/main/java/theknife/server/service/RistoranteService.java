@@ -150,14 +150,18 @@ public class RistoranteService {
     }
 
     /**
-     * Stima la localita' da suggerire all'avvio del client (decisione 18). Il
+     * Stima la localita' da suggerire all'avvio del client (decisione 18)
+     * geolocalizzando l'indirizzo del client stesso (decisione 30). Il
      * fallimento non e' un errore: significa che la stima non e' disponibile e
      * che l'utente digitera' il luogo a mano.
      *
+     * @param indirizzoClient l'indirizzo IP del client, scritto nella richiesta
+     *                        dal gestore della connessione; se assente la stima
+     *                        ripiega sulla macchina del server
      * @return la posizione stimata, oppure <code>null</code> se non determinabile
      */
-    public PosizioneDTO localitaIniziale () {
-        return localizzazione.posizioneStimata();
+    public PosizioneDTO localitaIniziale (String indirizzoClient) {
+        return localizzazione.posizioneStimata(indirizzoClient);
     }
 
     /**

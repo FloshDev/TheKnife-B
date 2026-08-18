@@ -10,7 +10,9 @@ import theknife.server.service.RistoranteService;
 /**
  * Comando OTTIENI_LOCALITA_INIZIALE: suggerisce la localita' da precompilare
  * nella schermata iniziale (decisione 18). Non richiede autenticazione e non
- * ha payload in richiesta.
+ * ha payload in richiesta: la stima si basa sull'indirizzo del client, che il
+ * gestore della connessione scrive nella richiesta prima del dispatch
+ * (decisione 30).
  * <p>
  * La stima non e' garantita: su rete locale o senza uscita verso Internet il
  * servizio esterno non risponde e la risposta e' NON_TROVATO. Non e' un
@@ -38,7 +40,9 @@ public class OttieniLocalitaInizialeCommand implements Command {
     /**
      * Restituisce la localita' stimata da suggerire nella schermata iniziale.
      *
-     * @param request la richiesta, priva di payload
+     * @param request la richiesta, priva di payload: se ne usa il solo
+     *                indirizzo del client, scritto dal gestore della
+     *                connessione (decisione 30)
      * @param utente  ignorato: il comando non richiede autenticazione
      * @return SUCCESSO con la {@link PosizioneDTO} stimata, NON_TROVATO se la
      *         stima non e' disponibile, ERRORE_SERVER se la stima fallisce in
@@ -47,7 +51,8 @@ public class OttieniLocalitaInizialeCommand implements Command {
     @Override
     public Response execute(Request request, UtenteDTO utente) {
         try {
-            PosizioneDTO posizione = ristoranteService.localitaIniziale();
+            PosizioneDTO posizione =
+                ristoranteService.localitaIniziale(request.getIndirizzoClient());
 
             if (posizione == null) {
                 return new Response(ResponseStatus.NON_TROVATO, null,
