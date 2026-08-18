@@ -26,7 +26,8 @@
             <Button fx:id="modificaRecensioneButton" text="Modifica Recensione" onAction="#handleModificaRecensione" styleClass="bottone-piccolo"/>
             <Button fx:id="eliminaRecensioneButton" text="Elimina Recensione" onAction="#handleEliminaRecensione" styleClass="bottone-piccolo"/>
         </HBox>
-        <Button fx:id="tornaIndietroButton" text="Torna Indietro" onAction="#handleTornaIndietro" styleClass="bottone-secondario"/> 
+        <Button fx:id="eliminaRistoranteButton" text="Elimina Ristorante" onAction="#handleEliminaRistorante" styleClass="bottone-secondario"/>
+        <Button fx:id="tornaIndietroButton" text="Torna Indietro" onAction="#handleTornaIndietro" styleClass="bottone-secondario"/>
 
     </VBox>
 

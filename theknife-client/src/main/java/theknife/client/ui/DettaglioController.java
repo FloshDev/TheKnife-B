@@ -55,6 +55,12 @@ public class DettaglioController {
     @FXML private Button scriviRecensioneButton;
     /** Bottone per rispondere alla recensione selezionata nella lista, visibile solo al gestore del ristorante (RF18). */
     @FXML private Button rispondiRecensioneButton;
+    /**
+     * Bottone per eliminare il ristorante, visibile solo al gestore (S42).
+     * Non ancora collegato al server: il comando {@code ELIMINA_RISTORANTE}
+     * non esiste ancora lato server, solo il pulsante è pronto.
+     */
+    @FXML private Button eliminaRistoranteButton;
     /** Bottone per tornare alla schermata dei risultati. */
     @FXML private Button tornaIndietroButton;
     /** Lista delle recensioni del ristorante. */
@@ -178,6 +184,15 @@ public class DettaglioController {
                 );
             });
         }
+    }
+
+    /**
+     * Elimina il ristorante corrente. Non ancora collegato: il comando
+     * {@code ELIMINA_RISTORANTE} non esiste ancora lato server (S42), quindi
+     * per ora mostra solo un avviso invece di fingere di funzionare.
+     */
+    @FXML private void handleEliminaRistorante() {
+        new Alert(Alert.AlertType.INFORMATION, "Funzionalità in arrivo").showAndWait();
     }
 
     /**
@@ -339,6 +354,7 @@ public class DettaglioController {
         modificaRecensioneButton.setVisible(false);
         eliminaRecensioneButton.setVisible(false);
         rispondiRecensioneButton.setVisible(false);
+        eliminaRistoranteButton.setVisible(false);
         boolean ospite = ServerConnection.getInstance().getUtenteCorrente() == null;
         preferitiButton.setVisible(!ospite);
         preferitiButton.setManaged(!ospite);
@@ -366,6 +382,7 @@ public class DettaglioController {
                 UtenteDTO utente = ServerConnection.getInstance().getUtenteCorrente();
                 boolean isGestore = utente != null && ristorante.getIdGestore() != null && ristorante.getIdGestore() == utente.getIdUtente();
                 rispondiRecensioneButton.setVisible(isGestore);
+                eliminaRistoranteButton.setVisible(isGestore);
             }
         );
 

@@ -2,17 +2,24 @@
 <!-- Layout della schermata dashboard ristoratore (S09). @author Barlera Marco, 760000, VA -->
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.DashboardController">
+<VBox styleClass="page-root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.DashboardController">
 
-    <Label fx:id="dashboardLabel" text="Dashboard Ristoratore"/>
+    <VBox styleClass="card, card-lista">
+        <Label fx:id="dashboardLabel" text="Dashboard Ristoratore" styleClass="brand-title"/>
 
-    <ListView fx:id="ristorantiGestiti"/>
+        <ListView fx:id="ristorantiGestiti" styleClass="lista-risultati" VBox.vgrow="ALWAYS"/>
 
-    <Button fx:id="aggiungiNuovoRistoranteButton" text="Aggiungi Nuovo Ristorante" onAction="#handleAggiungiNuovoRistorante"/>
-    <Button fx:id="associaRistoranteButton" text="Associati a ristorante esistente" onAction="#handleAssociaRistorante"/>
-    <Button fx:id="gestisciRecensioniButton" text="Gestisci Recensioni" onAction="#handleGestisciRecensioni"/>
-    <Button fx:id="tornaHomeButton" text="Torna Home" onAction="#handleTornaHome"/>
-    <Button fx:id="logoutButton" text="Logout" onAction="#handleLogout"/>
+        <Button fx:id="vediDettaglioButton" text="Vedi dettaglio" onAction="#handleVediDettaglio" styleClass="bottone-primario"/>
+        <Button fx:id="aggiungiNuovoRistoranteButton" text="Aggiungi Nuovo Ristorante" onAction="#handleAggiungiNuovoRistorante" styleClass="bottone-secondario"/>
+        <Button fx:id="associaRistoranteButton" text="Associati a ristorante esistente" onAction="#handleAssociaRistorante" styleClass="bottone-secondario"/>
+        <Button fx:id="gestisciRecensioniButton" text="Gestisci Recensioni" onAction="#handleGestisciRecensioni" styleClass="bottone-secondario"/>
+        <Button fx:id="logoutButton" text="Logout" onAction="#handleLogout" styleClass="bottone-secondario" graphicTextGap="6">
+            <graphic>
+                <SVGPath content="m16 17 5-5-5-5 M21 12H9 M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" fill="TRANSPARENT" stroke="#FAB12F" strokeWidth="2" strokeLineCap="ROUND" strokeLineJoin="ROUND" scaleX="0.6" scaleY="0.6"/>
+            </graphic>
+        </Button>
+    </VBox>
     
 </VBox>
