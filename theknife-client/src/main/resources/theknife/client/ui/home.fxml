@@ -2,6 +2,8 @@
 <!-- Layout della schermata Home (S04). @author Barlera Marco, 760000, VA -->
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.Group?>
 
 <VBox styleClass="page-root" fx:id="root" focusTraversable="true" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.HomeController">
 
@@ -20,9 +22,26 @@
         <Button text="Vicino a me" onAction="#handleVicinoAMe" styleClass="bottone-secondario"/>
 
         <Hyperlink fx:id="loginLink" text="Vai al Login" onAction="#handleLogin" styleClass="link-secondario"/>
-        <Hyperlink fx:id="logoutLink" text="Logout" onAction="#handleLogout" styleClass="link-secondario"/>
-        <Hyperlink fx:id="preferitiLink" text="Preferiti" onAction="#handlePreferiti" styleClass="link-secondario"/>
-        <Hyperlink fx:id="dashboardLink" text="Dashboard" onAction="#handleDashboard" styleClass="link-secondario"/>
+        <Hyperlink fx:id="preferitiLink" text="Preferiti" onAction="#handlePreferiti" styleClass="link-secondario" graphicTextGap="6">
+            <graphic>
+                <SVGPath content="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" fill="#b07840" scaleX="0.6" scaleY="0.6"/>
+            </graphic>
+        </Hyperlink>
+        <Hyperlink fx:id="dashboardLink" text="Dashboard" onAction="#handleDashboard" styleClass="link-secondario" graphicTextGap="6">
+            <graphic>
+                <Group scaleX="0.6" scaleY="0.6">
+                    <Rectangle x="3" y="3" width="7" height="9" arcWidth="2" arcHeight="2" fill="#b07840"/>
+                    <Rectangle x="14" y="3" width="7" height="5" arcWidth="2" arcHeight="2" fill="#b07840"/>
+                    <Rectangle x="14" y="12" width="7" height="9" arcWidth="2" arcHeight="2" fill="#b07840"/>
+                    <Rectangle x="3" y="16" width="7" height="5" arcWidth="2" arcHeight="2" fill="#b07840"/>
+                </Group>
+            </graphic>
+        </Hyperlink>
+        <Hyperlink fx:id="logoutLink" text="Logout" onAction="#handleLogout" styleClass="link-secondario" graphicTextGap="6">
+            <graphic>
+                <SVGPath content="m16 17 5-5-5-5 M21 12H9 M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" fill="TRANSPARENT" stroke="#b07840" strokeWidth="2" strokeLineCap="ROUND" strokeLineJoin="ROUND" scaleX="0.6" scaleY="0.6"/>
+            </graphic>
+        </Hyperlink>
     </VBox>
 
 </VBox>

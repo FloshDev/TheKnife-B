@@ -3,14 +3,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.PreferitiController">
+<VBox styleClass="page-root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.PreferitiController">
 
-    <Label fx:id="preferitiLabel" text="Preferiti"/>
+    <VBox styleClass="card, card-lista">
+        <Label fx:id="preferitiLabel" text="Preferiti" styleClass="brand-title"/>
 
-    <ListView fx:id="preferitiListView"/>
+        <ListView fx:id="preferitiListView" styleClass="lista-risultati" VBox.vgrow="ALWAYS"/>
 
-    <Button fx:id="tornaIndietroButton" text="Torna Indietro" onAction="#handleTornaIndietro"/>
-    <Button fx:id="rimuoviPreferitoButton" text="Rimuovi Preferito" onAction="#handleRimuoviPreferito"/>
-    <Button fx:id="vediDettaglioButton" text="Vedi dettaglio" onAction="#handleVediDettaglio"/>
+        <Button fx:id="vediDettaglioButton" text="Vedi dettaglio" onAction="#handleVediDettaglio" styleClass="bottone-primario"/>
+        <Button fx:id="rimuoviPreferitoButton" text="Rimuovi Preferito" onAction="#handleRimuoviPreferito" styleClass="bottone-secondario"/>
+        <Button fx:id="tornaIndietroButton" text="Torna Indietro" onAction="#handleTornaIndietro" styleClass="bottone-secondario"/>
+    </VBox>
 
 </VBox>

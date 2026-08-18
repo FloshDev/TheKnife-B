@@ -16,6 +16,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.SVGPath;
 import javafx.stage.Stage;
 import theknife.client.network.ServerConnection;
 import theknife.client.service.RecensioneService;
@@ -47,6 +49,8 @@ public class DettaglioController {
     @FXML private Label mediaStelleLabel;
     /** Bottone per aggiungere o rimuovere il ristorante dai preferiti (RF08/RF09). */
     @FXML private Button preferitiButton;
+    /** Icona a cuore su {@code preferitiButton}: piena se nei preferiti, vuota altrimenti. */
+    @FXML private SVGPath cuoreIcon;
     /** Bottone per scrivere una recensione al ristorante. */
     @FXML private Button scriviRecensioneButton;
     /** Bottone per rispondere alla recensione selezionata nella lista, visibile solo al gestore del ristorante (RF18). */
@@ -73,14 +77,18 @@ public class DettaglioController {
      * così "Torna Indietro" non riparte da una lista vuota.
      */
     private List<RistoranteDTO> risultatiPrecedenti;
+
+    /** Le schermate da cui si può arrivare a questo dettaglio. */
+    private enum Provenienza { RISULTATI, DASHBOARD, PREFERITI }
+
     /**
-     * Se si arriva a questa schermata da Aggiungi Ristorante invece che da
-     * Risultati, valorizzato da {@link #impostaProvenienzaDashboard()}.
-     * {@link #handleTornaIndietro(ActionEvent)} torna alla Dashboard invece
-     * che a Risultati quando vale {@code true} — non esiste una ricerca da
-     * riproporre in quel percorso (S40).
+     * Da dove si è arrivati a questa schermata, valorizzata da
+     * {@link #impostaProvenienzaDashboard()}/{@link #impostaProvenienzaPreferiti()}
+     * — default {@code RISULTATI}, l'unico caso con una lista di ricerca da
+     * riproporre. {@link #handleTornaIndietro(ActionEvent)} si biforca di
+     * conseguenza (S40).
      */
-    private boolean vieneDaDashboard = false;
+    private Provenienza provenienza = Provenienza.RISULTATI;
 
     /**
      * Se il ristorante corrente è già nei preferiti dell'utente loggato
@@ -103,7 +111,7 @@ public class DettaglioController {
                 },
                 esito -> {
                     preferito = false;
-                    aggiornaTestoPreferiti();
+                    aggiornaPreferitiButton();
                     new Alert(Alert.AlertType.INFORMATION, "Ristorante rimosso dai preferiti.").showAndWait();
                 }
             );
@@ -116,7 +124,7 @@ public class DettaglioController {
                 },
                 esito -> {
                     preferito = true;
-                    aggiornaTestoPreferiti();
+                    aggiornaPreferitiButton();
                     new Alert(Alert.AlertType.INFORMATION, "Ristorante aggiunto ai preferiti.").showAndWait();
                 }
             );
@@ -173,23 +181,31 @@ public class DettaglioController {
     }
 
     /**
-     * Naviga alla schermata dei risultati di ricerca, o alla Dashboard se si
-     * era arrivati da Aggiungi Ristorante (S40, {@link #vieneDaDashboard}).
+     * Naviga alla schermata di provenienza (S40, {@link #provenienza}):
+     * Risultati con la lista che l'aveva mostrata, oppure Dashboard/Preferiti
+     * se non c'era una ricerca dietro.
      *
      * @param event l'evento generato dal click sul bottone "Torna indietro"
      * @throws IOException se il caricamento della schermata fallisce
      */
     @FXML private void handleTornaIndietro(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        if (vieneDaDashboard) {
-            Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/dashboard.fxml"));
-            stage.getScene().setRoot(root);
-        } else {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/risultati.fxml"));
-            Parent root = loader.load();
-            RisultatiController controller = loader.getController();
-            controller.impostaRisultati(risultatiPrecedenti);
-            stage.getScene().setRoot(root);
+        switch (provenienza) {
+            case DASHBOARD -> {
+                Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/dashboard.fxml"));
+                stage.getScene().setRoot(root);
+            }
+            case PREFERITI -> {
+                Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/preferiti.fxml"));
+                stage.getScene().setRoot(root);
+            }
+            case RISULTATI -> {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/risultati.fxml"));
+                Parent root = loader.load();
+                RisultatiController controller = loader.getController();
+                controller.impostaRisultati(risultatiPrecedenti);
+                stage.getScene().setRoot(root);
+            }
         }
     }
 
@@ -279,7 +295,15 @@ public class DettaglioController {
      * Indietro" andrà alla Dashboard invece che a Risultati (S40).
      */
     public void impostaProvenienzaDashboard() {
-        this.vieneDaDashboard = true;
+        this.provenienza = Provenienza.DASHBOARD;
+    }
+
+    /**
+     * Segnala che si arriva a questa schermata da Preferiti: "Torna Indietro"
+     * andrà lì invece che a Risultati (S40).
+     */
+    public void impostaProvenienzaPreferiti() {
+        this.provenienza = Provenienza.PREFERITI;
     }
 
     /**
@@ -355,7 +379,7 @@ public class DettaglioController {
                             break;
                         }
                     }
-                    aggiornaTestoPreferiti();
+                    aggiornaPreferitiButton();
                 }
             );
 
@@ -400,11 +424,13 @@ public class DettaglioController {
     }
 
     /**
-     * Aggiorna il testo di {@code preferitiButton} in base a
-     * {@link #preferito}, così che rifletta sempre lo stato reale (RF08/RF09)
-     * invece di restare fisso su "Aggiungi ai preferiti".
+     * Aggiorna testo e icona di {@code preferitiButton} in base a
+     * {@link #preferito}, così che riflettano sempre lo stato reale
+     * (RF08/RF09) invece di restare fissi su "Aggiungi ai preferiti": cuore
+     * pieno quando il ristorante è già nei preferiti, vuoto altrimenti.
      */
-    private void aggiornaTestoPreferiti() {
+    private void aggiornaPreferitiButton() {
         preferitiButton.setText(preferito ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti");
+        cuoreIcon.setFill(preferito ? Color.web("#FAB12F") : Color.TRANSPARENT);
     }
 }

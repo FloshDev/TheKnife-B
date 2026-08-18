@@ -20,6 +20,7 @@ import theknife.client.service.RistoranteService;
 import theknife.common.dto.CercaRistorantiDTO;
 import theknife.common.dto.CercaVicinoDTO;
 import theknife.common.dto.UtenteDTO;
+import theknife.common.enums.Ruolo;
 
 /**
  * Controller della schermata Home (S04).
@@ -63,21 +64,27 @@ public class HomeController {
     /**
      * Toglie il focus dal primo campo di testo (altrimenti JavaFX lo assegna
      * automaticamente all'apertura della schermata) e mostra solo i link
-     * coerenti con lo stato di autenticazione corrente: "Vai al Login" da
-     * guest, "Logout"/"Preferiti"/"Dashboard" da utente autenticato.
+     * coerenti con stato di autenticazione e ruolo: "Vai al Login" da guest,
+     * "Logout" da chiunque sia autenticato, "Preferiti" solo da Cliente
+     * (RF08/RF09, non esistono preferiti per un Ristoratore) e "Dashboard"
+     * solo da Ristoratore (non ha senso per un Cliente).
      */
     @FXML private void initialize() {
         Platform.runLater(() -> root.requestFocus());
 
-        boolean ospite = ServerConnection.getInstance().getUtenteCorrente() == null;
+        UtenteDTO utente = ServerConnection.getInstance().getUtenteCorrente();
+        boolean ospite = utente == null;
+        boolean cliente = utente != null && utente.getRuolo() == Ruolo.CLIENTE;
+        boolean ristoratore = utente != null && utente.getRuolo() == Ruolo.RISTORATORE;
+
         loginLink.setVisible(ospite);
         loginLink.setManaged(ospite);
         logoutLink.setVisible(!ospite);
         logoutLink.setManaged(!ospite);
-        preferitiLink.setVisible(!ospite);
-        preferitiLink.setManaged(!ospite);
-        dashboardLink.setVisible(!ospite);
-        dashboardLink.setManaged(!ospite);
+        preferitiLink.setVisible(cliente);
+        preferitiLink.setManaged(cliente);
+        dashboardLink.setVisible(ristoratore);
+        dashboardLink.setManaged(ristoratore);
     }
 
     /**

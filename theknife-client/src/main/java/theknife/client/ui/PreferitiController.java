@@ -7,12 +7,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import theknife.client.service.RistoranteService;
 import theknife.common.dto.IdRistoranteDTO;
@@ -20,7 +20,7 @@ import theknife.common.dto.RistoranteDTO;
 
 
 /**
- * Controller della schermata Preferti (S08).
+ * Controller della schermata Preferiti (S08).
  *
  * @author Barlera Marco, 760000, VA
  */
@@ -31,39 +31,15 @@ public class PreferitiController {
     @FXML private Label preferitiLabel;
     /** Lista dei ristoranti preferiti dell'utente. */
     @FXML private ListView<RistoranteDTO> preferitiListView;
-    /** Bottone per tornare alla schermata Home. */
-    @FXML private Button tornaIndietroButton;
-    /** Bottone per rimuovere il ristorante selezionato dai preferiti. */
-    @FXML private Button rimuoviPreferitoButton;
     /** Bottone per aprire il dettaglio del ristorante selezionato. */
     @FXML private Button vediDettaglioButton;
+    /** Bottone per rimuovere il ristorante selezionato dai preferiti. */
+    @FXML private Button rimuoviPreferitoButton;
+    /** Bottone per tornare alla schermata Home. */
+    @FXML private Button tornaIndietroButton;
 
     /** Invia al server i comandi sui ristoranti preferiti dell'utente. */
     private final RistoranteService ristoranteService = new RistoranteService();
-
-    /**
-     * Carica dal server la lista dei ristoranti preferiti dell'utente e la
-     * mostra, sostituendo il contenuto attuale della lista.
-     */
-    private void caricaPreferiti() {
-        TaskRunner.run(
-            () -> ristoranteService.ottieniPreferiti(),
-            ristoranti -> {
-                preferitiListView.getItems().setAll(ristoranti);
-                preferitiListView.setCellFactory(lv -> new ListCell<RistoranteDTO>() {
-                    @Override
-                    protected void updateItem(RistoranteDTO item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty || item == null) {
-                            setText(null);
-                        } else {
-                            setText(item.getNome() + " - " + item.getCitta() + " - " + item.getTipoCucina());
-                        }
-                    }
-                });
-            }
-        );
-    }
 
     /**
      * Carica i preferiti all'apertura della schermata.
@@ -73,15 +49,30 @@ public class PreferitiController {
     }
 
     /**
-     * Naviga alla schermata Home.
+     * Naviga al dettaglio del ristorante selezionato nella lista. Mostra un
+     * avviso se nessun elemento è selezionato.
      *
-     * @param event l'evento generato dal click sul bottone "Torna indietro"
-     * @throws IOException se il caricamento della schermata fallisce
+     * @param event l'evento generato dal click sul bottone "Vedi dettaglio"
      */
-    @FXML private void handleTornaIndietro(ActionEvent event) throws IOException {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); 
-        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/home.fxml"));
-        stage.getScene().setRoot(root);
+    @FXML private void handleVediDettaglio(ActionEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        RistoranteDTO selectedRistorante = preferitiListView.getSelectionModel().getSelectedItem();
+        if (selectedRistorante != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/dettaglio.fxml"));
+                Parent root = loader.load();
+                DettaglioController controller = loader.getController();
+                controller.impostaRistorante(selectedRistorante.getIdRistorante());
+                controller.impostaProvenienzaPreferiti();
+                stage.getScene().setRoot(root);
+            } catch (IOException e) {
+                new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
+            }
+        }
+        else {
+            new Alert(Alert.AlertType.ERROR, "Nessun ristorante selezionato").showAndWait();
+        }
     }
 
     /**
@@ -110,28 +101,48 @@ public class PreferitiController {
     }
 
     /**
-     * Naviga al dettaglio del ristorante selezionato nella lista. Mostra un
-     * avviso se nessun elemento è selezionato.
+     * Naviga alla schermata Home.
      *
-     * @param event l'evento generato dal click sul bottone "Vedi dettaglio"
+     * @param event l'evento generato dal click sul bottone "Torna indietro"
+     * @throws IOException se il caricamento della schermata fallisce
      */
-    @FXML private void handleVediDettaglio(ActionEvent event) {
+    @FXML private void handleTornaIndietro(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/home.fxml"));
+        stage.getScene().setRoot(root);
+    }
 
-        RistoranteDTO selectedRistorante = preferitiListView.getSelectionModel().getSelectedItem();
-        if (selectedRistorante != null) {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/dettaglio.fxml"));
-                Parent root = loader.load();
-                DettaglioController controller = loader.getController();
-                controller.impostaRistorante(selectedRistorante.getIdRistorante());
-                stage.getScene().setRoot(root);
-            } catch (IOException e) {
-                new Alert(Alert.AlertType.ERROR, "Errore nel caricamento della schermata: " + e.getMessage()).showAndWait();
+    /**
+     * Carica dal server la lista dei ristoranti preferiti dell'utente e la
+     * mostra, sostituendo il contenuto attuale della lista.
+     */
+    private void caricaPreferiti() {
+        TaskRunner.run(
+            () -> ristoranteService.ottieniPreferiti(),
+            ristoranti -> {
+                preferitiListView.getItems().setAll(ristoranti);
+                preferitiListView.setCellFactory(lv -> new ListCell<RistoranteDTO>() {
+                    private final Label nomeLabel = new Label();
+                    private final Label infoLabel = new Label();
+                    private final VBox contenuto = new VBox(nomeLabel, infoLabel);
+                    {
+                        nomeLabel.getStyleClass().add("risultato-nome");
+                        infoLabel.getStyleClass().add("risultato-info");
+                    }
+
+                    @Override
+                    protected void updateItem(RistoranteDTO item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty || item == null) {
+                            setGraphic(null);
+                        } else {
+                            nomeLabel.setText(item.getNome());
+                            infoLabel.setText(item.getCitta() + " · " + item.getTipoCucina());
+                            setGraphic(contenuto);
+                        }
+                    }
+                });
             }
-        }
-        else {
-            new Alert(Alert.AlertType.ERROR, "Nessun ristorante selezionato").showAndWait();
-        }
+        );
     }
 }
