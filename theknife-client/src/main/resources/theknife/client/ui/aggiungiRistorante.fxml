@@ -3,23 +3,35 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.AggiungiRistoranteController">
+<VBox styleClass="page-root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.AggiungiRistoranteController">
 
-    <TextField fx:id="nomeField" promptText="Nome"/>
-    <TextField fx:id="indirizzoField" promptText="Indirizzo"/>
-    <TextField fx:id="cittaField" promptText="Citta"/>
-    <TextField fx:id="provinciaField" promptText="Provincia"/>
-    <TextField fx:id="nazioneField" promptText="Nazione"/>
-    <TextField fx:id="fasciaPrezzoField" promptText="Fascia di prezzo"/>
-    <TextField fx:id="tipoCucinaField" promptText="Tipo di cucina"/>
-    <TextField fx:id="webSiteField" promptText="Website"/>
-    <TextField fx:id="telefonoField" promptText="Telefono"/>
-    <TextField fx:id="premiField" promptText="Premi"/>
+    <VBox styleClass="card, card-lista">
+        <Label text="Aggiungi nuovo ristorante" styleClass="brand-title"/>
 
-    <CheckBox fx:id="prenotazioneOnlineCheck" text="Prenotazione Online"/>
-    <CheckBox fx:id="consegnaADomicilioCheck" text="Consegna a domicilio"/>
-    
-    <Button fx:id="salvaButton" text="Salva" onAction="#handleSalva"/>
-    <Button fx:id="annullaButton" text="Annulla" onAction="#handleAnnulla"/>
+        <GridPane hgap="12" vgap="12">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50"/>
+                <ColumnConstraints percentWidth="50"/>
+            </columnConstraints>
+            <TextField fx:id="nomeField" promptText="Nome" styleClass="campo-testo" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <TextField fx:id="tipoCucinaField" promptText="Tipo di cucina" styleClass="campo-testo" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            <TextField fx:id="indirizzoField" promptText="Indirizzo" styleClass="campo-testo" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <TextField fx:id="fasciaPrezzoField" promptText="Fascia di prezzo" styleClass="campo-testo" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            <TextField fx:id="cittaField" promptText="Citta" styleClass="campo-testo" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <TextField fx:id="webSiteField" promptText="Website" styleClass="campo-testo" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            <TextField fx:id="provinciaField" promptText="Provincia" styleClass="campo-testo" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            <TextField fx:id="telefonoField" promptText="Telefono" styleClass="campo-testo" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+            <TextField fx:id="nazioneField" promptText="Nazione" styleClass="campo-testo" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+            <TextField fx:id="premiField" promptText="Premi" styleClass="campo-testo" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+        </GridPane>
+
+        <HBox spacing="20" alignment="CENTER">
+            <CheckBox fx:id="prenotazioneOnlineCheck" text="Prenotazione Online"/>
+            <CheckBox fx:id="consegnaADomicilioCheck" text="Consegna a domicilio"/>
+        </HBox>
+
+        <Button fx:id="salvaButton" text="Salva" onAction="#handleSalva" styleClass="bottone-primario"/>
+        <Button fx:id="annullaButton" text="Annulla" onAction="#handleAnnulla" styleClass="bottone-secondario"/>
+    </VBox>
 
 </VBox>
