@@ -24,6 +24,8 @@ import theknife.common.dto.RistoranteDTO;
  */
 
 public class RisultatiController {
+    /** La card, la cui larghezza è agganciata alla finestra (grafica responsive). */
+    @FXML private VBox card;
     /** Titolo della schermata dei risultati. */
     @FXML private Label risultatiLabel;
     /** Lista dei ristoranti trovati dalla ricerca. */
@@ -32,7 +34,14 @@ public class RisultatiController {
     @FXML private Button dettaglioButton;
     /** Bottone per tornare alla schermata Home. */
     @FXML private Button tornaIndietroButton;
-    
+
+    /**
+     * Aggancia la larghezza della card alla finestra (grafica responsive).
+     */
+    @FXML private void initialize() {
+        Responsive.aggancia(card, 0.6, 480, 700);
+    }
+
     /**
      * Naviga al dettaglio del ristorante selezionato nella lista. Mostra un
      * avviso se nessun elemento è selezionato.
@@ -82,6 +91,10 @@ public class RisultatiController {
      *                   senza una ricerca precedente, S40)
      */
     public void impostaRisultati(List<RistoranteDTO> risultati) {
+        Label nessunRisultato = new Label("Nessun ristorante trovato con questi filtri.");
+        nessunRisultato.getStyleClass().add("risultato-info");
+        risultatiListView.setPlaceholder(nessunRisultato);
+
         risultatiListView.getItems().setAll(risultati == null ? List.of() : risultati);
 
         risultatiListView.setCellFactory(lv -> new ListCell<RistoranteDTO>() {

@@ -24,6 +24,8 @@ import theknife.common.dto.RistoranteDTO;
  * @author Barlera Marco, 760000, VA
  */
 public class DashboardController {
+    /** La card, la cui larghezza è agganciata alla finestra (grafica responsive). */
+    @FXML private VBox card;
     /** Titolo della schermata dashboard. */
     @FXML private Label dashboardLabel;
     /** Lista dei ristoranti gestiti dall'utente ristoratore. */
@@ -50,6 +52,10 @@ public class DashboardController {
      * città/cucina sotto, invece del {@code toString()} grezzo del DTO).
      */
     @FXML private void initialize() {
+        Responsive.aggancia(card, 0.6, 480, 700);
+        Label nessunRistorante = new Label("Non gestisci ancora nessun ristorante.");
+        nessunRistorante.getStyleClass().add("risultato-info");
+        ristorantiGestiti.setPlaceholder(nessunRistorante);
         TaskRunner.run(
             () -> ristoranteService.vediRistorantiGestiti(),
             ristoranti -> {

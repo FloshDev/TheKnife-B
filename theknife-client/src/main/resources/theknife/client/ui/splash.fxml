@@ -8,7 +8,7 @@
 
 <VBox styleClass="page-root" fx:id="root" focusTraversable="true" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.SplashController">
 
-    <VBox styleClass="card"> 
+    <VBox styleClass="card" fx:id="card">
 
         <ImageView fitWidth="110" fitHeight="110" preserveRatio="true">
             <image>

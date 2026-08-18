@@ -22,6 +22,8 @@ import theknife.client.service.RistoranteService;
 public class SplashController {
     /** Contenitore radice, usato solo per togliere il focus dal campo di testo all'apertura. */
     @FXML private VBox root;
+    /** La card, la cui larghezza è agganciata alla finestra (grafica responsive). */
+    @FXML private VBox card;
     /** Campo di testo per correggere a mano la località rilevata. */
     @FXML private TextField modificaLocalitaField;
     /** Mostra la località rilevata dall'IP della connessione. */
@@ -41,6 +43,7 @@ public class SplashController {
      */
     @FXML private void initialize() {
         Platform.runLater(() -> root.requestFocus());
+        Responsive.aggancia(card, 0.45, 360, 480);
 
         TaskRunner.run(
             () -> ristoranteService.ottieniLocalitaIniziale(),

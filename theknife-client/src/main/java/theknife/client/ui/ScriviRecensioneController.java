@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import theknife.client.service.RecensioneService;
 import theknife.common.dto.AggiungiRecensioneDTO;
@@ -28,6 +29,8 @@ import theknife.common.dto.RistoranteDTO;
 
 public class ScriviRecensioneController {
 
+    /** La card, la cui larghezza è agganciata alla finestra (grafica responsive). */
+    @FXML private VBox card;
     /** Titolo della schermata: "Scrivi una recensione" o, in modifica, "Modifica recensione". */
     @FXML private Label titoloSchermataLabel;
     /** Nome del ristorante che si sta recensendo. */
@@ -62,6 +65,7 @@ public class ScriviRecensioneController {
      * ridisegna il riempimento di tutte e cinque.
      */
     @FXML private void initialize() {
+        Responsive.aggancia(card, 0.45, 360, 480);
         for (int i = 1; i <= 5; i++) {
             Label stella = new Label("★");
             stella.getStyleClass().add("stella");

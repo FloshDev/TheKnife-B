@@ -26,6 +26,8 @@ import theknife.common.dto.RistoranteDTO;
 
 public class PreferitiController {
 
+    /** La card, la cui larghezza è agganciata alla finestra (grafica responsive). */
+    @FXML private VBox card;
     /** Titolo della schermata dei preferiti. */
     @FXML private Label preferitiLabel;
     /** Lista dei ristoranti preferiti dell'utente. */
@@ -44,6 +46,10 @@ public class PreferitiController {
      * Carica i preferiti all'apertura della schermata.
      */
     @FXML private void initialize() {
+        Responsive.aggancia(card, 0.6, 480, 700);
+        Label nessunPreferito = new Label("Non hai ancora nessun ristorante preferito.");
+        nessunPreferito.getStyleClass().add("risultato-info");
+        preferitiListView.setPlaceholder(nessunPreferito);
         caricaPreferiti();
     }
 

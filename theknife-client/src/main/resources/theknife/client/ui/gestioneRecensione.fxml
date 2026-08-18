@@ -5,7 +5,7 @@
 
 <VBox styleClass="page-root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.GestioneRecensioniController">
 
-    <VBox styleClass="card, card-lista">
+    <VBox styleClass="card, card-lista" fx:id="card">
         <Label text="Gestione recensione" styleClass="brand-title"/>
 
         <ListView fx:id="recensioniListView" styleClass="lista-risultati" VBox.vgrow="ALWAYS"/>

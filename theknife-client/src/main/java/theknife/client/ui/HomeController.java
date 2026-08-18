@@ -30,6 +30,8 @@ public class HomeController {
 
     /** Contenitore radice, usato solo per togliere il focus dal primo campo all'apertura. */
     @FXML private VBox root;
+    /** La card, la cui larghezza è agganciata alla finestra (grafica responsive). */
+    @FXML private VBox card;
 
     /** Campo di testo per filtrare per nome del ristorante. */
     @FXML private TextField nomeField;
@@ -70,6 +72,7 @@ public class HomeController {
      */
     @FXML private void initialize() {
         Platform.runLater(() -> root.requestFocus());
+        Responsive.aggancia(card, 0.45, 360, 480);
 
         UtenteDTO utente = ServerConnection.getInstance().getUtenteCorrente();
         boolean ospite = utente == null;

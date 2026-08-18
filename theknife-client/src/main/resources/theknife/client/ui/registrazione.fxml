@@ -10,7 +10,7 @@
         <ToggleGroup fx:id="ruoloGroup" />
     </fx:define>
 
-    <VBox styleClass="card">
+    <VBox styleClass="card" fx:id="card">
         <Label text="Crea account" styleClass="brand-title"/>
         <TextField fx:id="nomeField" promptText="Nome" styleClass="campo-testo"/>
         <TextField fx:id="cognomeField" promptText="Cognome" styleClass="campo-testo"/>

@@ -14,6 +14,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
@@ -27,6 +28,8 @@ import theknife.common.enums.Ruolo;
  * @author Barlera Marco, 760000, VA
  */
 public class RegistrazioneController {
+    /** La card, la cui larghezza è agganciata alla finestra (grafica responsive). */
+    @FXML private VBox card;
     /** Campo di testo per il nome. */
     @FXML private TextField nomeField;
     /** Campo di testo per il cognome. */
@@ -76,6 +79,7 @@ public class RegistrazioneController {
     @FXML private void initialize() {
         passwordFieldVisibile.textProperty().bindBidirectional(passwordField.textProperty());
         password2FieldVisibile.textProperty().bindBidirectional(passwordField2.textProperty());
+        Responsive.aggancia(card, 0.45, 360, 480);
 
         dataNascitaField.setConverter(new StringConverter<LocalDate>() {
             private final DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");

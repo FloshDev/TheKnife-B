@@ -25,6 +25,8 @@ import theknife.common.dto.RispondiRecensioneDTO;
  */
 
 public class GestioneRecensioniController {
+    /** La card, la cui larghezza è agganciata alla finestra (grafica responsive). */
+    @FXML private VBox card;
     /** Lista delle recensioni di tutti i ristoranti gestiti. */
     @FXML private ListView<RecensioneDTO> recensioniListView;
     /** Area di testo per la risposta alla recensione selezionata. */
@@ -41,6 +43,10 @@ public class GestioneRecensioniController {
      * Carica le recensioni all'apertura della schermata.
      */
     @FXML private void initialize() {
+        Responsive.aggancia(card, 0.6, 480, 700);
+        Label nessunaRecensione = new Label("Nessuna recensione da gestire per ora.");
+        nessunaRecensione.getStyleClass().add("risultato-info");
+        recensioniListView.setPlaceholder(nessunaRecensione);
         caricaRecensioni();
     }
 

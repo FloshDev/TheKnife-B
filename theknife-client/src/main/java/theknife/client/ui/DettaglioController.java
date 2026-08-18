@@ -37,6 +37,8 @@ import theknife.common.dto.UtenteDTO;
  */
 
 public class DettaglioController {
+    /** La card, la cui larghezza è agganciata alla finestra (grafica responsive). */
+    @FXML private VBox card;
     /** Nome del ristorante. */
     @FXML private Label nomeLabel;
     /** Tipo di cucina del ristorante. */
@@ -102,6 +104,13 @@ public class DettaglioController {
      * il server, non è un dato che arriva col dettaglio del ristorante.
      */
     private boolean preferito = false;
+
+    /**
+     * Aggancia la larghezza della card alla finestra (grafica responsive).
+     */
+    @FXML private void initialize() {
+        Responsive.aggancia(card, 0.6, 480, 700);
+    }
 
     /**
      * Aggiunge o rimuove il ristorante corrente dai preferiti dell'utente, a
@@ -344,6 +353,9 @@ public class DettaglioController {
         rispondiRecensioneButton.setManaged(false);
         eliminaRistoranteButton.setVisible(false);
         eliminaRistoranteButton.setManaged(false);
+        Label nessunaRecensione = new Label("Nessuna recensione ancora. Scrivi la prima!");
+        nessunaRecensione.getStyleClass().add("risultato-info");
+        recensioniListView.setPlaceholder(nessunaRecensione);
         boolean ospite = ServerConnection.getInstance().getUtenteCorrente() == null;
         preferitiButton.setVisible(!ospite);
         preferitiButton.setManaged(!ospite);
@@ -370,8 +382,8 @@ public class DettaglioController {
                 nomeLabel.setText(ristorante.getNome());
                 tipoCucinaLabel.setText(ristorante.getTipoCucina());
                 indirizzoLabel.setText(ristorante.getIndirizzo());
-                fasciaPrezzoLabel.setText(String.valueOf(ristorante.getFasciaPrezzo()));
-                mediaStelleLabel.setText(String.valueOf(ristorante.getMediaStelle()));
+                fasciaPrezzoLabel.setText("€".repeat(ristorante.getFasciaPrezzo()));
+                mediaStelleLabel.setText("★ " + ristorante.getMediaStelle());
                 UtenteDTO utente = ServerConnection.getInstance().getUtenteCorrente();
                 boolean isGestore = utente != null && ristorante.getIdGestore() != null && ristorante.getIdGestore() == utente.getIdUtente();
                 rispondiRecensioneButton.setVisible(isGestore);

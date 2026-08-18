@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import theknife.client.service.RistoranteService;
 import theknife.common.dto.AggiungiRistoranteDTO; 
@@ -21,7 +22,9 @@ import theknife.common.dto.AggiungiRistoranteDTO;
  */
 
 public class AggiungiRistoranteController {
-    
+
+    /** La card, la cui larghezza è agganciata alla finestra (grafica responsive). */
+    @FXML private VBox card;
     /** Campo di testo per il nome del ristorante. */
     @FXML private TextField nomeField;
     /** Campo di testo per l'indirizzo. */
@@ -49,6 +52,13 @@ public class AggiungiRistoranteController {
 
     /** Invia al server i comandi sui ristoranti, incluso l'inserimento. */
     private final RistoranteService ristoranteService = new RistoranteService();
+
+    /**
+     * Aggancia la larghezza della card alla finestra (grafica responsive).
+     */
+    @FXML private void initialize() {
+        Responsive.aggancia(card, 0.6, 480, 700);
+    }
 
     /**
      * Crea un nuovo ristorante con i dati del form e, al successo, naviga

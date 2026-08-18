@@ -7,7 +7,7 @@
 
 <VBox styleClass="page-root" fx:id="root" focusTraversable="true" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.HomeController">
 
-    <VBox styleClass="card">
+    <VBox styleClass="card" fx:id="card">
         <Label text="Cerca ristoranti" styleClass="brand-title"/>
         <TextField fx:id="nomeField" promptText="Nome ristorante" styleClass="campo-testo"/>
         <TextField fx:id="cittaField" promptText="Città" styleClass="campo-testo"/>

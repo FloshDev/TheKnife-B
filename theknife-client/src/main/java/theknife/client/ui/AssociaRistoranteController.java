@@ -27,6 +27,8 @@ import theknife.common.dto.RistoranteDTO;
  */
 
 public class AssociaRistoranteController {
+    /** La card, la cui larghezza è agganciata alla finestra (grafica responsive). */
+    @FXML private VBox card;
     /** Campo di testo per la ricerca del ristorante per nome. */
     @FXML private TextField ricercaField;
     /** Lista dei ristoranti trovati dalla ricerca. */
@@ -42,6 +44,13 @@ public class AssociaRistoranteController {
     private final RistoranteService ristoranteService = new RistoranteService();
 
     /**
+     * Aggancia la larghezza della card alla finestra (grafica responsive).
+     */
+    @FXML private void initialize() {
+        Responsive.aggancia(card, 0.6, 480, 700);
+    }
+
+    /**
      * Cerca i ristoranti per nome e mostra i risultati nella lista. Solo il
      * nome è supportato: nessun comando del protocollo consente la ricerca
      * per indirizzo, benché fosse promessa dal placeholder originale del
@@ -53,6 +62,9 @@ public class AssociaRistoranteController {
         TaskRunner.run(
             () -> ristoranteService.cercaRistoranti(cercaRistoranteDTO),
             ristoranti -> {
+                Label nessunRisultato = new Label("Nessun ristorante trovato con questo nome.");
+                nessunRisultato.getStyleClass().add("risultato-info");
+                risultatiListView.setPlaceholder(nessunRisultato);
                 risultatiListView.getItems().setAll(ristoranti);
                 risultatiListView.setCellFactory(lv -> new ListCell<RistoranteDTO>() {
                     private final Label nomeLabel = new Label();

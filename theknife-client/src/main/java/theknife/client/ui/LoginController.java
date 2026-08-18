@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import theknife.client.service.AuthService;
@@ -20,6 +21,8 @@ import theknife.common.enums.Ruolo;
  * @author Barlera Marco, 760000, VA
  */
 public class LoginController {
+    /** La card, la cui larghezza è agganciata alla finestra (grafica responsive). */
+    @FXML private VBox card;
     /** Campo di testo per lo username. */
     @FXML private TextField usernameField;
     /** Campo per la password, mascherato a schermo. */
@@ -40,6 +43,7 @@ public class LoginController {
      */
     @FXML private void initialize() {
         passwordFieldVisibile.textProperty().bindBidirectional(passwordField.textProperty());
+        Responsive.aggancia(card, 0.45, 360, 480);
     }
 
     /**

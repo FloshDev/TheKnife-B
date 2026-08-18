@@ -6,7 +6,7 @@
 
 <VBox styleClass="page-root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.LoginController">
 
-    <VBox styleClass="card">
+    <VBox styleClass="card" fx:id="card">
         <Label text="Accedi" styleClass="brand-title"/>
         <TextField fx:id="usernameField" promptText="Username" styleClass="campo-testo"/>
         <StackPane>

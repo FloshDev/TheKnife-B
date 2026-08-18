@@ -6,7 +6,7 @@
 
 <VBox styleClass="page-root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.DashboardController">
 
-    <VBox styleClass="card, card-lista">
+    <VBox styleClass="card, card-lista" fx:id="card">
         <Label fx:id="dashboardLabel" text="Dashboard Ristoratore" styleClass="brand-title"/>
 
         <ListView fx:id="ristorantiGestiti" styleClass="lista-risultati" VBox.vgrow="ALWAYS"/>
