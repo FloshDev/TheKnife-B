@@ -7,12 +7,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import theknife.client.service.RistoranteService;
 import theknife.common.dto.CercaRistorantiDTO;
@@ -55,13 +56,23 @@ public class AssociaRistoranteController {
             ristoranti -> {
                 risultatiListView.getItems().setAll(ristoranti);
                 risultatiListView.setCellFactory(lv -> new ListCell<RistoranteDTO>() {
+                    private final Label nomeLabel = new Label();
+                    private final Label infoLabel = new Label();
+                    private final VBox contenuto = new VBox(nomeLabel, infoLabel);
+                    {
+                        nomeLabel.getStyleClass().add("risultato-nome");
+                        infoLabel.getStyleClass().add("risultato-info");
+                    }
+
                     @Override
                     protected void updateItem(RistoranteDTO item, boolean empty) {
                         super.updateItem(item, empty);
                         if (empty || item == null) {
-                            setText(null);
+                            setGraphic(null);
                         } else {
-                            setText(item.getNome() + " - " + item.getCitta());
+                            nomeLabel.setText(item.getNome());
+                            infoLabel.setText(item.getCitta());
+                            setGraphic(contenuto);
                         }
                     }
                 });
@@ -73,7 +84,7 @@ public class AssociaRistoranteController {
      * torna alla dashboard. Mostra un avviso se nessun elemento è
      * selezionato.
      *
-     * @param event l'evento generato dal click sul bottone "Associa"
+     * @param event l'evento generato dal click sul bottone "Gestisci"
      * @throws IOException se il caricamento della schermata fallisce
      */
     @FXML private void handleAssocia(ActionEvent event) throws IOException {

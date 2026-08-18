@@ -3,14 +3,17 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.AssociaRistoranteController">
+<VBox styleClass="page-root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.AssociaRistoranteController">
 
-    <TextField fx:id="ricercaField" promptText="Cerca per nome"/>
+    <VBox styleClass="card, card-lista">
+        <Label text="Associa ristorante" styleClass="brand-title"/>
+        <TextField fx:id="ricercaField" promptText="Cerca per nome" styleClass="campo-testo"/>
 
-    <ListView fx:id="risultatiListView"/>
+        <ListView fx:id="risultatiListView" styleClass="lista-risultati" VBox.vgrow="ALWAYS"/>
     
-    <Button fx:id="cercaButton" text="Cerca" onAction="#handleCerca"/>
-    <Button fx:id="associaButton" text="Associa" onAction="#handleAssocia"/>
-    <Button fx:id="annullaButton" text="Annulla" onAction="#handleAnnulla"/>
+        <Button fx:id="cercaButton" text="Cerca" onAction="#handleCerca" styleClass="bottone-secondario" defaultButton="true"/>
+        <Button fx:id="associaButton" text="Gestisci" onAction="#handleAssocia" styleClass="bottone-primario"/>
+        <Button fx:id="annullaButton" text="Annulla" onAction="#handleAnnulla" styleClass="bottone-secondario"/>
+    </VBox>
 
 </VBox>
