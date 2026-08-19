@@ -45,6 +45,11 @@ public class RecensioneDTO implements java.io.Serializable {
     private long idUtente;
     
 /**
+ * Lo username dell'utente che ha scritto la recensione.
+ */
+    private String username;
+
+/**
  * La data e l'ora di pubblicazione della recensione.
  */
     private LocalDateTime dataPubblicazione;
@@ -68,12 +73,13 @@ public class RecensioneDTO implements java.io.Serializable {
  * @param testo il testo della recensione
  * @param stelle il numero di stelle della recensione
  * @param idUtente l'idetificatore dell'utente
+ * @param username lo username dell'utente
  * @param dataPubblicazione la data e l'ora di pubblicazione della recensione
  * @param risposta la risposta alla recensione
  * @param dataRisposta la data e l'ora di pubblicazione della risposta alla recensione
  */
     public RecensioneDTO(long idRecensione, long idRistorante, String titolo, String testo, 
-            int stelle, long idUtente, LocalDateTime dataPubblicazione, String risposta, 
+            int stelle, long idUtente, String username, LocalDateTime dataPubblicazione, String risposta, 
             LocalDateTime dataRisposta) {
         this.idRecensione = idRecensione;
         this.idRistorante = idRistorante;
@@ -81,6 +87,7 @@ public class RecensioneDTO implements java.io.Serializable {
         this.testo = testo;
         this.stelle = stelle;
         this.idUtente = idUtente;
+        this.username = username;
         this.dataPubblicazione = dataPubblicazione;
         this.risposta = risposta;
         this.dataRisposta = dataRisposta;
@@ -184,6 +191,22 @@ public class RecensioneDTO implements java.io.Serializable {
     }
 
 /**
+ * Restituisce lo username dell'utente che ha scritto la recensione.
+ * @return lo username dell'utente
+ */
+    public String getUsername() {
+        return username;
+    }
+
+/**
+ * Imposta lo username dell'utente che ha scritto la recensione.
+ * @param username lo username dell'utente
+ */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+/**
  * Restituisce la data e l'ora di pubblicazione della recensione.
  * @return la data e l'ora di pubblicazione della recensione
  */
@@ -240,7 +263,8 @@ public class RecensioneDTO implements java.io.Serializable {
     public String toString() {
         return "RecensioneDTO [idRecensione=" + idRecensione + ", idRistorante=" + idRistorante + 
             ", titolo=" + titolo + ", testo=" + testo + ", stelle=" + stelle + 
-            ", idUtente=" + idUtente + ", dataPubblicazione=" + dataPubblicazione + 
+            ", idUtente=" + idUtente + ", username=" + username + 
+            ", dataPubblicazione=" + dataPubblicazione + 
             ", risposta=" + risposta + ", dataRisposta=" + dataRisposta + "]";
     }
 }
