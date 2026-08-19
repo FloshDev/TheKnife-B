@@ -43,6 +43,8 @@ public class ScriviRecensioneController {
     @FXML private TextArea testoField;
     /** Bottone di conferma: "Pubblica" o, in modifica, "Salva modifiche". */
     @FXML private Button pubblicaButton;
+    /** Controller della sidebar inclusa (fx:include), per evidenziare "Ricerca" come voce attiva. */
+    @FXML private SidebarController sidebarController;
 
     /** Invia al server la recensione appena scritta o modificata. */
     private final RecensioneService recensioneService = new RecensioneService();
@@ -65,7 +67,8 @@ public class ScriviRecensioneController {
      * ridisegna il riempimento di tutte e cinque.
      */
     @FXML private void initialize() {
-        Responsive.aggancia(card, 0.45, 360, 480);
+        Responsive.aggancia(card, 0.45, 380, 560);
+        sidebarController.impostaAttivo(SidebarController.Voce.RICERCA);
         for (int i = 1; i <= 5; i++) {
             Label stella = new Label("★");
             stella.getStyleClass().add("stella");

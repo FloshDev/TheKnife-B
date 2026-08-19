@@ -1,11 +1,11 @@
 .page-root {
-    -fx-background-color: #FEF3E2;
+    -fx-background-color: linear-gradient(to bottom right, #FEF3E2, #FBE4C2);
     -fx-alignment: center;
 }
 
 .card {
     -fx-background-color: white;
-    -fx-background-radius: 24;
+    -fx-background-radius: 0;
     -fx-padding: 48 40 40 40;
     -fx-spacing: 14;
     -fx-alignment: CENTER;
@@ -34,9 +34,9 @@
     -fx-font-size: 13px;
     -fx-pref-height: 50;
     -fx-background-color: white;
-    -fx-background-radius: 14;
+    -fx-background-radius: 0;
     -fx-border-color: #f0d0a0;
-    -fx-border-radius: 14;
+    -fx-border-radius: 0;
     -fx-border-width: 2;
     -fx-padding: 0 16 0 16;
     -fx-prompt-text-fill: #b0906c;
@@ -47,19 +47,45 @@
 }
 
 .area-testo {
-    -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
     -fx-font-size: 13px;
     -fx-pref-height: 120;
     -fx-background-color: white;
-    -fx-background-radius: 14;
+    -fx-background-radius: 0;
     -fx-border-color: #f0d0a0;
-    -fx-border-radius: 14;
+    -fx-border-radius: 0;
     -fx-border-width: 2;
 }
 .area-testo .content {
     -fx-background-color: white;
-    -fx-background-radius: 12;
+    -fx-background-radius: 0;
     -fx-padding: 10 14 10 14;
+}
+.area-testo .scroll-bar:vertical {
+    -fx-pref-width: 8;
+    -fx-background-color: transparent;
+}
+.area-testo .scroll-bar:horizontal {
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
+    -fx-opacity: 0;
+}
+.area-testo .scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+    -fx-opacity: 0;
+}
+.area-testo .scroll-bar:vertical .thumb {
+    -fx-background-color: #f0d0a0;
+    -fx-background-radius: 6;
+}
+.area-testo .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #FAB12F;
+}
+.area-testo .scroll-bar:vertical .increment-button,
+.area-testo .scroll-bar:vertical .decrement-button {
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
+    -fx-opacity: 0;
 }
 .area-testo:focused {
     -fx-border-color: #FAB12F;
@@ -83,7 +109,7 @@
     -fx-font-weight: 800;
     -fx-background-color: #FAB12F;
     -fx-text-fill: white;
-    -fx-background-radius: 14;
+    -fx-background-radius: 0;
     -fx-pref-height: 50;
     -fx-max-width: infinity;
     -fx-cursor: hand;
@@ -114,9 +140,9 @@
 
 .date-picker {
     -fx-background-color: white;
-    -fx-background-radius: 14;
+    -fx-background-radius: 0;
     -fx-border-color: #f0d0a0;
-    -fx-border-radius: 14;
+    -fx-border-radius: 0;
     -fx-border-width: 2;
     -fx-pref-height: 50;
     -fx-max-width: infinity;
@@ -179,9 +205,9 @@
 
 .selettore-ruolo {
     -fx-background-color: white;
-    -fx-background-radius: 14;
+    -fx-background-radius: 0;
     -fx-border-color: #f0d0a0;
-    -fx-border-radius: 14;
+    -fx-border-radius: 0;
     -fx-border-width: 2;
     -fx-pref-height: 50;
 }
@@ -206,10 +232,10 @@
     -fx-text-fill: white;
 }
 .opzione-ruolo-sx {
-    -fx-background-radius: 12 0 0 12;
+    -fx-background-radius: 0;
 }
 .opzione-ruolo-dx {
-    -fx-background-radius: 0 12 12 0;
+    -fx-background-radius: 0;
 }
 .divisore-ruolo {
     -fx-background-color: #f0d0a0;
@@ -226,8 +252,8 @@
     -fx-text-fill: #FAB12F;
     -fx-border-color: #FAB12F;
     -fx-border-width: 2;
-    -fx-background-radius: 14;
-    -fx-border-radius: 14;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
     -fx-pref-height: 50;
     -fx-max-width: infinity;
     -fx-cursor: hand;
@@ -330,18 +356,21 @@
 }
 
 .bottone-piccolo {
-    -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
     -fx-font-size: 12px;
-    -fx-font-weight: 600;
+    -fx-font-weight: 700;
     -fx-background-color: white;
-    -fx-text-fill: #b07840;
-    -fx-border-color: #f0d0a0;
+    -fx-text-fill: #FA812F;
+    -fx-border-color: #FAB12F;
     -fx-border-width: 1.5;
-    -fx-background-radius: 10;
-    -fx-border-radius: 10;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
     -fx-padding: 0 12 0 12;
     -fx-pref-height: 32;
     -fx-cursor: hand;
+}
+.bottone-piccolo:hover {
+    -fx-background-color: #fff5e8;
 }
 .bottone-piccolo:hover {
     -fx-background-color: #fff5e8;
@@ -406,4 +435,350 @@
     -fx-border-width: 2;
     -fx-background-radius: 10;
     -fx-border-radius: 10;
+}
+
+/* Redesign — nuovo stile di riferimento, in corso schermata per schermata */
+
+.hero-content {
+    -fx-alignment: CENTER;
+    -fx-spacing: 16;
+    -fx-max-width: 440;
+}
+
+.eyebrow {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 13px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #FA812F;
+}
+
+.hero-title {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 34px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #2C2C2C;
+    -fx-text-alignment: center;
+}
+
+.hero-subtitle {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 15px;
+    -fx-font-weight: 500;
+    -fx-text-fill: #b07840;
+    -fx-text-alignment: center;
+}
+
+.campo-icona {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #2C2C2C;
+    -fx-background-color: white;
+    -fx-background-radius: 0;
+    -fx-border-color: #f0d0a0;
+    -fx-border-radius: 0;
+    -fx-border-width: 2;
+    -fx-padding: 0 16 0 16;
+    -fx-pref-height: 50;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.gradiente-hero {
+    -fx-background-color: linear-gradient(to bottom right, #FEF3E2, #FBE4C2);
+}
+
+.card-title {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 22px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #2C2C2C;
+}
+
+.campo-label {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #605d5d;
+}
+
+.divisore {
+    -fx-background-color: #f0d0a0;
+    -fx-pref-height: 1.5;
+    -fx-max-height: 1.5;
+    -fx-max-width: infinity;
+}
+
+.app-shell {
+    -fx-background-color: linear-gradient(to bottom right, #FEF3E2, #FBE4C2);
+}
+
+.sidebar {
+    -fx-background-color: white;
+    -fx-border-color: transparent #f0d0a0 transparent transparent;
+    -fx-border-width: 0 1.5 0 0;
+    -fx-padding: 24 16 24 16;
+    -fx-spacing: 16;
+    -fx-pref-width: 240;
+    -fx-min-width: 240;
+    -fx-max-width: 240;
+    -fx-alignment: TOP_LEFT;
+}
+
+.sidebar-brand {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 18px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #2C2C2C;
+}
+
+.sidebar-nav-item {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 15px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #605d5d;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-color: transparent;
+    -fx-padding: 12;
+    -fx-max-width: infinity;
+    -fx-cursor: hand;
+    -fx-graphic-text-gap: 12;
+    -fx-underline: false;
+}
+.sidebar-nav-item:hover {
+    -fx-background-color: #fff5e8;
+}
+.sidebar-nav-item.attivo {
+    -fx-background-color: #fdeacb;
+    -fx-text-fill: #FA812F;
+}
+
+.sidebar-avatar {
+    -fx-background-color: #fdeacb;
+    -fx-background-radius: 100%;
+    -fx-min-width: 36;
+    -fx-min-height: 36;
+    -fx-max-width: 36;
+    -fx-max-height: 36;
+    -fx-alignment: CENTER;
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-weight: 800;
+    -fx-font-size: 14px;
+    -fx-text-fill: #FA812F;
+}
+.sidebar-username {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #2C2C2C;
+}
+.sidebar-ruolo {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 11px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #b07840;
+}
+.sidebar-logout {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #FA812F;
+    -fx-underline: false;
+}
+
+.main-content {
+    -fx-padding: 120 48 40 48;
+    -fx-spacing: 24;
+    -fx-alignment: TOP_CENTER;
+}
+
+.page-title {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 32px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #2C2C2C;
+}
+
+.page-subtitle {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: 500;
+    -fx-text-fill: #b07840;
+}
+
+.main-content-riempi {
+    -fx-padding: 32 48 32 48;
+    -fx-alignment: TOP_LEFT;
+}
+
+.bottone-icona {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-color: transparent;
+    -fx-padding: 8;
+    -fx-cursor: hand;
+}
+.bottone-icona:hover {
+    -fx-background-color: #fff5e8;
+    -fx-background-radius: 100%;
+}
+
+.lista-risultati-card .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 0 0 14 0;
+    -fx-border-width: 0;
+}
+.lista-risultati-card .list-cell:filled:hover,
+.lista-risultati-card .list-cell:filled:selected {
+    -fx-background-color: transparent;
+}
+
+.risultato-card {
+    -fx-background-color: white;
+    -fx-background-radius: 0;
+    -fx-padding: 18 20 18 20;
+    -fx-spacing: 8;
+    -fx-effect: dropshadow(gaussian, rgba(44,44,44,0.10), 12, 0, 0, 3);
+    -fx-cursor: hand;
+}
+.risultato-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(44,44,44,0.18), 16, 0, 0, 5);
+}
+
+.badge-prezzo {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #b07840;
+}
+
+.badge-rating {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #b07840;
+    -fx-background-color: #fdeacb;
+    -fx-background-radius: 6;
+    -fx-padding: 4 10 4 10;
+}
+
+.tag-feature {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 11px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #FA812F;
+    -fx-background-color: white;
+    -fx-border-color: #FAB12F;
+    -fx-border-width: 1.5;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-padding: 3 10 3 10;
+}
+
+.mappa-placeholder {
+    -fx-background-color: white;
+    -fx-border-color: #f0d0a0;
+    -fx-border-width: 2;
+}
+.mappa-cella {
+    -fx-border-color: transparent #f0d0a0 #f0d0a0 transparent;
+    -fx-border-width: 0 1 1 0;
+}
+.mappa-caption {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 11px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #b07840;
+    -fx-padding: 10;
+}
+
+.main-content-centrato {
+    -fx-padding: 32 48 32 48;
+    -fx-alignment: TOP_CENTER;
+}
+
+.contenuto-dettaglio {
+    -fx-max-width: 760;
+}
+
+.contenuto-recensione {
+    -fx-max-width: 560;
+}
+
+.sezione-titolo {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 26px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #2C2C2C;
+}
+
+.bottone-icona-outline {
+    -fx-background-color: white;
+    -fx-border-color: #FAB12F;
+    -fx-border-width: 2;
+    -fx-padding: 10;
+    -fx-cursor: hand;
+}
+.bottone-icona-outline:hover {
+    -fx-background-color: #fff5e8;
+}
+
+.recensione-riga {
+    -fx-padding: 0 0 16 0;
+    -fx-spacing: 6;
+    -fx-border-color: transparent transparent #f0d0a0 transparent;
+    -fx-border-width: 0 0 2 0;
+}
+
+.recensione-stelle {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #FAB12F;
+}
+
+.card-recensione {
+    -fx-max-width: infinity;
+    -fx-alignment: TOP_LEFT;
+}
+
+.scroll-trasparente {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+.scroll-trasparente > .viewport {
+    -fx-background-color: transparent;
+}
+.scroll-trasparente .scroll-bar:vertical {
+    -fx-pref-width: 8;
+    -fx-background-color: transparent;
+}
+.scroll-trasparente .scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+    -fx-opacity: 0;
+}
+.scroll-trasparente .scroll-bar:vertical .thumb {
+    -fx-background-color: #f0d0a0;
+    -fx-background-radius: 6;
+}
+.scroll-trasparente .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #FAB12F;
+}
+.scroll-trasparente .scroll-bar:vertical .increment-button,
+.scroll-trasparente .scroll-bar:vertical .decrement-button {
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
+    -fx-opacity: 0;
+}
+.scroll-trasparente .scroll-bar:horizontal {
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
+    -fx-opacity: 0;
+}
+
+.recensione-data {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 12px;
+    -fx-text-fill: #b07840;
 }

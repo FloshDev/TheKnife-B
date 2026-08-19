@@ -1,6 +1,7 @@
 package theknife.client.ui;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,7 +12,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import theknife.client.service.RecensioneService;
@@ -25,54 +28,27 @@ import theknife.common.dto.RispondiRecensioneDTO;
  */
 
 public class GestioneRecensioniController {
-    /** La card, la cui larghezza è agganciata alla finestra (grafica responsive). */
-    @FXML private VBox card;
-    /** Lista delle recensioni di tutti i ristoranti gestiti. */
+    /** Lista delle recensioni di tutti i ristoranti gestiti, con risposta inline per card. */
     @FXML private ListView<RecensioneDTO> recensioniListView;
-    /** Area di testo per la risposta alla recensione selezionata. */
-    @FXML private TextArea rispostaField;
-    /** Bottone per inviare la risposta. */
-    @FXML private Button rispondiButton;
-    /** Bottone per tornare alla dashboard. */
+    /** Bottone icona per tornare alla dashboard. */
     @FXML private Button tornaIndietroButton;
+    /** Controller della sidebar inclusa (fx:include). */
+    @FXML private SidebarController sidebarController;
 
     /** Invia al server i comandi sulle recensioni dei ristoranti gestiti. */
     private final RecensioneService recensioneService = new RecensioneService();
+    /** Formato di visualizzazione della data delle recensioni (es. "12 ago 2026"). */
+    private static final DateTimeFormatter FORMATO_DATA = DateTimeFormatter.ofPattern("d MMM yyyy");
 
     /**
      * Carica le recensioni all'apertura della schermata.
      */
     @FXML private void initialize() {
-        Responsive.aggancia(card, 0.6, 480, 700);
+        sidebarController.impostaAttivo(SidebarController.Voce.GESTIONE_RECENSIONI);
         Label nessunaRecensione = new Label("Nessuna recensione da gestire per ora.");
         nessunaRecensione.getStyleClass().add("risultato-info");
         recensioniListView.setPlaceholder(nessunaRecensione);
         caricaRecensioni();
-    }
-
-    /**
-     * Invia la risposta scritta alla recensione selezionata nella lista e
-     * ricarica l'elenco. Mostra un avviso se nessun elemento è selezionato.
-     */
-    @FXML private void handleRispondi() {
-        RecensioneDTO selectedRecensione = recensioniListView.getSelectionModel().getSelectedItem();
-        if (selectedRecensione != null) {
-            String risposta = rispostaField.getText();
-            TaskRunner.run(
-                () -> { RispondiRecensioneDTO dto = new RispondiRecensioneDTO(selectedRecensione.getIdRecensione(), risposta);
-                        recensioneService.rispondiRecensione(dto);
-                        return null;
-                    },
-                result -> {
-                    Toast.successo("Risposta inviata con successo");
-                    rispostaField.clear();
-                    caricaRecensioni();
-                }
-            );
-        }
-        else {
-            Toast.errore("Nessuna recensione selezionata");
-        }
     }
 
     /**
@@ -88,6 +64,28 @@ public class GestioneRecensioniController {
     }
 
     /**
+     * Invia la risposta scritta a una recensione e ricarica l'elenco.
+     *
+     * @param recensione la recensione a cui rispondere
+     * @param risposta il testo della risposta
+     */
+    private void rispondi(RecensioneDTO recensione, String risposta) {
+        if (risposta == null || risposta.isBlank()) {
+            Toast.avviso("Scrivi una risposta prima di inviare.");
+            return;
+        }
+        TaskRunner.run(
+            () -> { recensioneService.rispondiRecensione(new RispondiRecensioneDTO(recensione.getIdRecensione(), risposta));
+                    return null;
+                },
+            result -> {
+                Toast.successo("Risposta inviata con successo");
+                caricaRecensioni();
+            }
+        );
+    }
+
+    /**
      * Carica dal server le recensioni di tutti i ristoranti gestiti
      * dall'utente e le mostra, sostituendo il contenuto attuale della lista.
      */
@@ -96,29 +94,74 @@ public class GestioneRecensioniController {
             () -> recensioneService.leggiRecensioniRistorantiGestiti(),
             recensioni -> {
                 recensioniListView.getItems().setAll(recensioni);
-                recensioniListView.setCellFactory(lv -> new ListCell<RecensioneDTO>() {
-                    private final Label titoloLabel = new Label();
-                    private final Label infoLabel = new Label();
-                    private final VBox contenuto = new VBox(titoloLabel, infoLabel);
-                    {
-                        titoloLabel.getStyleClass().add("risultato-nome");
-                        infoLabel.getStyleClass().add("risultato-info");
-                    }
-
-                    @Override
-                    protected void updateItem(RecensioneDTO item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty || item == null) {
-                            setGraphic(null);
-                        } else {
-                            titoloLabel.setText(item.getStelle() + "★ " + item.getTitolo());
-                            infoLabel.setText("Ristorante #" + item.getIdRistorante()
-                                + (item.getRisposta() != null ? " · risposto" : " · da rispondere"));
-                            setGraphic(contenuto);
-                        }
-                    }
-                });
+                recensioniListView.setCellFactory(lv -> new RecensioneGestitaCell());
             }
         );
+    }
+
+    /**
+     * Cella della lista recensioni: titolo, data, ristorante, stelle e
+     * testo, con un campo di risposta inline al posto di una recensione
+     * selezionata + bottone condiviso — mostrato solo se non c'è già una
+     * risposta.
+     */
+    private class RecensioneGestitaCell extends ListCell<RecensioneDTO> {
+        private final Label titoloLabel = new Label();
+        private final Label dataLabel = new Label();
+        private final HBox intestazione = new HBox(titoloLabel, dataLabel);
+        private final Label ristoranteLabel = new Label();
+        private final Label stelleLabel = new Label();
+        private final Label testoLabel = new Label();
+        private final Label rispostaLabel = new Label();
+        private final TextField rispostaField = new TextField();
+        private final Button inviaButton = new Button("Invia");
+        private final HBox rispondiRow = new HBox(8, rispostaField, inviaButton);
+        private final VBox contenuto = new VBox(6,
+            intestazione, ristoranteLabel, stelleLabel, testoLabel, rispostaLabel, rispondiRow);
+
+        {
+            contenuto.getStyleClass().add("recensione-riga");
+            titoloLabel.getStyleClass().add("risultato-nome");
+            titoloLabel.setMaxWidth(Double.MAX_VALUE);
+            HBox.setHgrow(titoloLabel, Priority.ALWAYS);
+            dataLabel.getStyleClass().add("recensione-data");
+            ristoranteLabel.getStyleClass().add("risultato-info");
+            stelleLabel.getStyleClass().add("recensione-stelle");
+            testoLabel.getStyleClass().add("risultato-info");
+            testoLabel.setWrapText(true);
+            rispostaLabel.getStyleClass().add("recensione-risposta");
+            rispostaLabel.setWrapText(true);
+            rispostaField.getStyleClass().add("campo-testo");
+            rispostaField.setPromptText("Scrivi una risposta…");
+            HBox.setHgrow(rispostaField, Priority.ALWAYS);
+            inviaButton.getStyleClass().add("bottone-piccolo");
+            inviaButton.setOnAction(e -> rispondi(getItem(), rispostaField.getText()));
+        }
+
+        @Override
+        protected void updateItem(RecensioneDTO item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+                setGraphic(null);
+            } else {
+                titoloLabel.setText(item.getTitolo());
+                dataLabel.setText(item.getDataPubblicazione() == null ? "" : item.getDataPubblicazione().format(FORMATO_DATA));
+                ristoranteLabel.setText("Ristorante #" + item.getIdRistorante());
+                stelleLabel.setText("★".repeat(item.getStelle()) + "☆".repeat(5 - item.getStelle()));
+                testoLabel.setText(item.getTesto());
+
+                boolean haRisposta = item.getRisposta() != null;
+                rispostaLabel.setVisible(haRisposta);
+                rispostaLabel.setManaged(haRisposta);
+                if (haRisposta) {
+                    rispostaLabel.setText("Risposta: " + item.getRisposta());
+                }
+                rispostaField.clear();
+                rispondiRow.setVisible(!haRisposta);
+                rispondiRow.setManaged(!haRisposta);
+
+                setGraphic(contenuto);
+            }
+        }
     }
 }

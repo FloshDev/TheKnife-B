@@ -2,36 +2,103 @@
 <!-- Layout della schermata aggiungi nuovo ristorante (S10). @author Barlera Marco, 760000, VA -->
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 
-<VBox styleClass="page-root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.AggiungiRistoranteController">
+<HBox styleClass="app-shell" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.AggiungiRistoranteController">
 
-    <VBox styleClass="card, card-lista" fx:id="card">
-        <Label text="Aggiungi nuovo ristorante" styleClass="brand-title"/>
+    <fx:define>
+        <ToggleGroup fx:id="prezzoGroup" />
+    </fx:define>
 
-        <GridPane hgap="12" vgap="12">
-            <columnConstraints>
-                <ColumnConstraints percentWidth="50"/>
-                <ColumnConstraints percentWidth="50"/>
-            </columnConstraints>
-            <TextField fx:id="nomeField" promptText="Nome" styleClass="campo-testo" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-            <TextField fx:id="tipoCucinaField" promptText="Tipo di cucina" styleClass="campo-testo" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-            <TextField fx:id="indirizzoField" promptText="Indirizzo" styleClass="campo-testo" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-            <TextField fx:id="fasciaPrezzoField" promptText="Fascia di prezzo" styleClass="campo-testo" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-            <TextField fx:id="cittaField" promptText="Citta" styleClass="campo-testo" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-            <TextField fx:id="webSiteField" promptText="Website" styleClass="campo-testo" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-            <TextField fx:id="provinciaField" promptText="Provincia" styleClass="campo-testo" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-            <TextField fx:id="telefonoField" promptText="Telefono" styleClass="campo-testo" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-            <TextField fx:id="nazioneField" promptText="Nazione" styleClass="campo-testo" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-            <TextField fx:id="premiField" promptText="Premi" styleClass="campo-testo" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-        </GridPane>
+    <fx:include fx:id="sidebar" source="sidebar.fxml"/>
 
-        <HBox spacing="20" alignment="CENTER">
-            <CheckBox fx:id="prenotazioneOnlineCheck" text="Prenotazione Online"/>
-            <CheckBox fx:id="consegnaADomicilioCheck" text="Consegna a domicilio"/>
-        </HBox>
+    <VBox styleClass="main-content, main-content-centrato" HBox.hgrow="ALWAYS">
+        <VBox styleClass="contenuto-dettaglio" fx:id="card" spacing="16">
 
-        <Button fx:id="salvaButton" text="Salva" onAction="#handleSalva" styleClass="bottone-primario"/>
-        <Button fx:id="annullaButton" text="Annulla" onAction="#handleAnnulla" styleClass="bottone-secondario"/>
+            <Button fx:id="tornaIndietroButton" onAction="#handleAnnulla" styleClass="bottone-icona">
+                <graphic>
+                    <SVGPath content="M15 18l-6-6 6-6" fill="TRANSPARENT" stroke="#FA812F" strokeWidth="2.5" strokeLineCap="ROUND" strokeLineJoin="ROUND"/>
+                </graphic>
+            </Button>
+            <Label text="Aggiungi ristorante" styleClass="page-title"/>
+
+            <VBox styleClass="card, card-recensione" spacing="18">
+
+                <HBox spacing="16">
+                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                        <Label text="Nome" styleClass="campo-label"/>
+                        <TextField fx:id="nomeField" promptText="Nome del locale" styleClass="campo-testo" maxWidth="Infinity"/>
+                    </VBox>
+                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                        <Label text="Tipo di cucina" styleClass="campo-label"/>
+                        <TextField fx:id="tipoCucinaField" promptText="Es. Italiana" styleClass="campo-testo" maxWidth="Infinity"/>
+                    </VBox>
+                </HBox>
+
+                <HBox spacing="16">
+                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                        <Label text="Indirizzo" styleClass="campo-label"/>
+                        <TextField fx:id="indirizzoField" promptText="Via, numero civico" styleClass="campo-testo" maxWidth="Infinity"/>
+                    </VBox>
+                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                        <Label text="Città" styleClass="campo-label"/>
+                        <TextField fx:id="cittaField" promptText="Città" styleClass="campo-testo" maxWidth="Infinity"/>
+                    </VBox>
+                </HBox>
+
+                <HBox spacing="16">
+                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                        <Label text="Provincia" styleClass="campo-label"/>
+                        <TextField fx:id="provinciaField" promptText="Provincia" styleClass="campo-testo" maxWidth="Infinity"/>
+                    </VBox>
+                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                        <Label text="Nazione" styleClass="campo-label"/>
+                        <TextField fx:id="nazioneField" promptText="Nazione" styleClass="campo-testo" maxWidth="Infinity"/>
+                    </VBox>
+                </HBox>
+
+                <HBox spacing="16">
+                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                        <Label text="Telefono" styleClass="campo-label"/>
+                        <TextField fx:id="telefonoField" promptText="+39…" styleClass="campo-testo" maxWidth="Infinity"/>
+                    </VBox>
+                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                        <Label text="Fascia di prezzo" styleClass="campo-label"/>
+                        <HBox styleClass="selettore-ruolo" alignment="CENTER">
+                            <ToggleButton fx:id="prezzo1Radio" text="€" toggleGroup="$prezzoGroup" styleClass="opzione-ruolo" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                            <Region styleClass="divisore-ruolo"/>
+                            <ToggleButton fx:id="prezzo2Radio" text="€€" toggleGroup="$prezzoGroup" styleClass="opzione-ruolo" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                            <Region styleClass="divisore-ruolo"/>
+                            <ToggleButton fx:id="prezzo3Radio" text="€€€" toggleGroup="$prezzoGroup" styleClass="opzione-ruolo" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                            <Region styleClass="divisore-ruolo"/>
+                            <ToggleButton fx:id="prezzo4Radio" text="€€€€" toggleGroup="$prezzoGroup" styleClass="opzione-ruolo" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                        </HBox>
+                    </VBox>
+                </HBox>
+
+                <HBox spacing="16">
+                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                        <Label text="Sito web" styleClass="campo-label"/>
+                        <TextField fx:id="webSiteField" promptText="Facoltativo" styleClass="campo-testo" maxWidth="Infinity"/>
+                    </VBox>
+                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                        <Label text="Premi" styleClass="campo-label"/>
+                        <TextField fx:id="premiField" promptText="Facoltativo" styleClass="campo-testo" maxWidth="Infinity"/>
+                    </VBox>
+                </HBox>
+
+                <HBox spacing="20">
+                    <CheckBox fx:id="prenotazioneOnlineCheck" text="Prenotazione online"/>
+                    <CheckBox fx:id="consegnaADomicilioCheck" text="Consegna a domicilio"/>
+                </HBox>
+
+                <HBox spacing="12" alignment="CENTER_RIGHT">
+                    <Button fx:id="annullaButton" text="Annulla" onAction="#handleAnnulla" styleClass="bottone-secondario"/>
+                    <Button fx:id="salvaButton" text="Salva" onAction="#handleSalva" styleClass="bottone-primario"/>
+                </HBox>
+
+            </VBox>
+        </VBox>
     </VBox>
 
-</VBox>
+</HBox>

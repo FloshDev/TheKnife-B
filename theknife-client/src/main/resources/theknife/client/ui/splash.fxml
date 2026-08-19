@@ -2,13 +2,15 @@
 <!-- Layout della schermata iniziale (S01). @author Barlera Marco, 760000, VA -->
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.Group?>
 
 
-<VBox styleClass="page-root" fx:id="root" focusTraversable="true" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.SplashController">
+<VBox styleClass="page-root, gradiente-hero" fx:id="root" focusTraversable="true" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.SplashController">
 
-    <VBox styleClass="card" fx:id="card">
+    <VBox styleClass="hero-content" fx:id="card" alignment="CENTER" spacing="16">
 
         <ImageView fitWidth="110" fitHeight="110" preserveRatio="true">
             <image>
@@ -16,12 +18,24 @@
             </image>
         </ImageView>
 
-        <Label text="The Knife" fx:id="theKnifeLabel" styleClass="brand-title"/>
-        <Label fx:id="localitaLabel" text="" styleClass="localita-label"/>
-        <TextField fx:id="modificaLocalitaField" promptText="Es. Milano" styleClass="campo-testo"/>
-        <Button text="Conferma" onAction="#handleConferma" styleClass="bottone-primario" defaultButton="true"/>
-        <Hyperlink text="Vai al Login" onAction="#handleLogin" styleClass="link-primario"/>
-        <Hyperlink text="Continua come ospite" onAction="#handleGuest" styleClass="link-secondario"/>
+        <Label text="THEKNIFE" fx:id="theKnifeLabel" styleClass="eyebrow"/>
+        <Label text="Trova il tuo prossimo ristorante" styleClass="hero-title" wrapText="true" textAlignment="CENTER"/>
+        <Label text="Cerca e valuta i ristoranti vicino a te." styleClass="hero-subtitle" wrapText="true" textAlignment="CENTER"/>
+
+        <Label fx:id="localitaLabel" text="" styleClass="campo-icona" graphicTextGap="10" maxWidth="Infinity">
+            <graphic>
+                <Group scaleX="0.7" scaleY="0.7">
+                    <SVGPath content="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" fill="TRANSPARENT" stroke="#FA812F" strokeWidth="2" strokeLineCap="ROUND" strokeLineJoin="ROUND"/>
+                    <Circle centerX="12" centerY="10" radius="3" fill="TRANSPARENT" stroke="#FA812F" strokeWidth="2"/>
+                </Group>
+            </graphic>
+        </Label>
+        <TextField fx:id="modificaLocalitaField" promptText="Correggi la località, se serve" styleClass="campo-testo"/>
+
+        <HBox spacing="16" alignment="CENTER">
+            <Button text="Conferma e continua →" onAction="#handleConferma" styleClass="bottone-primario" defaultButton="true"/>
+            <Hyperlink text="Accedi" onAction="#handleLogin" styleClass="link-primario"/>
+        </HBox>
     </VBox>
-    
+
 </VBox>

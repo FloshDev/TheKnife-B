@@ -31,6 +31,12 @@ public class SplashController {
 
     /** Invia al server la richiesta di localizzazione iniziale (decisione 18). */
     private final RistoranteService ristoranteService = new RistoranteService();
+    /**
+     * Località rilevata dall'IP, se la geolocalizzazione riesce ({@code null}
+     * altrimenti). Ripiego per {@link #handleConferma(ActionEvent)} quando
+     * l'utente non scrive nulla in {@link #modificaLocalitaField}.
+     */
+    private String luogoRilevato;
 
     /**
      * Toglie il focus dal campo di testo (altrimenti JavaFX lo assegna
@@ -49,26 +55,41 @@ public class SplashController {
             () -> ristoranteService.ottieniLocalitaIniziale(),
             posizione -> {
                 String luogo = posizione.getLuogo();
-                localitaLabel.setText(luogo != null && !luogo.isBlank()
-                    ? "Sembri trovarti a " + luogo
-                    : "Non siamo riusciti a rilevare la tua posizione: scrivila qui sotto");
+                if (luogo != null && !luogo.isBlank()) {
+                    luogoRilevato = luogo;
+                    localitaLabel.setText("Sembri trovarti a " + luogo);
+                } else {
+                    localitaLabel.setText("Non siamo riusciti a rilevare la tua posizione: scrivila qui sotto");
+                }
             },
             eccezione -> localitaLabel.setText("Non siamo riusciti a rilevare la tua posizione: scrivila qui sotto")
         );
     }
 
     /**
-     * Conferma la località rilevata (o corretta a mano) e naviga alla Home.
-     * È il percorso principale della schermata (bottone pieno) e quello
-     * richiesto dalle direttive del docente: il nome del luogo lo digita
-     * l'utente, il sistema non deve indovinarlo.
+     * Naviga alla Home, sia che l'utente abbia effettuato il login sia che
+     * prosegua come ospite: senza autenticazione le due cose non si
+     * distinguono, quindi è un solo percorso invece di due. Pre-riempie il
+     * campo città di Home con la località corretta a mano in
+     * {@link #modificaLocalitaField}, o in mancanza con quella rilevata
+     * automaticamente ({@link #luogoRilevato}) — quella digitata ha sempre
+     * la precedenza, coerente con la decisione 18 (l'utente ha l'ultima
+     * parola sul luogo).
      *
-     * @param event l'evento generato dal click sul bottone "Conferma"
+     * @param event l'evento generato dal click sul bottone "Conferma e continua"
      * @throws IOException se il caricamento della schermata fallisce
      */
     @FXML private void handleConferma(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/home.fxml"));
+        String cittaCorretta = modificaLocalitaField.getText();
+        String citta = (cittaCorretta != null && !cittaCorretta.isBlank()) ? cittaCorretta : luogoRilevato;
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/home.fxml"));
+        Parent root = loader.load();
+        if (citta != null) {
+            HomeController controller = loader.getController();
+            controller.impostaCitta(citta);
+        }
         stage.getScene().setRoot(root);
     }
 
@@ -81,18 +102,6 @@ public class SplashController {
     @FXML private void handleLogin(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); // Non crei una finestra nuova, riusi quella che già esiste
         Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/login.fxml"));
-        stage.getScene().setRoot(root);
-    }
-
-    /**
-     * Naviga alla Home senza autenticarsi.
-     *
-     * @param event l'evento generato dal click sul link "Continua come ospite"
-     * @throws IOException se il caricamento della schermata fallisce
-     */
-    @FXML private void handleGuest(ActionEvent event) throws IOException {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/home.fxml"));
         stage.getScene().setRoot(root);
     }
 }

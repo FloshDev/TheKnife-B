@@ -5,6 +5,7 @@ import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -12,13 +13,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import theknife.client.service.RistoranteService;
 import theknife.common.dto.CercaRistorantiDTO;
 import theknife.common.dto.IdRistoranteDTO;
 import theknife.common.dto.RistoranteDTO;
-
 
 /**
  * Controller della schermata associa ristorante (S11).
@@ -27,27 +29,25 @@ import theknife.common.dto.RistoranteDTO;
  */
 
 public class AssociaRistoranteController {
-    /** La card, la cui larghezza è agganciata alla finestra (grafica responsive). */
-    @FXML private VBox card;
     /** Campo di testo per la ricerca del ristorante per nome. */
     @FXML private TextField ricercaField;
-    /** Lista dei ristoranti trovati dalla ricerca. */
+    /** Lista dei ristoranti trovati dalla ricerca, una card orizzontale per ristorante. */
     @FXML private ListView<RistoranteDTO> risultatiListView;
     /** Bottone per avviare la ricerca. */
     @FXML private Button cercaButton;
-    /** Bottone per associarsi al ristorante selezionato. */
-    @FXML private Button associaButton;
-    /** Bottone per tornare alla dashboard senza associare nulla. */
+    /** Bottone icona per tornare alla dashboard senza associare nulla. */
     @FXML private Button annullaButton;
+    /** Controller della sidebar inclusa (fx:include), per evidenziare "Associati a un ristorante" come voce attiva. */
+    @FXML private SidebarController sidebarController;
 
     /** Invia al server i comandi sui ristoranti, incluso l'associazione al gestore. */
     private final RistoranteService ristoranteService = new RistoranteService();
 
     /**
-     * Aggancia la larghezza della card alla finestra (grafica responsive).
+     * Evidenzia "Associati a un ristorante" nella sidebar.
      */
     @FXML private void initialize() {
-        Responsive.aggancia(card, 0.6, 480, 700);
+        sidebarController.impostaAttivo(SidebarController.Voce.ASSOCIA);
     }
 
     /**
@@ -66,60 +66,35 @@ public class AssociaRistoranteController {
                 nessunRisultato.getStyleClass().add("risultato-info");
                 risultatiListView.setPlaceholder(nessunRisultato);
                 risultatiListView.getItems().setAll(ristoranti);
-                risultatiListView.setCellFactory(lv -> new ListCell<RistoranteDTO>() {
-                    private final Label nomeLabel = new Label();
-                    private final Label infoLabel = new Label();
-                    private final VBox contenuto = new VBox(nomeLabel, infoLabel);
-                    {
-                        nomeLabel.getStyleClass().add("risultato-nome");
-                        infoLabel.getStyleClass().add("risultato-info");
-                    }
-
-                    @Override
-                    protected void updateItem(RistoranteDTO item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty || item == null) {
-                            setGraphic(null);
-                        } else {
-                            nomeLabel.setText(item.getNome());
-                            infoLabel.setText(item.getCitta());
-                            setGraphic(contenuto);
-                        }
-                    }
-                });
+                risultatiListView.setCellFactory(lv -> new RistoranteTrovatoCell());
             }
         );
     }
+
     /**
-     * Associa l'utente come gestore del ristorante selezionato nella lista e
-     * torna alla dashboard. Mostra un avviso se nessun elemento è
-     * selezionato.
+     * Associa l'utente come gestore del ristorante indicato e torna alla
+     * dashboard.
      *
-     * @param event l'evento generato dal click sul bottone "Gestisci"
-     * @throws IOException se il caricamento della schermata fallisce
+     * @param ristorante il ristorante a cui associarsi
      */
-    @FXML private void handleAssocia(ActionEvent event) throws IOException {
-        RistoranteDTO selectedRistorante = risultatiListView.getSelectionModel().getSelectedItem();
-        if (selectedRistorante != null) {
-            TaskRunner.run(
-                () -> { ristoranteService.associaRistorante(new IdRistoranteDTO(selectedRistorante.getIdRistorante()));
-                        return null;
-                    },
-                result -> {
-                    Toast.successo("Ristorante associato con successo");
-                    try {
-                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/dashboard.fxml"));
-                        stage.getScene().setRoot(root);
-                    } catch (IOException e) {
-                        Toast.errore("Errore nel caricamento della schermata: " + e.getMessage());
-                    }
+    private void associa(RistoranteDTO ristorante) {
+        TaskRunner.run(
+            () -> { ristoranteService.associaRistorante(new IdRistoranteDTO(ristorante.getIdRistorante()));
+                    return null;
+                },
+            result -> {
+                Toast.successo("Ristorante associato con successo");
+                try {
+                    Stage stage = (Stage) risultatiListView.getScene().getWindow();
+                    Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/dashboard.fxml"));
+                    stage.getScene().setRoot(root);
+                } catch (IOException e) {
+                    Toast.errore("Errore nel caricamento della schermata: " + e.getMessage());
                 }
-            );
-        } else {
-            Toast.avviso("Seleziona un ristorante dalla lista");
-        }
+            }
+        );
     }
+
     /**
      * Torna alla dashboard senza associare nulla.
      *
@@ -132,4 +107,37 @@ public class AssociaRistoranteController {
         stage.getScene().setRoot(root);
     }
 
+    /**
+     * Cella della lista risultati: card orizzontale con nome e città a
+     * sinistra, bottone "Associati" a destra.
+     */
+    private class RistoranteTrovatoCell extends ListCell<RistoranteDTO> {
+        private final Label nomeLabel = new Label();
+        private final Label infoLabel = new Label();
+        private final VBox testi = new VBox(4, nomeLabel, infoLabel);
+        private final Button associatiButton = new Button("Associati");
+        private final HBox contenuto = new HBox(12, testi, associatiButton);
+
+        {
+            contenuto.getStyleClass().add("risultato-card");
+            contenuto.setAlignment(Pos.CENTER_LEFT);
+            HBox.setHgrow(testi, Priority.ALWAYS);
+            nomeLabel.getStyleClass().add("risultato-nome");
+            infoLabel.getStyleClass().add("risultato-info");
+            associatiButton.getStyleClass().add("bottone-secondario");
+            associatiButton.setOnAction(e -> associa(getItem()));
+        }
+
+        @Override
+        protected void updateItem(RistoranteDTO item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+                setGraphic(null);
+            } else {
+                nomeLabel.setText(item.getNome());
+                infoLabel.setText(item.getCitta());
+                setGraphic(contenuto);
+            }
+        }
+    }
 }

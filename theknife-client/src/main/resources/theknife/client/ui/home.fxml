@@ -2,46 +2,68 @@
 <!-- Layout della schermata Home (S04). @author Barlera Marco, 760000, VA -->
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.Group?>
 
-<VBox styleClass="page-root" fx:id="root" focusTraversable="true" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.HomeController">
+<HBox styleClass="app-shell" fx:id="root" focusTraversable="true" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.HomeController">
 
-    <VBox styleClass="card" fx:id="card">
-        <Label text="Cerca ristoranti" styleClass="brand-title"/>
-        <TextField fx:id="nomeField" promptText="Nome ristorante" styleClass="campo-testo"/>
-        <TextField fx:id="cittaField" promptText="Città" styleClass="campo-testo"/>
-        <TextField fx:id="tipoCucinaField" promptText="Tipo di cucina" styleClass="campo-testo"/>
-        <TextField fx:id="fasciaPrezzoField" promptText="Fascia prezzo (1-4)" styleClass="campo-testo"/>
-        <TextField fx:id="raggioKmField" promptText="Raggio di ricerca (km)" styleClass="campo-testo"/>
+    <fx:define>
+        <ToggleGroup fx:id="prezzoGroup" />
+    </fx:define>
 
-        <CheckBox fx:id="prenotazioneOnlineCheck" text="Prenotazione online"/>
-        <CheckBox fx:id="consegnaADomicilioCheck" text="Consegna a domicilio"/>
+    <fx:include fx:id="sidebar" source="sidebar.fxml"/>
 
-        <Button text="Cerca" onAction="#handleCerca" styleClass="bottone-primario"/>
-        <Button text="Vicino a me" onAction="#handleVicinoAMe" styleClass="bottone-secondario"/>
+    <VBox styleClass="main-content" HBox.hgrow="ALWAYS">
+        <Label text="Cerca un ristorante" styleClass="page-title"/>
+        <Label text="Filtra per nome, città, cucina o cerca vicino a te." styleClass="page-subtitle"/>
 
-        <Hyperlink fx:id="loginLink" text="Vai al Login" onAction="#handleLogin" styleClass="link-secondario"/>
-        <Hyperlink fx:id="preferitiLink" text="Preferiti" onAction="#handlePreferiti" styleClass="link-secondario" graphicTextGap="6">
-            <graphic>
-                <SVGPath content="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" fill="#b07840" scaleX="0.6" scaleY="0.6"/>
-            </graphic>
-        </Hyperlink>
-        <Hyperlink fx:id="dashboardLink" text="Dashboard" onAction="#handleDashboard" styleClass="link-secondario" graphicTextGap="6">
-            <graphic>
-                <Group scaleX="0.6" scaleY="0.6">
-                    <Rectangle x="3" y="3" width="7" height="9" arcWidth="2" arcHeight="2" fill="#b07840"/>
-                    <Rectangle x="14" y="3" width="7" height="5" arcWidth="2" arcHeight="2" fill="#b07840"/>
-                    <Rectangle x="14" y="12" width="7" height="9" arcWidth="2" arcHeight="2" fill="#b07840"/>
-                    <Rectangle x="3" y="16" width="7" height="5" arcWidth="2" arcHeight="2" fill="#b07840"/>
-                </Group>
-            </graphic>
-        </Hyperlink>
-        <Hyperlink fx:id="logoutLink" text="Logout" onAction="#handleLogout" styleClass="link-secondario" graphicTextGap="6">
-            <graphic>
-                <SVGPath content="m16 17 5-5-5-5 M21 12H9 M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" fill="TRANSPARENT" stroke="#b07840" strokeWidth="2" strokeLineCap="ROUND" strokeLineJoin="ROUND" scaleX="0.6" scaleY="0.6"/>
-            </graphic>
-        </Hyperlink>
+        <VBox styleClass="card, card-lista" fx:id="card">
+
+            <HBox spacing="16">
+                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                    <Label text="Nome ristorante" styleClass="campo-label"/>
+                    <TextField fx:id="nomeField" promptText="Osteria del Ponte" styleClass="campo-testo" maxWidth="Infinity"/>
+                </VBox>
+                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                    <Label text="Città" styleClass="campo-label"/>
+                    <TextField fx:id="cittaField" promptText="Milano" styleClass="campo-testo" maxWidth="Infinity"/>
+                </VBox>
+            </HBox>
+
+            <HBox spacing="16">
+                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                    <Label text="Tipo di cucina" styleClass="campo-label"/>
+                    <TextField fx:id="tipoCucinaField" promptText="Italiana, Giapponese…" styleClass="campo-testo" maxWidth="Infinity"/>
+                </VBox>
+                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                    <Label text="Fascia di prezzo" styleClass="campo-label"/>
+                    <HBox styleClass="selettore-ruolo" alignment="CENTER">
+                        <ToggleButton fx:id="prezzo1Radio" text="€" toggleGroup="$prezzoGroup" styleClass="opzione-ruolo" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                        <Region styleClass="divisore-ruolo"/>
+                        <ToggleButton fx:id="prezzo2Radio" text="€€" toggleGroup="$prezzoGroup" styleClass="opzione-ruolo" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                        <Region styleClass="divisore-ruolo"/>
+                        <ToggleButton fx:id="prezzo3Radio" text="€€€" toggleGroup="$prezzoGroup" styleClass="opzione-ruolo" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                        <Region styleClass="divisore-ruolo"/>
+                        <ToggleButton fx:id="prezzo4Radio" text="€€€€" toggleGroup="$prezzoGroup" styleClass="opzione-ruolo" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                    </HBox>
+                </VBox>
+            </HBox>
+
+            <HBox spacing="20">
+                <CheckBox fx:id="prenotazioneOnlineCheck" text="Prenotazione online"/>
+                <CheckBox fx:id="consegnaADomicilioCheck" text="Consegna a domicilio"/>
+            </HBox>
+
+            <Region styleClass="divisore"/>
+
+            <HBox spacing="12" alignment="BOTTOM_LEFT">
+                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                    <Label text="Raggio (km) — vicino a te" styleClass="campo-label"/>
+                    <TextField fx:id="raggioKmField" promptText="5" styleClass="campo-testo" maxWidth="Infinity"/>
+                </VBox>
+                <Button text="Vicino a me" onAction="#handleVicinoAMe" styleClass="bottone-secondario"/>
+                <Button text="Cerca →" onAction="#handleCerca" styleClass="bottone-primario" defaultButton="true"/>
+            </HBox>
+
+        </VBox>
     </VBox>
 
-</VBox>
+</HBox>

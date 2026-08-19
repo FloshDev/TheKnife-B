@@ -9,11 +9,11 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import theknife.client.service.RistoranteService;
-import theknife.common.dto.AggiungiRistoranteDTO; 
-
+import theknife.common.dto.AggiungiRistoranteDTO;
 
 /**
  * Controller della schermata aggiungi nuovo ristorante (S10).
@@ -23,8 +23,10 @@ import theknife.common.dto.AggiungiRistoranteDTO;
 
 public class AggiungiRistoranteController {
 
-    /** La card, la cui larghezza è agganciata alla finestra (grafica responsive). */
+    /** Il contenuto, la cui larghezza è agganciata alla finestra (grafica responsive). */
     @FXML private VBox card;
+    /** Controller della sidebar inclusa (fx:include), per evidenziare "Aggiungi ristorante" come voce attiva. */
+    @FXML private SidebarController sidebarController;
     /** Campo di testo per il nome del ristorante. */
     @FXML private TextField nomeField;
     /** Campo di testo per l'indirizzo. */
@@ -35,8 +37,8 @@ public class AggiungiRistoranteController {
     @FXML private TextField provinciaField;
     /** Campo di testo per la nazione. */
     @FXML private TextField nazioneField;
-    /** Campo di testo per la fascia di prezzo (1-4). */
-    @FXML private TextField fasciaPrezzoField;
+    /** Bottoni della fascia di prezzo (1-4 simboli "€"), selezione obbligatoria. */
+    @FXML private ToggleButton prezzo1Radio, prezzo2Radio, prezzo3Radio, prezzo4Radio;
     /** Campo di testo per il tipo di cucina. */
     @FXML private TextField tipoCucinaField;
     /** Campo di testo per il sito web, facoltativo. */
@@ -54,10 +56,26 @@ public class AggiungiRistoranteController {
     private final RistoranteService ristoranteService = new RistoranteService();
 
     /**
-     * Aggancia la larghezza della card alla finestra (grafica responsive).
+     * Aggancia la larghezza del contenuto alla finestra (grafica responsive)
+     * ed evidenzia "Aggiungi ristorante" nella sidebar.
      */
     @FXML private void initialize() {
-        Responsive.aggancia(card, 0.6, 480, 700);
+        Responsive.aggancia(card, 0.6, 480, 760);
+        sidebarController.impostaAttivo(SidebarController.Voce.AGGIUNGI);
+    }
+
+    /**
+     * Restituisce la fascia di prezzo selezionata (1-4), o 0 se nessun
+     * bottone è selezionato.
+     *
+     * @return la fascia di prezzo selezionata, oppure 0
+     */
+    private int fasciaPrezzoSelezionata() {
+        if (prezzo1Radio.isSelected()) return 1;
+        if (prezzo2Radio.isSelected()) return 2;
+        if (prezzo3Radio.isSelected()) return 3;
+        if (prezzo4Radio.isSelected()) return 4;
+        return 0;
     }
 
     /**
@@ -75,11 +93,9 @@ public class AggiungiRistoranteController {
         String citta = cittaField.getText();
         String provincia = provinciaField.getText();
         String nazione = nazioneField.getText();
-        int fasciaPrezzo;
-        try {
-            fasciaPrezzo = Integer.parseInt(fasciaPrezzoField.getText());
-        } catch (NumberFormatException e) {
-            Toast.errore("Fascia di prezzo non valida, inserisci un numero valido");
+        int fasciaPrezzo = fasciaPrezzoSelezionata();
+        if (fasciaPrezzo == 0) {
+            Toast.errore("Seleziona una fascia di prezzo");
             return;
         }
         String tipoCucina = tipoCucinaField.getText();

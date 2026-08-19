@@ -9,17 +9,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import theknife.client.network.ServerConnection;
-import theknife.client.service.AuthService;
 import theknife.client.service.RistoranteService;
 import theknife.common.dto.CercaRistorantiDTO;
 import theknife.common.dto.CercaVicinoDTO;
 import theknife.common.dto.UtenteDTO;
-import theknife.common.enums.Ruolo;
 
 /**
  * Controller della schermata Home (S04).
@@ -29,9 +28,11 @@ import theknife.common.enums.Ruolo;
 public class HomeController {
 
     /** Contenitore radice, usato solo per togliere il focus dal primo campo all'apertura. */
-    @FXML private VBox root;
+    @FXML private HBox root;
     /** La card, la cui larghezza è agganciata alla finestra (grafica responsive). */
     @FXML private VBox card;
+    /** Controller della sidebar inclusa (fx:include), per evidenziare "Ricerca" come voce attiva. */
+    @FXML private SidebarController sidebarController;
 
     /** Campo di testo per filtrare per nome del ristorante. */
     @FXML private TextField nomeField;
@@ -39,8 +40,8 @@ public class HomeController {
     @FXML private TextField cittaField;
     /** Campo di testo per filtrare per tipo di cucina. */
     @FXML private TextField tipoCucinaField;
-    /** Campo di testo per filtrare per fascia di prezzo (1-4). */
-    @FXML private TextField fasciaPrezzoField;
+    /** Bottoni della fascia di prezzo (1-4 simboli "€"), selezione singola opzionale. */
+    @FXML private ToggleButton prezzo1Radio, prezzo2Radio, prezzo3Radio, prezzo4Radio;
     /** Campo di testo per il raggio, in km, della ricerca "vicino a me". */
     @FXML private TextField raggioKmField;
     /** Filtro per i ristoranti che offrono prenotazione online. */
@@ -48,45 +49,32 @@ public class HomeController {
     /** Filtro per i ristoranti che offrono consegna a domicilio. */
     @FXML private CheckBox consegnaADomicilioCheck;
 
-    /** Link "Vai al Login", visibile solo da guest. */
-    @FXML private Hyperlink loginLink;
-    /** Link "Logout", visibile solo da utente autenticato. */
-    @FXML private Hyperlink logoutLink;
-    /** Link "Preferiti", nascosto da guest (decisione 24: filtro cosmetico, non sostituisce il controllo lato server). */
-    @FXML private Hyperlink preferitiLink;
-    /** Link "Dashboard", nascosto da guest (decisione 24: filtro cosmetico, non sostituisce il controllo lato server). */
-    @FXML private Hyperlink dashboardLink;
-
     /** Invia al server i comandi di ricerca dei ristoranti. */
     private final RistoranteService ristoranteService = new RistoranteService();
-    /** Invia al server i comandi di autenticazione, usato qui per il logout. */
-    private final AuthService authService = new AuthService();
 
     /**
      * Toglie il focus dal primo campo di testo (altrimenti JavaFX lo assegna
-     * automaticamente all'apertura della schermata) e mostra solo i link
-     * coerenti con stato di autenticazione e ruolo: "Vai al Login" da guest,
-     * "Logout" da chiunque sia autenticato, "Preferiti" solo da Cliente
-     * (RF08/RF09, non esistono preferiti per un Ristoratore) e "Dashboard"
-     * solo da Ristoratore (non ha senso per un Cliente).
+     * automaticamente all'apertura della schermata) ed evidenzia "Ricerca"
+     * nella sidebar come voce attiva.
      */
     @FXML private void initialize() {
         Platform.runLater(() -> root.requestFocus());
-        Responsive.aggancia(card, 0.45, 360, 480);
+        Responsive.aggancia(card, 0.6, 480, 700);
+        sidebarController.impostaAttivo(SidebarController.Voce.RICERCA);
+    }
 
-        UtenteDTO utente = ServerConnection.getInstance().getUtenteCorrente();
-        boolean ospite = utente == null;
-        boolean cliente = utente != null && utente.getRuolo() == Ruolo.CLIENTE;
-        boolean ristoratore = utente != null && utente.getRuolo() == Ruolo.RISTORATORE;
-
-        loginLink.setVisible(ospite);
-        loginLink.setManaged(ospite);
-        logoutLink.setVisible(!ospite);
-        logoutLink.setManaged(!ospite);
-        preferitiLink.setVisible(cliente);
-        preferitiLink.setManaged(cliente);
-        dashboardLink.setVisible(ristoratore);
-        dashboardLink.setManaged(ristoratore);
+    /**
+     * Restituisce la fascia di prezzo selezionata (1-4), o 0 se nessun
+     * bottone è selezionato (nessun filtro sul prezzo).
+     *
+     * @return la fascia di prezzo selezionata, oppure 0
+     */
+    private int fasciaPrezzoSelezionata() {
+        if (prezzo1Radio.isSelected()) return 1;
+        if (prezzo2Radio.isSelected()) return 2;
+        if (prezzo3Radio.isSelected()) return 3;
+        if (prezzo4Radio.isSelected()) return 4;
+        return 0;
     }
 
     /**
@@ -99,13 +87,7 @@ public class HomeController {
         String nome = nomeField.getText();
         String citta = cittaField.getText();
         String tipoCucina = tipoCucinaField.getText();
-        int fasciaPrezzo;
-        try {
-            fasciaPrezzo = fasciaPrezzoField.getText().isBlank() ? 0 : Integer.parseInt(fasciaPrezzoField.getText());
-        } catch (NumberFormatException e) {
-            Toast.errore("Fascia di prezzo non valida, inserisci un numero valido");
-            return;
-        }
+        int fasciaPrezzo = fasciaPrezzoSelezionata();
         boolean prenotazioneOnline = prenotazioneOnlineCheck.isSelected();
         boolean consegnaADomicilio = consegnaADomicilioCheck.isSelected();
 
@@ -180,61 +162,13 @@ public class HomeController {
     }
 
     /**
-     * Naviga alla schermata di login.
+     * Pre-riempie il campo città con la località confermata (o rilevata)
+     * nello Splash, così la ricerca parte già filtrata su quella zona invece
+     * di richiedere di digitarla di nuovo.
      *
-     * @param event l'evento generato dal click sul link di login
-     * @throws IOException se il caricamento della schermata fallisce
+     * @param citta la città da precompilare
      */
-    @FXML private void handleLogin(ActionEvent event) throws IOException {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/login.fxml"));
-        stage.getScene().setRoot(root);
-    }
-
-    /**
-     * Invalida la sessione sul server e naviga alla schermata iniziale.
-     *
-     * @param event l'evento generato dal click sul link di logout
-     * @throws IOException se il caricamento della schermata fallisce
-     */
-    @FXML private void handleLogout(ActionEvent event) throws IOException {
-        TaskRunner.run(
-        () -> { authService.logout();
-                return null;
-            },
-        _void -> {
-            try{
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/splash.fxml"));
-                stage.getScene().setRoot(root);
-            } catch (IOException e) {
-                Toast.errore("Errore nel caricamento della schermata: " + e.getMessage());
-            }
-        }
-        );
-    }
-
-    /**
-     * Naviga alla schermata dei preferiti.
-     *
-     * @param event l'evento generato dal click sul link "Preferiti"
-     * @throws IOException se il caricamento della schermata fallisce
-     */
-    @FXML private void handlePreferiti(ActionEvent event) throws IOException {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/preferiti.fxml"));
-        stage.getScene().setRoot(root);
-    }
-
-    /**
-     * Naviga alla dashboard del ristoratore.
-     *
-     * @param event l'evento generato dal click sul link "Dashboard"
-     * @throws IOException se il caricamento della schermata fallisce
-     */
-    @FXML private void handleDashboard(ActionEvent event) throws IOException {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/dashboard.fxml"));
-        stage.getScene().setRoot(root);
+    public void impostaCitta(String citta) {
+        cittaField.setText(citta);
     }
 }

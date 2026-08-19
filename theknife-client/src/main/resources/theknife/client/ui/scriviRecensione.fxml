@@ -2,22 +2,49 @@
 <!-- Layout della schermata recensione (S07). @author Barlera Marco, 760000, VA -->
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 
-<VBox styleClass="page-root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.ScriviRecensioneController">
+<HBox styleClass="app-shell" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.ScriviRecensioneController">
 
-    <VBox styleClass="card" fx:id="card">
-        <Label fx:id="titoloSchermataLabel" text="Scrivi una recensione" styleClass="brand-title"/>
-        <Label fx:id="nomeRistoranteLabel" text="Nome Ristorante" styleClass="localita-label"/>
-    
-        <TextField fx:id="titoloField" promptText="Titolo" styleClass="campo-testo"/>
-        <HBox fx:id="stelleBox" alignment="CENTER" spacing="4">
+    <fx:include fx:id="sidebar" source="sidebar.fxml"/>
 
-        </HBox>
+    <VBox styleClass="main-content, main-content-centrato" HBox.hgrow="ALWAYS">
+        <VBox styleClass="contenuto-recensione" fx:id="card" spacing="16">
 
-        <TextArea fx:id="testoField" promptText="Scrivi la tua recensione" styleClass="area-testo"/>
-        
-        <Button fx:id="pubblicaButton" text="Pubblica" onAction="#handlePubblica" styleClass="bottone-primario"/>
-        <Button fx:id="annullaButton" text="Annulla" onAction="#handleAnnulla" styleClass="bottone-secondario"/>
+            <VBox spacing="2">
+                <Button fx:id="tornaIndietroButton" onAction="#handleAnnulla" styleClass="bottone-icona">
+                    <graphic>
+                        <SVGPath content="M15 18l-6-6 6-6" fill="TRANSPARENT" stroke="#FA812F" strokeWidth="2.5" strokeLineCap="ROUND" strokeLineJoin="ROUND"/>
+                    </graphic>
+                </Button>
+                <Label fx:id="nomeRistoranteLabel" text="Nome Ristorante" styleClass="page-subtitle"/>
+                <Label fx:id="titoloSchermataLabel" text="Scrivi una recensione" styleClass="page-title"/>
+            </VBox>
+
+            <VBox styleClass="card, card-recensione" spacing="18">
+
+                <VBox spacing="6">
+                    <Label text="Titolo" styleClass="campo-label"/>
+                    <TextField fx:id="titoloField" promptText="Riassumi la tua esperienza in poche parole" styleClass="campo-testo"/>
+                </VBox>
+
+                <VBox spacing="6">
+                    <Label text="Valutazione" styleClass="campo-label"/>
+                    <HBox fx:id="stelleBox" spacing="4"/>
+                </VBox>
+
+                <VBox spacing="6">
+                    <Label text="La tua recensione" styleClass="campo-label"/>
+                    <TextArea fx:id="testoField" promptText="Racconta la tua esperienza…" styleClass="area-testo" wrapText="true"/>
+                </VBox>
+
+                <HBox spacing="12" alignment="CENTER_RIGHT">
+                    <Button fx:id="annullaButton" text="Annulla" onAction="#handleAnnulla" styleClass="bottone-secondario"/>
+                    <Button fx:id="pubblicaButton" text="Pubblica" onAction="#handlePubblica" styleClass="bottone-primario"/>
+                </HBox>
+
+            </VBox>
+        </VBox>
     </VBox>
 
-</VBox>
+</HBox>

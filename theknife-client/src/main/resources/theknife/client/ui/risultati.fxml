@@ -2,14 +2,105 @@
 <!-- Layout della schermata risultati ricerca (S05). @author Barlera Marco, 760000, VA -->
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.Group?>
 
-<VBox styleClass="page-root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.RisultatiController">
+<HBox styleClass="app-shell" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.RisultatiController">
 
-    <VBox styleClass="card, card-lista" fx:id="card">
-        <Label text="Risultati ricerca" fx:id="risultatiLabel" styleClass="brand-title"/>
-        <ListView fx:id="risultatiListView" styleClass="lista-risultati" VBox.vgrow="ALWAYS"/>
-        
-        <Button fx:id="dettaglioButton" text="Vedi dettaglio" onAction="#handleDettaglio" styleClass="bottone-primario"/>
-        <Button fx:id="tornaIndietroButton" text="Torna Indietro" onAction="#handleTornaIndietro" styleClass="bottone-secondario"   />
+    <fx:include fx:id="sidebar" source="sidebar.fxml"/>
+
+    <VBox styleClass="main-content, main-content-riempi" HBox.hgrow="ALWAYS">
+        <HBox spacing="8" alignment="CENTER_LEFT">
+            <Button fx:id="tornaIndietroButton" onAction="#handleTornaIndietro" styleClass="bottone-icona">
+                <graphic>
+                    <SVGPath content="M15 18l-6-6 6-6" fill="TRANSPARENT" stroke="#FA812F" strokeWidth="2.5" strokeLineCap="ROUND" strokeLineJoin="ROUND"/>
+                </graphic>
+            </Button>
+            <Label fx:id="risultatiLabel" styleClass="page-title"/>
+        </HBox>
+
+        <HBox spacing="24" VBox.vgrow="ALWAYS">
+            <ListView fx:id="risultatiListView" styleClass="lista-risultati, lista-risultati-card" HBox.hgrow="ALWAYS"/>
+
+            <StackPane styleClass="mappa-placeholder" HBox.hgrow="ALWAYS">
+                <GridPane>
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="12.5000"/>
+                        <ColumnConstraints percentWidth="12.5000"/>
+                        <ColumnConstraints percentWidth="12.5000"/>
+                        <ColumnConstraints percentWidth="12.5000"/>
+                        <ColumnConstraints percentWidth="12.5000"/>
+                        <ColumnConstraints percentWidth="12.5000"/>
+                        <ColumnConstraints percentWidth="12.5000"/>
+                        <ColumnConstraints percentWidth="12.5000"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints percentHeight="16.6667"/>
+                        <RowConstraints percentHeight="16.6667"/>
+                        <RowConstraints percentHeight="16.6667"/>
+                        <RowConstraints percentHeight="16.6667"/>
+                        <RowConstraints percentHeight="16.6667"/>
+                        <RowConstraints percentHeight="16.6667"/>
+                    </rowConstraints>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="4" GridPane.rowIndex="0"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="5" GridPane.rowIndex="0"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="6" GridPane.rowIndex="0"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="7" GridPane.rowIndex="0"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="4" GridPane.rowIndex="1"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="5" GridPane.rowIndex="1"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="6" GridPane.rowIndex="1"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="7" GridPane.rowIndex="1"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="4" GridPane.rowIndex="2"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="5" GridPane.rowIndex="2"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="6" GridPane.rowIndex="2"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="7" GridPane.rowIndex="2"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="3" GridPane.rowIndex="3"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="4" GridPane.rowIndex="3"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="5" GridPane.rowIndex="3"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="6" GridPane.rowIndex="3"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="7" GridPane.rowIndex="3"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="3" GridPane.rowIndex="4"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="4" GridPane.rowIndex="4"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="5" GridPane.rowIndex="4"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="6" GridPane.rowIndex="4"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="7" GridPane.rowIndex="4"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="2" GridPane.rowIndex="5"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="3" GridPane.rowIndex="5"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="4" GridPane.rowIndex="5"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="5" GridPane.rowIndex="5"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="6" GridPane.rowIndex="5"/>
+                    <Region styleClass="mappa-cella" GridPane.columnIndex="7" GridPane.rowIndex="5"/>
+                </GridPane>
+                <Group>
+                    <Circle centerX="120" centerY="80" radius="5" fill="#FAB12F"/>
+                    <Circle centerX="300" centerY="130" radius="5" fill="#FAB12F"/>
+                    <Circle centerX="180" centerY="220" radius="6" fill="#2C2C2C"/>
+                    <Circle centerX="90" centerY="260" radius="5" fill="#FAB12F"/>
+                    <Circle centerX="260" centerY="290" radius="5" fill="#FAB12F"/>
+                </Group>
+                <Label text="ANTEPRIMA MAPPA" styleClass="mappa-caption" StackPane.alignment="BOTTOM_LEFT"/>
+            </StackPane>
+        </HBox>
     </VBox>
-</VBox>
+
+</HBox>
