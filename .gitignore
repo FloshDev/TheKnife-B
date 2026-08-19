@@ -12,6 +12,10 @@ Thumbs.db
 *.bak
 *.tmp
 
+# Word lock files (apri un documento in Word)
+~$*.docx
+~$*.doc*
+
 # Claude Code local config
 .claude/
 
