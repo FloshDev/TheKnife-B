@@ -59,11 +59,12 @@ public class RecensioneDAO {
      * @throws DataAccessException se l'accesso al database fallisce
      */
     public List<RecensioneDTO> trovaPerRistorante (long idRistorante) throws DataAccessException {
-        String sql = "SELECT id_recensione, id_ristorante, id_cliente, titolo, testo, stelle, "
-                   + "data_pubblicazione, risposta, data_risposta "
-                   + "FROM Recensioni "
-                   + "WHERE id_ristorante = ? "
-                   + "ORDER BY data_pubblicazione DESC";
+        String sql = "SELECT rec.id_recensione, rec.id_ristorante, rec.id_cliente, u.username, "
+                   + "rec.titolo, rec.testo, rec.stelle, rec.data_pubblicazione, rec.risposta, rec.data_risposta "
+                   + "FROM Recensioni rec "
+                   + "JOIN Utenti u ON rec.id_cliente = u.id "
+                   + "WHERE rec.id_ristorante = ? "
+                   + "ORDER BY rec.data_pubblicazione DESC";
         List<RecensioneDTO> recensioni = new ArrayList<>();
         try (Connection conn = db.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -89,10 +90,11 @@ public class RecensioneDAO {
      * @throws DataAccessException se l'accesso al database fallisce
      */
     public List<RecensioneDTO> trovaPerGestore (long idGestore) throws DataAccessException {
-        String sql = "SELECT rec.id_recensione, rec.id_ristorante, rec.id_cliente, rec.titolo, "
-                   + "rec.testo, rec.stelle, rec.data_pubblicazione, rec.risposta, rec.data_risposta "
+        String sql = "SELECT rec.id_recensione, rec.id_ristorante, rec.id_cliente, u.username, "
+                   + "rec.titolo, rec.testo, rec.stelle, rec.data_pubblicazione, rec.risposta, rec.data_risposta "
                    + "FROM Recensioni rec "
                    + "JOIN RistorantiTheKnife r ON rec.id_ristorante = r.id_ristorante "
+                   + "JOIN Utenti u ON rec.id_cliente = u.id "
                    + "WHERE r.id_gestore = ? "
                    + "ORDER BY rec.data_pubblicazione DESC";
         List<RecensioneDTO> recensioni = new ArrayList<>();
@@ -119,9 +121,11 @@ public class RecensioneDAO {
      * @throws DataAccessException se l'accesso al database fallisce
      */
     public RecensioneDTO trovaPerId (long idRecensione) throws DataAccessException {
-        String sql = "SELECT id_recensione, id_ristorante, id_cliente, titolo, testo, stelle, "
-                   + "data_pubblicazione, risposta, data_risposta "
-                   + "FROM Recensioni WHERE id_recensione = ?";
+        String sql = "SELECT rec.id_recensione, rec.id_ristorante, rec.id_cliente, u.username, "
+                   + "rec.titolo, rec.testo, rec.stelle, rec.data_pubblicazione, rec.risposta, rec.data_risposta "
+                   + "FROM Recensioni rec "
+                   + "JOIN Utenti u ON rec.id_cliente = u.id "
+                   + "WHERE rec.id_recensione = ?";
         try (Connection conn = db.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, idRecensione);
@@ -262,6 +266,7 @@ public class RecensioneDAO {
             rs.getString("testo"),
             rs.getInt("stelle"),
             rs.getLong("id_cliente"),
+            rs.getString("username"),
             dataPubblicazione,
             rs.getString("risposta"),
             dataRisposta);
