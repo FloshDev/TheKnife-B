@@ -330,15 +330,17 @@ public class DettaglioController {
     }
 
     /**
-     * Cella della lista recensioni: titolo, data, stelle e testo, con
-     * "Rispondi" (solo gestore, solo se non ha già risposto) o
-     * "Modifica"/"Elimina" (solo autore della recensione) inline sulla card
-     * invece di bottoni condivisi legati alla selezione della lista.
+     * Cella della lista recensioni: username dell'autore, data, titolo,
+     * stelle e testo (decisione 33), con "Rispondi" (solo gestore, solo se
+     * non ha già risposto) o "Modifica"/"Elimina" (solo autore della
+     * recensione) inline sulla card invece di bottoni condivisi legati alla
+     * selezione della lista.
      */
     private class RecensioneCell extends ListCell<RecensioneDTO> {
-        private final Label titoloLabel = new Label();
+        private final Label usernameLabel = new Label();
         private final Label dataLabel = new Label();
-        private final HBox intestazione = new HBox(titoloLabel, dataLabel);
+        private final HBox intestazione = new HBox(usernameLabel, dataLabel);
+        private final Label titoloLabel = new Label();
         private final Label stelleLabel = new Label();
         private final Label testoLabel = new Label();
         private final Label rispostaLabel = new Label();
@@ -346,14 +348,15 @@ public class DettaglioController {
         private final Button modificaButton = new Button("Modifica");
         private final Button eliminaButton = new Button("Elimina");
         private final HBox azioniRow = new HBox(8, rispondiButton, modificaButton, eliminaButton);
-        private final VBox contenuto = new VBox(intestazione, stelleLabel, testoLabel, rispostaLabel, azioniRow);
+        private final VBox contenuto = new VBox(intestazione, titoloLabel, stelleLabel, testoLabel, rispostaLabel, azioniRow);
 
         {
             contenuto.getStyleClass().add("recensione-riga");
-            titoloLabel.getStyleClass().add("risultato-nome");
-            titoloLabel.setMaxWidth(Double.MAX_VALUE);
-            HBox.setHgrow(titoloLabel, javafx.scene.layout.Priority.ALWAYS);
+            usernameLabel.getStyleClass().add("risultato-nome");
+            usernameLabel.setMaxWidth(Double.MAX_VALUE);
+            HBox.setHgrow(usernameLabel, javafx.scene.layout.Priority.ALWAYS);
             dataLabel.getStyleClass().add("recensione-data");
+            titoloLabel.getStyleClass().add("dettaglio-info");
             stelleLabel.getStyleClass().add("recensione-stelle");
             testoLabel.getStyleClass().add("risultato-info");
             testoLabel.setWrapText(true);
@@ -374,8 +377,9 @@ public class DettaglioController {
             if (empty || item == null) {
                 setGraphic(null);
             } else {
-                titoloLabel.setText(item.getTitolo());
+                usernameLabel.setText(item.getUsername());
                 dataLabel.setText(item.getDataPubblicazione() == null ? "" : item.getDataPubblicazione().format(FORMATO_DATA));
+                titoloLabel.setText(item.getTitolo());
                 stelleLabel.setText("★".repeat(item.getStelle()) + "☆".repeat(5 - item.getStelle()));
                 testoLabel.setText(item.getTesto());
 

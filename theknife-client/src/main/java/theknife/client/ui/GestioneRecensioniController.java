@@ -100,16 +100,17 @@ public class GestioneRecensioniController {
     }
 
     /**
-     * Cella della lista recensioni: titolo, data, ristorante, stelle e
-     * testo, con un campo di risposta inline al posto di una recensione
-     * selezionata + bottone condiviso — mostrato solo se non c'è già una
-     * risposta.
+     * Cella della lista recensioni: username dell'autore, data, ristorante,
+     * titolo, stelle e testo (decisione 33), con un campo di risposta
+     * inline al posto di una recensione selezionata + bottone condiviso —
+     * mostrato solo se non c'è già una risposta.
      */
     private class RecensioneGestitaCell extends ListCell<RecensioneDTO> {
-        private final Label titoloLabel = new Label();
+        private final Label usernameLabel = new Label();
         private final Label dataLabel = new Label();
-        private final HBox intestazione = new HBox(titoloLabel, dataLabel);
+        private final HBox intestazione = new HBox(usernameLabel, dataLabel);
         private final Label ristoranteLabel = new Label();
+        private final Label titoloLabel = new Label();
         private final Label stelleLabel = new Label();
         private final Label testoLabel = new Label();
         private final Label rispostaLabel = new Label();
@@ -117,15 +118,16 @@ public class GestioneRecensioniController {
         private final Button inviaButton = new Button("Invia");
         private final HBox rispondiRow = new HBox(8, rispostaField, inviaButton);
         private final VBox contenuto = new VBox(6,
-            intestazione, ristoranteLabel, stelleLabel, testoLabel, rispostaLabel, rispondiRow);
+            intestazione, ristoranteLabel, titoloLabel, stelleLabel, testoLabel, rispostaLabel, rispondiRow);
 
         {
             contenuto.getStyleClass().add("recensione-riga");
-            titoloLabel.getStyleClass().add("risultato-nome");
-            titoloLabel.setMaxWidth(Double.MAX_VALUE);
-            HBox.setHgrow(titoloLabel, Priority.ALWAYS);
+            usernameLabel.getStyleClass().add("risultato-nome");
+            usernameLabel.setMaxWidth(Double.MAX_VALUE);
+            HBox.setHgrow(usernameLabel, Priority.ALWAYS);
             dataLabel.getStyleClass().add("recensione-data");
             ristoranteLabel.getStyleClass().add("risultato-info");
+            titoloLabel.getStyleClass().add("dettaglio-info");
             stelleLabel.getStyleClass().add("recensione-stelle");
             testoLabel.getStyleClass().add("risultato-info");
             testoLabel.setWrapText(true);
@@ -144,9 +146,10 @@ public class GestioneRecensioniController {
             if (empty || item == null) {
                 setGraphic(null);
             } else {
-                titoloLabel.setText(item.getTitolo());
+                usernameLabel.setText(item.getUsername());
                 dataLabel.setText(item.getDataPubblicazione() == null ? "" : item.getDataPubblicazione().format(FORMATO_DATA));
                 ristoranteLabel.setText("Ristorante #" + item.getIdRistorante());
+                titoloLabel.setText(item.getTitolo());
                 stelleLabel.setText("★".repeat(item.getStelle()) + "☆".repeat(5 - item.getStelle()));
                 testoLabel.setText(item.getTesto());
 
