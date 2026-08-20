@@ -145,4 +145,12 @@ public class RistoranteService {
         if (response.getStatus() != ResponseStatus.SUCCESSO)
             throw new IOException(response.getMessaggio());
     }
+
+    public void eliminaRistorante(IdRistoranteDTO id) throws IOException, ClassNotFoundException {
+        Request request = new Request(CommandType.ELIMINA_RISTORANTE, id, connection.getSessionToken());
+        Response response = connection.inviaRichiesta(request);
+
+        if (response.getStatus() != ResponseStatus.SUCCESSO)
+            throw new IOException(response.getMessaggio());
+    }
 }

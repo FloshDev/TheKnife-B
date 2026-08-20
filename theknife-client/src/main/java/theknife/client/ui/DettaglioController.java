@@ -177,12 +177,36 @@ public class DettaglioController {
     }
 
     /**
-     * Elimina il ristorante corrente. Non ancora collegato: il comando
-     * {@code ELIMINA_RISTORANTE} non esiste ancora lato server (S42), quindi
-     * per ora mostra solo un avviso invece di fingere di funzionare.
+     * Elimina il ristorante corrente, dopo conferma dell'utente (S44):
+     * operazione distruttiva e irreversibile (con il ristorante spariscono
+     * anche le sue recensioni, servizi e preferiti, cascata dichiarata nello
+     * schema). Al successo torna alla dashboard, dato che il dettaglio non
+     * ha più nulla da mostrare.
+     *
+     * @param event l'evento generato dal click sul bottone "Elimina ristorante"
      */
-    @FXML private void handleEliminaRistorante() {
-        Toast.successo("Funzionalità in arrivo");
+    @FXML private void handleEliminaRistorante(ActionEvent event) {
+        Alert conferma = new Alert(Alert.AlertType.CONFIRMATION, "Sei sicuro di voler eliminare questo ristorante? L'operazione non è reversibile.");
+        Toast.stilizza(conferma);
+        Optional<ButtonType> result = conferma.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            TaskRunner.run(
+                () -> {
+                    ristoranteService.eliminaRistorante(new IdRistoranteDTO(idRistorante));
+                    return null;
+                },
+                esito -> {
+                    Toast.successo("Ristorante eliminato.");
+                    try {
+                        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/dashboard.fxml"));
+                        stage.getScene().setRoot(root);
+                    } catch (IOException e) {
+                        Toast.errore("Errore nel caricamento della schermata: " + e.getMessage());
+                    }
+                }
+            );
+        }
     }
 
     /**
