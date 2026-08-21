@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Componente mappa riusabile (Leaflet dentro WebView, decisione 34). @author Barlera Marco, 760000, VA -->
+<?import javafx.scene.web.WebView?>
+
+<WebView xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:id="webView" fx:controller="theknife.client.ui.MappaController"/>

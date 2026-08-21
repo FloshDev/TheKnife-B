@@ -32,6 +32,12 @@
             <artifactId>javafx-fxml</artifactId>
             <version>21.0.2</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <version>21.0.2</version>
+        </dependency>
     </dependencies>
 
 
@@ -67,6 +73,13 @@
                 <version>0.0.8</version>
                 <configuration>
                     <mainClass>theknife.client.app.TheKnifeClient</mainClass>
+                    <options>
+                        <!-- Silenzia i WARNING ripetuti ad ogni avvio su System::load/WebPage
+                             (accesso nativo di javafx-graphics/javafx-web, non un problema
+                             nostro). Il WARNING su sun.misc.Unsafe resta: nessun flag per
+                             silenziarlo su Java 21, introdotto solo da JDK 23 in poi. -->
+                        <option>--enable-native-access=javafx.graphics,javafx.web</option>
+                    </options>
                 </configuration>
             </plugin>
         </plugins>

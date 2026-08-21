@@ -298,6 +298,15 @@
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
 }
+.lista-risultati .scroll-bar:horizontal {
+    /* Lista a colonna singola: non deve mai scorrere in orizzontale. La policy
+       AS_NEEDED di JavaFX fa comparire la scrollbar per qualunque overflow anche
+       di pochi decimi di pixel (bordo di selezione, ombra della card) — invece
+       di inseguire l'arrotondamento esatto, la si nasconde: non serve comunque. */
+    -fx-max-height: 0;
+    -fx-pref-height: 0;
+    -fx-opacity: 0;
+}
 .lista-risultati .scroll-bar:vertical {
     -fx-pref-width: 8;
     -fx-background-color: transparent;
@@ -625,12 +634,24 @@
 
 .lista-risultati-card .list-cell {
     -fx-background-color: transparent;
-    -fx-padding: 0 0 14 0;
+    /* Margine orizzontale reale (non solo insets sul bordo): la card resta
+       staccata dal bordo della ListView, così il bordo di selezione ha
+       davvero spazio invece di essere tagliato dal clip del viewport. */
+    -fx-padding: 0 3 14 3;
     -fx-border-width: 0;
 }
 .lista-risultati-card .list-cell:filled:hover,
 .lista-risultati-card .list-cell:filled:selected {
     -fx-background-color: transparent;
+}
+.lista-risultati-card .list-cell:filled:selected .risultato-card {
+    /* Bordo di selezione (click su un marker della mappa evidenzia la card
+       corrispondente, decisione 34). Insets positivi: lo stroke centrato resta
+       dentro i bounds della card, visibile sui 4 lati senza sporgere nel
+       margine della cella (vedi il padding orizzontale sopra). */
+    -fx-border-color: #FA812F;
+    -fx-border-width: 2;
+    -fx-border-insets: 1;
 }
 
 .risultato-card {
@@ -675,21 +696,11 @@
     -fx-padding: 3 10 3 10;
 }
 
-.mappa-placeholder {
-    -fx-background-color: white;
+/* Bordo del riquadro mappa vera (WebView+Leaflet, decisione 34), sostituisce
+   il pannello segnaposto su Risultati/Preferiti/Dashboard/Dettaglio. */
+.mappa-riquadro {
     -fx-border-color: #f0d0a0;
     -fx-border-width: 2;
-}
-.mappa-cella {
-    -fx-border-color: transparent #f0d0a0 #f0d0a0 transparent;
-    -fx-border-width: 0 1 1 0;
-}
-.mappa-caption {
-    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
-    -fx-font-size: 11px;
-    -fx-font-weight: 700;
-    -fx-text-fill: #b07840;
-    -fx-padding: 10;
 }
 
 .main-content-centrato {

@@ -124,6 +124,7 @@ public class AssociaRistoranteController {
             HBox.setHgrow(testi, Priority.ALWAYS);
             nomeLabel.getStyleClass().add("risultato-nome");
             infoLabel.getStyleClass().add("risultato-info");
+            infoLabel.setWrapText(true);
             associatiButton.getStyleClass().add("bottone-secondario");
             associatiButton.setOnAction(e -> associa(getItem()));
         }

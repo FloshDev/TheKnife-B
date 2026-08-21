@@ -12,7 +12,11 @@
         <Label text="I tuoi ristoranti" styleClass="page-title"/>
         <Label text="Gestisci i locali di cui sei titolare." styleClass="page-subtitle"/>
 
-        <ListView fx:id="ristorantiGestiti" styleClass="lista-risultati, lista-risultati-card" VBox.vgrow="ALWAYS"/>
+        <HBox fx:id="rigaContenuto" spacing="24" VBox.vgrow="ALWAYS">
+            <ListView fx:id="ristorantiGestiti" styleClass="lista-risultati, lista-risultati-card"/>
+
+            <fx:include fx:id="mappa" source="mappa.fxml"/>
+        </HBox>
 
     </VBox>
 

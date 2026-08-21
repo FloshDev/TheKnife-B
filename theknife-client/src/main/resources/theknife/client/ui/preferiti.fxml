@@ -3,7 +3,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
-<?import javafx.scene.Group?>
 
 <HBox styleClass="app-shell" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.PreferitiController">
 
@@ -19,85 +18,10 @@
             <Label fx:id="preferitiLabel" styleClass="page-title"/>
         </HBox>
 
-        <HBox spacing="24" VBox.vgrow="ALWAYS">
-            <ListView fx:id="preferitiListView" styleClass="lista-risultati, lista-risultati-card" HBox.hgrow="ALWAYS"/>
+        <HBox fx:id="rigaContenuto" spacing="24" VBox.vgrow="ALWAYS">
+            <ListView fx:id="preferitiListView" styleClass="lista-risultati, lista-risultati-card"/>
 
-            <StackPane styleClass="mappa-placeholder" HBox.hgrow="ALWAYS">
-                <GridPane>
-                    <columnConstraints>
-                        <ColumnConstraints percentWidth="12.5000"/>
-                        <ColumnConstraints percentWidth="12.5000"/>
-                        <ColumnConstraints percentWidth="12.5000"/>
-                        <ColumnConstraints percentWidth="12.5000"/>
-                        <ColumnConstraints percentWidth="12.5000"/>
-                        <ColumnConstraints percentWidth="12.5000"/>
-                        <ColumnConstraints percentWidth="12.5000"/>
-                        <ColumnConstraints percentWidth="12.5000"/>
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints percentHeight="16.6667"/>
-                        <RowConstraints percentHeight="16.6667"/>
-                        <RowConstraints percentHeight="16.6667"/>
-                        <RowConstraints percentHeight="16.6667"/>
-                        <RowConstraints percentHeight="16.6667"/>
-                        <RowConstraints percentHeight="16.6667"/>
-                    </rowConstraints>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="4" GridPane.rowIndex="0"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="5" GridPane.rowIndex="0"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="6" GridPane.rowIndex="0"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="7" GridPane.rowIndex="0"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="4" GridPane.rowIndex="1"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="5" GridPane.rowIndex="1"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="6" GridPane.rowIndex="1"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="7" GridPane.rowIndex="1"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="4" GridPane.rowIndex="2"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="5" GridPane.rowIndex="2"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="6" GridPane.rowIndex="2"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="7" GridPane.rowIndex="2"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="3" GridPane.rowIndex="3"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="4" GridPane.rowIndex="3"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="5" GridPane.rowIndex="3"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="6" GridPane.rowIndex="3"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="7" GridPane.rowIndex="3"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="3" GridPane.rowIndex="4"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="4" GridPane.rowIndex="4"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="5" GridPane.rowIndex="4"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="6" GridPane.rowIndex="4"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="7" GridPane.rowIndex="4"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="2" GridPane.rowIndex="5"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="3" GridPane.rowIndex="5"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="4" GridPane.rowIndex="5"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="5" GridPane.rowIndex="5"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="6" GridPane.rowIndex="5"/>
-                    <Region styleClass="mappa-cella" GridPane.columnIndex="7" GridPane.rowIndex="5"/>
-                </GridPane>
-                <Group>
-                    <Circle centerX="150" centerY="100" radius="6" fill="#FAB12F"/>
-                    <Circle centerX="90" centerY="220" radius="6" fill="#FAB12F"/>
-                    <Circle centerX="260" centerY="180" radius="6" fill="#FAB12F"/>
-                </Group>
-                <Label text="ANTEPRIMA MAPPA" styleClass="mappa-caption" StackPane.alignment="BOTTOM_LEFT"/>
-            </StackPane>
+            <fx:include fx:id="mappa" source="mappa.fxml"/>
         </HBox>
     </VBox>
 

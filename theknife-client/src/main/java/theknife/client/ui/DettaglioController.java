@@ -21,6 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import theknife.client.network.ServerConnection;
 import theknife.client.service.RecensioneService;
@@ -60,16 +61,16 @@ public class DettaglioController {
     @FXML private SVGPath cuoreIcon;
     /** Bottone per scrivere una recensione al ristorante. */
     @FXML private Button scriviRecensioneButton;
-    /**
-     * Bottone per eliminare il ristorante, visibile solo al gestore (S42).
-     * Non ancora collegato al server: il comando {@code ELIMINA_RISTORANTE}
-     * non esiste ancora lato server, solo il pulsante è pronto.
-     */
+    /** Bottone per eliminare il ristorante, visibile solo al gestore (RF18, S42/S44). */
     @FXML private Button eliminaRistoranteButton;
     /** Bottone icona per tornare alla schermata di provenienza. */
     @FXML private Button tornaIndietroButton;
     /** Lista delle recensioni del ristorante. */
     @FXML private ListView<RecensioneDTO> recensioniListView;
+    /** Il nodo radice del componente mappa incluso (fx:include), per impostarne l'altezza. */
+    @FXML private WebView mappa;
+    /** Controller del componente mappa incluso (fx:include, decisione 34): un solo pin statico. */
+    @FXML private MappaController mappaController;
 
     /** Invia al server i comandi sui ristoranti, incluso l'aggiornamento dei preferiti. */
     private final RistoranteService ristoranteService = new RistoranteService();
@@ -118,6 +119,10 @@ public class DettaglioController {
     @FXML private void initialize() {
         Responsive.aggancia(card, 0.6, 480, 760);
         sidebarController.impostaAttivo(SidebarController.Voce.RICERCA);
+        // MappaController azzera l'altezza preferita del WebView (serve per la divisione a
+        // metà con una lista sulle altre schermate) — qui non c'è nessuna lista accanto,
+        // un pin singolo statico, gli si dà un'altezza fissa invece.
+        mappa.setPrefHeight(240);
     }
 
     /**
@@ -316,6 +321,8 @@ public class DettaglioController {
                 eliminaRistoranteButton.setVisible(gestore);
                 eliminaRistoranteButton.setManaged(gestore);
                 recensioniListView.refresh();
+
+                mappaController.impostaPinSingolo(ristorante);
             }
         );
 
@@ -337,6 +344,7 @@ public class DettaglioController {
         caricaRecensioni();
     }
 
+    /** Carica dal server le recensioni del ristorante corrente e ripopola la lista. */
     private void caricaRecensioni() {
         TaskRunner.run(
             () -> recensioneService.leggiRecensioni(new IdRistoranteDTO(idRistorante)),

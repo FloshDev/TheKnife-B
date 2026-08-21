@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javafx.beans.binding.DoubleBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import theknife.client.network.ServerConnection;
 import theknife.client.service.RistoranteService;
@@ -43,6 +45,12 @@ public class RisultatiController {
     @FXML private Button tornaIndietroButton;
     /** Controller della sidebar inclusa (fx:include), per evidenziare "Ricerca" come voce attiva. */
     @FXML private SidebarController sidebarController;
+    /** La riga con lista e mappa affiancate, per vincolarne la larghezza esattamente a metà ciascuna. */
+    @FXML private HBox rigaContenuto;
+    /** Il nodo radice del componente mappa incluso (fx:include), per agganciarne la larghezza. */
+    @FXML private WebView mappa;
+    /** Controller del componente mappa incluso (fx:include, decisione 34). */
+    @FXML private MappaController mappaController;
 
     /** Invia al server i comandi sui preferiti, usato dal cuore su ogni card. */
     private final RistoranteService ristoranteService = new RistoranteService();
@@ -58,6 +66,12 @@ public class RisultatiController {
      */
     @FXML private void initialize() {
         sidebarController.impostaAttivo(SidebarController.Voce.RICERCA);
+        // Vincolo esplicito a metà larghezza ciascuno, invece di affidarsi a hgrow +
+        // dimensioni preferite di ListView/WebView (che non coincidono mai da sole:
+        // WebView parte da un default enorme, ListView da uno piccolo).
+        DoubleBinding metaLarghezza = rigaContenuto.widthProperty().subtract(24).divide(2);
+        risultatiListView.prefWidthProperty().bind(metaLarghezza);
+        mappa.prefWidthProperty().bind(metaLarghezza);
         risultatiListView.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                 apriDettaglio((Stage) risultatiListView.getScene().getWindow(), risultatiListView.getSelectionModel().getSelectedItem());
@@ -95,6 +109,9 @@ public class RisultatiController {
 
         risultatiListView.getItems().setAll(risultati == null ? List.of() : risultati);
         risultatiLabel.setText("Risultati (" + risultatiListView.getItems().size() + ")");
+
+        mappaController.impostaRistoranti(risultatiListView.getItems());
+        mappaController.setOnMarkerClick(this::evidenziaCard);
 
         UtenteDTO utente = ServerConnection.getInstance().getUtenteCorrente();
         cliente = utente != null && utente.getRuolo() == Ruolo.CLIENTE;
@@ -141,6 +158,37 @@ public class RisultatiController {
                 risultatiListView.refresh();
             }
         );
+    }
+
+    /**
+     * Cerca nella lista corrente il ristorante con l'id indicato, ricevuto
+     * grezzo dal click su un marker della mappa (il componente mappa non
+     * conosce i DTO, solo id/lat/long che gli passiamo).
+     *
+     * @param id l'identificativo del ristorante cliccato sulla mappa
+     * @return il ristorante corrispondente, o {@code null} se non trovato
+     */
+    private RistoranteDTO trovaRistorante(long id) {
+        return risultatiListView.getItems().stream()
+            .filter(r -> r.getIdRistorante() == id)
+            .findFirst()
+            .orElse(null);
+    }
+
+    /**
+     * Seleziona e mostra nella lista il ristorante corrispondente al marker
+     * cliccato sulla mappa — collega il click su un marker alla sua card,
+     * senza navigare altrove (il click sulla freccia resta l'unico modo per
+     * aprire il dettaglio da qui).
+     *
+     * @param idRistorante l'identificativo del ristorante il cui marker è stato cliccato
+     */
+    private void evidenziaCard(long idRistorante) {
+        RistoranteDTO ristorante = trovaRistorante(idRistorante);
+        if (ristorante != null) {
+            risultatiListView.getSelectionModel().select(ristorante);
+            risultatiListView.scrollTo(ristorante);
+        }
     }
 
     /**
@@ -194,6 +242,7 @@ public class RisultatiController {
             nomeLabel.getStyleClass().add("risultato-nome");
             prezzoLabel.getStyleClass().add("badge-prezzo");
             infoLabel.getStyleClass().add("risultato-info");
+            infoLabel.setWrapText(true);
             ratingLabel.getStyleClass().add("badge-rating");
             prenotazioneTag.getStyleClass().add("tag-feature");
             consegnaTag.getStyleClass().add("tag-feature");
@@ -215,6 +264,12 @@ public class RisultatiController {
             frecciaButton.setGraphic(frecciaIcon);
             frecciaButton.getStyleClass().add("bottone-icona");
             frecciaButton.setOnAction(e -> apriDettaglio((Stage) frecciaButton.getScene().getWindow(), getItem()));
+
+            contenuto.setOnMouseClicked(e -> {
+                if (getItem() != null) {
+                    mappaController.evidenziaMarker(getItem().getIdRistorante());
+                }
+            });
         }
 
         @Override
