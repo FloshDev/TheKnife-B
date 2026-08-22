@@ -148,7 +148,7 @@ public class PreferitiController {
                 },
             esito -> {
                 caricaPreferiti();
-                Toast.successo("Ristorante rimosso dai preferiti");
+                Toast.avviso("Ristorante rimosso dai preferiti");
             }
         );
     }

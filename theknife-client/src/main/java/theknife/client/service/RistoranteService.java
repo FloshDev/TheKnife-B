@@ -37,7 +37,7 @@ public class RistoranteService {
         if (response.getStatus() == ResponseStatus.SUCCESSO) {
             return (List<RistoranteDTO>) response.getPayload();
         } else {
-            throw new IOException(response.getMessaggio());
+            throw new ErroreServerException(response.getMessaggio());
         }
     }
 
@@ -49,7 +49,7 @@ public class RistoranteService {
         if (response.getStatus() == ResponseStatus.SUCCESSO) {
             return (List<RistoranteDTO>) response.getPayload();
         } else {
-            throw new IOException(response.getMessaggio());
+            throw new ErroreServerException(response.getMessaggio());
         }
     }
 
@@ -60,7 +60,7 @@ public class RistoranteService {
         if (response.getStatus() == ResponseStatus.SUCCESSO) {
             return (RistoranteDTO) response.getPayload();
         } else {
-            throw new IOException(response.getMessaggio());
+            throw new ErroreServerException(response.getMessaggio());
         }
     }
 
@@ -71,7 +71,7 @@ public class RistoranteService {
         if (response.getStatus() == ResponseStatus.SUCCESSO) {
             return (PosizioneDTO) response.getPayload();
         } else {
-            throw new IOException(response.getMessaggio());
+            throw new ErroreServerException(response.getMessaggio());
         }
     }
 
@@ -80,7 +80,7 @@ public class RistoranteService {
         Response response = connection.inviaRichiesta(request);
 
         if (response.getStatus() != ResponseStatus.SUCCESSO)
-            throw new IOException(response.getMessaggio());
+            throw new ErroreServerException(response.getMessaggio());
     }
 
     public void rimuoviPreferito(IdRistoranteDTO id) throws IOException, ClassNotFoundException {
@@ -88,7 +88,7 @@ public class RistoranteService {
         Response response = connection.inviaRichiesta(request);
 
         if (response.getStatus() != ResponseStatus.SUCCESSO)
-            throw new IOException(response.getMessaggio());    
+            throw new ErroreServerException(response.getMessaggio());    
     }
 
     @SuppressWarnings("unchecked")
@@ -99,7 +99,7 @@ public class RistoranteService {
         if (response.getStatus() == ResponseStatus.SUCCESSO) {
             return (List<RistoranteDTO>) response.getPayload();
         } else {
-            throw new IOException(response.getMessaggio());
+            throw new ErroreServerException(response.getMessaggio());
         }
     }
 
@@ -110,7 +110,7 @@ public class RistoranteService {
         if (response.getStatus() == ResponseStatus.SUCCESSO) {
             return (RistoranteDTO) response.getPayload();
         } else {
-            throw new IOException(response.getMessaggio());
+            throw new ErroreServerException(response.getMessaggio());
         }
     }
 
@@ -122,7 +122,7 @@ public class RistoranteService {
         if (response.getStatus() == ResponseStatus.SUCCESSO) {
             return (List<RistoranteDTO>) response.getPayload();
         } else {
-            throw new IOException(response.getMessaggio());
+            throw new ErroreServerException(response.getMessaggio());
         }
     }
 
@@ -131,7 +131,7 @@ public class RistoranteService {
         Response response = connection.inviaRichiesta(request);
 
         if (response.getStatus() != ResponseStatus.SUCCESSO)
-            throw new IOException(response.getMessaggio());
+            throw new ErroreServerException(response.getMessaggio());
     }
 
     public void eliminaRistorante(IdRistoranteDTO id) throws IOException, ClassNotFoundException {
@@ -139,6 +139,6 @@ public class RistoranteService {
         Response response = connection.inviaRichiesta(request);
 
         if (response.getStatus() != ResponseStatus.SUCCESSO)
-            throw new IOException(response.getMessaggio());
+            throw new ErroreServerException(response.getMessaggio());
     }
 }

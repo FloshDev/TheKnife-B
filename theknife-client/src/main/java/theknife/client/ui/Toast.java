@@ -145,8 +145,14 @@ public class Toast {
             FadeTransition dissolvenzaOut = new FadeTransition(DURATA_DISSOLVENZA, contenuto);
             dissolvenzaOut.setToValue(0);
             dissolvenzaOut.setOnFinished(fine -> {
+                int indice = attivi.indexOf(popup);
                 popup.hide();
                 attivi.remove(popup);
+                // Le notifiche sotto quella appena sparita salgono di uno slot, invece di
+                // lasciare un buco nella pila.
+                for (int i = indice; i < attivi.size(); i++) {
+                    attivi.get(i).setY(finestra.getY() + MARGINE + i * ALTEZZA_SLOT);
+                }
             });
             dissolvenzaOut.play();
         });

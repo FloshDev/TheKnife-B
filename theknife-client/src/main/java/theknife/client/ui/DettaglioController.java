@@ -140,7 +140,7 @@ public class DettaglioController {
                 esito -> {
                     preferito = false;
                     aggiornaPreferitiButton();
-                    Toast.successo("Ristorante rimosso dai preferiti.");
+                    Toast.avviso("Ristorante rimosso dai preferiti.");
                 }
             );
         }

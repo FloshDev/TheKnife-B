@@ -36,7 +36,7 @@ public class AuthService {
             connection.setUtenteCorrente(loginResultDTO.getUtente());
             return loginResultDTO;
         } else {
-            throw new IOException(response.getMessaggio());
+            throw new ErroreServerException(response.getMessaggio());
         }
     }
 
@@ -46,7 +46,7 @@ public class AuthService {
         Response response = connection.inviaRichiesta(request);
         
         if(response.getStatus() != ResponseStatus.SUCCESSO) {
-            throw new IOException(response.getMessaggio());
+            throw new ErroreServerException(response.getMessaggio());
         }
     }
 

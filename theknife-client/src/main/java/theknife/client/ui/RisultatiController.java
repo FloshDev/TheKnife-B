@@ -190,7 +190,7 @@ public class RisultatiController {
             esito -> {
                 if (giaPreferito) {
                     preferitiIds.remove(ristorante.getIdRistorante());
-                    Toast.successo("Ristorante rimosso dai preferiti.");
+                    Toast.avviso("Ristorante rimosso dai preferiti.");
                 } else {
                     preferitiIds.add(ristorante.getIdRistorante());
                     Toast.successo("Ristorante aggiunto ai preferiti.");

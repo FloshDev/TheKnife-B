@@ -37,7 +37,7 @@ public class RecensioneService {
         if (response.getStatus() == ResponseStatus.SUCCESSO) {
             return (List<RecensioneDTO>) response.getPayload();
         } else {
-            throw new IOException(response.getMessaggio());
+            throw new ErroreServerException(response.getMessaggio());
         }
     }
 
@@ -46,7 +46,7 @@ public class RecensioneService {
         Response response = connection.inviaRichiesta(request);
         
         if (response.getStatus() != ResponseStatus.SUCCESSO) {
-            throw new IOException(response.getMessaggio());
+            throw new ErroreServerException(response.getMessaggio());
         }
     }
 
@@ -55,7 +55,7 @@ public class RecensioneService {
         Response response = connection.inviaRichiesta(request);
         
         if (response.getStatus() != ResponseStatus.SUCCESSO) {
-            throw new IOException(response.getMessaggio());
+            throw new ErroreServerException(response.getMessaggio());
         }
     }
 
@@ -64,7 +64,7 @@ public class RecensioneService {
         Response response = connection.inviaRichiesta(request);
         
         if (response.getStatus() != ResponseStatus.SUCCESSO)
-            throw new IOException(response.getMessaggio());
+            throw new ErroreServerException(response.getMessaggio());
     }
 
     @SuppressWarnings("unchecked")
@@ -75,7 +75,7 @@ public class RecensioneService {
         if (response.getStatus() == ResponseStatus.SUCCESSO) {
             return (List<RecensioneDTO>) response.getPayload();
         } else {
-            throw new IOException(response.getMessaggio());
+            throw new ErroreServerException(response.getMessaggio());
         }
     }
 
@@ -84,7 +84,7 @@ public class RecensioneService {
         Response response = connection.inviaRichiesta(request);
         
         if (response.getStatus() != ResponseStatus.SUCCESSO) {
-            throw new IOException(response.getMessaggio());
+            throw new ErroreServerException(response.getMessaggio());
         }
     }
 }

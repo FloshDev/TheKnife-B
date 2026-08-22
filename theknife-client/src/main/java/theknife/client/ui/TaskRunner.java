@@ -7,6 +7,7 @@ import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
 import javafx.concurrent.Task;
+import theknife.client.service.ErroreServerException;
 
 /**
  * Esegue un'operazione bloccante (tipicamente una chiamata a un service, che a
@@ -59,10 +60,19 @@ public class TaskRunner {
     public static <T> void run(Callable<T> operazione, Consumer<T> alSuccesso) {
         run(operazione, alSuccesso, eccezione -> {
             String messaggio;
-            if (eccezione instanceof IOException) {
+            if (eccezione instanceof ErroreServerException) {
+                // Il server ha risposto (non è un problema di connessione): il messaggio è
+                // già pensato per l'utente ("Username o password non validi.", ecc.), va
+                // mostrato così com'è — controllato PRIMA di IOException, di cui è sottoclasse.
+                messaggio = eccezione.getMessage();
+            } else if (eccezione instanceof IOException || eccezione instanceof ClassNotFoundException) {
                 // Un socket caduto (server spento, rete interrotta) risale come IOException
                 // grezza — "Connection reset"/"Broken pipe"/messaggio nullo, testo tecnico che
-                // non dice all'utente cosa è successo. Messaggio unico e chiaro invece.
+                // non dice all'utente cosa è successo. ClassNotFoundException (deserializzazione
+                // fallita, stream corrotto o versioni client/server disallineate) ha lo stesso
+                // problema: il messaggio è il nome di una classe, non testo per l'utente.
+                // Stesso messaggio per entrambe: non è un errore applicativo, è la comunicazione
+                // col server che non è andata a buon fine.
                 messaggio = "Impossibile contattare il server. Controlla la connessione e riprova.";
             } else if (eccezione.getMessage() != null) {
                 messaggio = eccezione.getMessage();
