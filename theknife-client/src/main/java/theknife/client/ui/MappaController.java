@@ -54,6 +54,8 @@ public class MappaController {
      * silenzioso dopo un numero variabile di utilizzi (bug classico di JavaFX WebView).
      */
     private Bridge bridge;
+    /** Numero massimo di marker disegnati insieme: oltre, il WebView (senza accelerazione grafica) si blocca. */
+    private static final int MASSIMO_MARKER = 300;
     /**
      * Ritarda la chiamata a {@code invalidateSize()} finché il ridimensionamento
      * non si ferma per un istante: chiamate troppo ravvicinate durante un
@@ -173,7 +175,13 @@ public class MappaController {
      */
     private void disegnaRistoranti(List<RistoranteDTO> ristoranti) {
         window.call("pulisciMarker");
-        for (RistoranteDTO r : ristoranti) {
+        // WebView non ha accelerazione grafica: centinaia di marker DOM la fanno bloccare
+        // (ricerche senza filtri o con raggio ampio possono restituire migliaia di risultati).
+        // La lista non ha questo limite (è virtualizzata), solo la mappa.
+        List<RistoranteDTO> daDisegnare = ristoranti.size() > MASSIMO_MARKER
+            ? ristoranti.subList(0, MASSIMO_MARKER)
+            : ristoranti;
+        for (RistoranteDTO r : daDisegnare) {
             window.call("aggiungiMarker", r.getIdRistorante(), r.getLatitudine(), r.getLongitudine());
         }
         window.call("adattaVista");

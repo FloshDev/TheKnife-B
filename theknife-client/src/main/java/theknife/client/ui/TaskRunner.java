@@ -1,5 +1,6 @@
 package theknife.client.ui;
 
+import java.io.IOException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -57,8 +58,15 @@ public class TaskRunner {
      */
     public static <T> void run(Callable<T> operazione, Consumer<T> alSuccesso) {
         run(operazione, alSuccesso, eccezione -> {
-            String messaggio = eccezione.getMessage();
-            if (messaggio == null) {
+            String messaggio;
+            if (eccezione instanceof IOException) {
+                // Un socket caduto (server spento, rete interrotta) risale come IOException
+                // grezza — "Connection reset"/"Broken pipe"/messaggio nullo, testo tecnico che
+                // non dice all'utente cosa è successo. Messaggio unico e chiaro invece.
+                messaggio = "Impossibile contattare il server. Controlla la connessione e riprova.";
+            } else if (eccezione.getMessage() != null) {
+                messaggio = eccezione.getMessage();
+            } else {
                 messaggio = "Si è verificato un errore sconosciuto.";
             }
             Toast.errore(messaggio);

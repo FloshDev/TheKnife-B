@@ -1,5 +1,8 @@
 package theknife.client.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.scene.control.Alert;
@@ -36,6 +39,23 @@ public class Toast {
     private static final double MARGINE = 20;
     /** Larghezza fissa: serve per calcolare la posizione prima ancora di mostrarlo. */
     private static final double LARGHEZZA = 320;
+    /**
+     * Altezza di uno "slot" verticale riservato a ogni notifica (compreso lo
+     * spazio tra una e l'altra), usata per impilarle invece di farle apparire
+     * tutte nello stesso punto. Stimata invece che calcolata dal layout reale
+     * (variabile con {@code wrapText}) — sufficiente per messaggi di 1-2 righe,
+     * che sono la quasi totalità dei casi.
+     */
+    private static final double ALTEZZA_SLOT = 68;
+
+    /**
+     * Notifiche attualmente visibili, nell'ordine in cui sono apparse: la
+     * posizione verticale di una nuova notifica dipende da quante sono già
+     * in coda sopra di lei, così più notifiche vicine nel tempo (es. il
+     * server irraggiungibile per più richieste di fila) si impilano invece
+     * di sovrapporsi esattamente, coprendosi a vicenda.
+     */
+    private static final List<Popup> attivi = new ArrayList<>();
 
     private Toast() {}
 
@@ -113,7 +133,8 @@ public class Toast {
         popup.getContent().add(contenuto);
         popup.show(finestra,
             finestra.getX() + finestra.getWidth() - LARGHEZZA - MARGINE,
-            finestra.getY() + MARGINE);
+            finestra.getY() + MARGINE + attivi.size() * ALTEZZA_SLOT);
+        attivi.add(popup);
 
         FadeTransition dissolvenzaIn = new FadeTransition(DURATA_DISSOLVENZA, contenuto);
         dissolvenzaIn.setToValue(1);
@@ -123,7 +144,10 @@ public class Toast {
         attesa.setOnFinished(e -> {
             FadeTransition dissolvenzaOut = new FadeTransition(DURATA_DISSOLVENZA, contenuto);
             dissolvenzaOut.setToValue(0);
-            dissolvenzaOut.setOnFinished(fine -> popup.hide());
+            dissolvenzaOut.setOnFinished(fine -> {
+                popup.hide();
+                attivi.remove(popup);
+            });
             dissolvenzaOut.play();
         });
         attesa.play();

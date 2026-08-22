@@ -88,7 +88,6 @@ Durante la progettazione ogni membro lavora **solo nella propria cartella** in
 
 - Non modificare i file nelle cartelle di progettazione degli altri
 - Non modificare `1_Doc. Conclusi/` senza accordo del gruppo
-- I file `.drawio` si editano a mano in draw.io (le modifiche automatiche li corrompono)
 - Commit frequenti, messaggi in italiano vanno bene
 
 ## Team

@@ -1,6 +1,8 @@
 package theknife.client.ui;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -51,7 +53,11 @@ public class AssociaRistoranteController {
     }
 
     /**
-     * Cerca i ristoranti per nome e mostra i risultati nella lista. Solo il
+     * Cerca i ristoranti per nome e mostra i risultati nella lista, esclusi
+     * quelli già gestiti da qualcuno (RF-17: ci si può associare solo a un
+     * ristorante senza gestore) — filtro cosmetico, il controllo vero resta
+     * lato server (`AssociaRistoranteCommand`), che rifiuta comunque se il
+     * ristorante viene preso da un altro gestore nel frattempo. Solo il
      * nome è supportato: nessun comando del protocollo consente la ricerca
      * per indirizzo, benché fosse promessa dal placeholder originale del
      * campo di ricerca.
@@ -62,10 +68,13 @@ public class AssociaRistoranteController {
         TaskRunner.run(
             () -> ristoranteService.cercaRistoranti(cercaRistoranteDTO),
             ristoranti -> {
-                Label nessunRisultato = new Label("Nessun ristorante trovato con questo nome.");
+                Label nessunRisultato = new Label("Nessun ristorante libero trovato con questo nome.");
                 nessunRisultato.getStyleClass().add("risultato-info");
                 risultatiListView.setPlaceholder(nessunRisultato);
-                risultatiListView.getItems().setAll(ristoranti);
+                List<RistoranteDTO> liberi = ristoranti.stream()
+                    .filter(r -> r.getIdGestore() == null)
+                    .collect(Collectors.toList());
+                risultatiListView.getItems().setAll(liberi);
                 risultatiListView.setCellFactory(lv -> new RistoranteTrovatoCell());
             }
         );

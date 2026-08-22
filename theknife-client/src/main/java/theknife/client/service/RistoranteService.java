@@ -10,7 +10,6 @@ import theknife.common.dto.CercaVicinoDTO;
 import theknife.common.dto.IdRistoranteDTO;
 import theknife.common.dto.PosizioneDTO;
 import theknife.common.dto.RistoranteDTO;
-import theknife.common.dto.StatisticheRistoranteDTO;
 import theknife.common.enums.CommandType;
 import theknife.common.enums.ResponseStatus;
 import theknife.common.protocol.Request;
@@ -122,17 +121,6 @@ public class RistoranteService {
 
         if (response.getStatus() == ResponseStatus.SUCCESSO) {
             return (List<RistoranteDTO>) response.getPayload();
-        } else {
-            throw new IOException(response.getMessaggio());
-        }
-    }
-
-    public StatisticheRistoranteDTO ottieniStatistiche(IdRistoranteDTO id) throws IOException, ClassNotFoundException {
-        Request request = new Request(CommandType.OTTIENI_STATISTICHE_RISTORANTE, id, connection.getSessionToken());
-        Response response = connection.inviaRichiesta(request);
-
-        if (response.getStatus() == ResponseStatus.SUCCESSO) {
-            return (StatisticheRistoranteDTO) response.getPayload();
         } else {
             throw new IOException(response.getMessaggio());
         }
