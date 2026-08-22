@@ -54,6 +54,8 @@
 
             <Region styleClass="divisore"/>
 
+            <Label text="&quot;Vicino a me&quot; usa solo città e raggio, ignora gli altri filtri qui sopra. &quot;Cerca&quot; usa i filtri sopra, ignora il raggio." styleClass="risultato-info" wrapText="true"/>
+
             <HBox spacing="12" alignment="BOTTOM_LEFT">
                 <VBox spacing="6" HBox.hgrow="ALWAYS">
                     <Label text="Raggio (km) — vicino a te" styleClass="campo-label"/>

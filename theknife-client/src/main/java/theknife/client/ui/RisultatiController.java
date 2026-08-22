@@ -25,6 +25,8 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import theknife.client.network.ServerConnection;
 import theknife.client.service.RistoranteService;
+import theknife.common.dto.CercaRistorantiDTO;
+import theknife.common.dto.CercaVicinoDTO;
 import theknife.common.dto.IdRistoranteDTO;
 import theknife.common.dto.RistoranteDTO;
 import theknife.common.dto.UtenteDTO;
@@ -54,6 +56,17 @@ public class RisultatiController {
 
     /** Invia al server i comandi sui preferiti, usato dal cuore su ogni card. */
     private final RistoranteService ristoranteService = new RistoranteService();
+    /**
+     * Filtri di "Cerca" usati per ottenere questa lista, se arrivata da lì — {@code null} se
+     * arrivata da "Vicino a me". Ripassati a Home da {@link #handleTornaIndietro(ActionEvent)}
+     * così il form non riparte vuoto.
+     */
+    private CercaRistorantiDTO filtriRicerca;
+    /**
+     * Filtri di "Vicino a me" usati per ottenere questa lista, se arrivata da lì — {@code null}
+     * se arrivata da "Cerca". Stesso scopo di {@link #filtriRicerca}.
+     */
+    private CercaVicinoDTO filtriVicino;
     /** Se l'utente corrente è un Cliente: solo lui vede/usa il cuore preferiti (RF08/RF09). */
     private boolean cliente;
     /** Gli id dei ristoranti già nei preferiti dell'utente corrente, per pre-colorare i cuori. */
@@ -87,8 +100,35 @@ public class RisultatiController {
      */
     @FXML private void handleTornaIndietro(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/home.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/home.fxml"));
+        Parent root = loader.load();
+        HomeController controller = loader.getController();
+        controller.precompilaFiltri(filtriRicerca);
+        controller.precompilaVicino(filtriVicino);
         stage.getScene().setRoot(root);
+    }
+
+    /**
+     * Registra i filtri di "Cerca" usati per la lista corrente, per poterli
+     * ripassare a Home se si torna indietro (invece di far ripartire il form
+     * vuoto).
+     *
+     * @param filtri i filtri usati, o {@code null}
+     */
+    public void impostaFiltriRicerca(CercaRistorantiDTO filtri) {
+        this.filtriRicerca = filtri;
+        this.filtriVicino = null;
+    }
+
+    /**
+     * Registra i filtri di "Vicino a me" usati per la lista corrente, stesso
+     * scopo di {@link #impostaFiltriRicerca(CercaRistorantiDTO)}.
+     *
+     * @param filtri i filtri usati, o {@code null}
+     */
+    public void impostaFiltriVicino(CercaVicinoDTO filtri) {
+        this.filtriVicino = filtri;
+        this.filtriRicerca = null;
     }
 
     /**

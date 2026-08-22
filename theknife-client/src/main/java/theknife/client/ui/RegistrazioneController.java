@@ -133,8 +133,16 @@ public class RegistrazioneController {
             Toast.errore("Inserisci una password");
             return;
         }
+        if(password.length() < 8) {
+            Toast.errore("La password deve avere almeno 8 caratteri");
+            return;
+        }
         if(!password.equals(password2)) {
             Toast.errore("Le password non coincidono");
+            return;
+        }
+        if(!email.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
+            Toast.errore("Inserisci un indirizzo email valido");
             return;
         }
 

@@ -88,8 +88,10 @@ public class HomeController {
         String citta = cittaField.getText();
         String tipoCucina = tipoCucinaField.getText();
         int fasciaPrezzo = fasciaPrezzoSelezionata();
-        boolean prenotazioneOnline = prenotazioneOnlineCheck.isSelected();
-        boolean consegnaADomicilio = consegnaADomicilioCheck.isSelected();
+        // Boolean, non boolean: null vuol dire "nessun filtro" per RistoranteDAO.cerca, non
+        // "deve essere false". Checkbox non spuntata = non mi interessa, non "deve NON offrirlo".
+        Boolean prenotazioneOnline = prenotazioneOnlineCheck.isSelected() ? Boolean.TRUE : null;
+        Boolean consegnaADomicilio = consegnaADomicilioCheck.isSelected() ? Boolean.TRUE : null;
 
         CercaRistorantiDTO filtri = new CercaRistorantiDTO(
             nome, citta, tipoCucina, prenotazioneOnline, fasciaPrezzo, consegnaADomicilio, null
@@ -105,6 +107,7 @@ public class HomeController {
                 Parent root = loader.load();
                 RisultatiController controller = loader.getController();
                 controller.impostaRisultati(cercaResult);
+                controller.impostaFiltriRicerca(filtri);
                 stage.getScene().setRoot(root);
             } catch (IOException e) {
                 Toast.errore("Errore nel caricamento della schermata: " + e.getMessage());
@@ -153,6 +156,7 @@ public class HomeController {
                 Parent root = loader.load();
                 RisultatiController controller = loader.getController();
                 controller.impostaRisultati(cercaResult);
+                controller.impostaFiltriVicino(filtri);
                 stage.getScene().setRoot(root);
             } catch (IOException e) {
                 Toast.errore("Errore nel caricamento della schermata: " + e.getMessage());
@@ -170,5 +174,44 @@ public class HomeController {
      */
     public void impostaCitta(String citta) {
         cittaField.setText(citta);
+    }
+
+    /**
+     * Precompila il form con i filtri usati nell'ultima ricerca "Cerca",
+     * così tornando indietro da Risultati non si riparte da un form vuoto.
+     *
+     * @param filtri i filtri dell'ultima ricerca, o {@code null} (nessuna precompilazione)
+     */
+    public void precompilaFiltri(CercaRistorantiDTO filtri) {
+        if (filtri == null) {
+            return;
+        }
+        nomeField.setText(filtri.getNome());
+        cittaField.setText(filtri.getCitta());
+        tipoCucinaField.setText(filtri.getTipoCucina());
+        switch (filtri.getFasciaPrezzo()) {
+            case 1 -> prezzo1Radio.setSelected(true);
+            case 2 -> prezzo2Radio.setSelected(true);
+            case 3 -> prezzo3Radio.setSelected(true);
+            case 4 -> prezzo4Radio.setSelected(true);
+            default -> { }
+        }
+        prenotazioneOnlineCheck.setSelected(Boolean.TRUE.equals(filtri.isPrenotazioneOnline()));
+        consegnaADomicilioCheck.setSelected(Boolean.TRUE.equals(filtri.isConsegnaADomicilio()));
+    }
+
+    /**
+     * Precompila città e raggio con i valori usati nell'ultima ricerca
+     * "Vicino a me", così tornando indietro da Risultati non si riparte da
+     * un form vuoto.
+     *
+     * @param filtri i filtri dell'ultima ricerca, o {@code null} (nessuna precompilazione)
+     */
+    public void precompilaVicino(CercaVicinoDTO filtri) {
+        if (filtri == null) {
+            return;
+        }
+        cittaField.setText(filtri.getLuogo());
+        raggioKmField.setText(String.valueOf(filtri.getRaggioKm()));
     }
 }
