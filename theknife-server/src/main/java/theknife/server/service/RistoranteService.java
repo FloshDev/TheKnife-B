@@ -86,7 +86,15 @@ public class RistoranteService {
             throw new ValidationException("Criteri di ricerca mancanti.");
         }
 
-        return ristoranteDAO.cerca(filtri);
+        PosizioneDTO posizione = null;
+        if (filtri.getCitta() != null && !filtri.getCitta().isBlank()) {
+            posizione = geocoding.geocodifica(filtri.getCitta());
+            if (posizione == null) {
+                posizione = ristoranteDAO.trovaCoordinateLuogo(filtri.getCitta());
+            }
+        }
+
+        return ristoranteDAO.cerca(filtri, posizione);
     }
 
     /**
