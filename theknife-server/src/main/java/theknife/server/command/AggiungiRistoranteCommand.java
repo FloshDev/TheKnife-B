@@ -9,6 +9,7 @@ import theknife.common.protocol.Response;
 import theknife.server.exception.ApplicationException;
 import theknife.server.exception.DataAccessException;
 import theknife.server.exception.ValidationException;
+import theknife.server.service.EsitoAggiuntaRistorante;
 import theknife.server.service.RistoranteService;
 
 /**
@@ -18,7 +19,9 @@ import theknife.server.service.RistoranteService;
  * Il gestore compila solo l'indirizzo: le coordinate le calcola il server
  * geocodificando (decisione 29). Se il geocoding fallisce il ristorante viene
  * comunque creato, senza coordinate, e semplicemente non comparira' nelle
- * ricerche per vicinanza finche' non viene corretto.
+ * ricerche per vicinanza finche' non viene corretto - ma la risposta lo dice
+ * esplicitamente nel messaggio (S46), invece di tornare un SUCCESSO uguale a
+ * quello di un indirizzo geocodificato davvero.
  *
  * @author Ciani Flavio Angelo, 761581, VA
  */
@@ -43,7 +46,8 @@ public class AggiungiRistoranteCommand implements Command {
      *
      * @param request la richiesta, con un {@link AggiungiRistoranteDTO} come payload
      * @param utente  il ristoratore autenticato, che diventa gestore del ristorante
-     * @return SUCCESSO con il {@link RistoranteDTO} appena creato,
+     * @return SUCCESSO con il {@link RistoranteDTO} appena creato - con il
+     *         messaggio che avvisa se le coordinate non sono state determinate -,
      *         ERRORE_VALIDAZIONE se un campo obbligatorio manca, ERRORE se il
      *         ristorante non e' rileggibile dopo l'inserimento, ERRORE_SERVER se l'accesso al database fallisce
      */
@@ -55,8 +59,15 @@ public class AggiungiRistoranteCommand implements Command {
         }
 
         try {
-            RistoranteDTO creato = ristoranteService.aggiungi(dati, utente.getIdUtente());
-            return new Response(ResponseStatus.SUCCESSO, creato, "Ristorante aggiunto.");
+            EsitoAggiuntaRistorante esito = ristoranteService.aggiungi(dati, utente.getIdUtente());
+
+            String messaggio = esito.coordinateValide()
+                    ? "Ristorante aggiunto."
+                    : "Ristorante aggiunto, ma non e' stato possibile determinare le "
+                      + "coordinate dell'indirizzo: non comparira' nelle ricerche per "
+                      + "vicinanza finche' l'indirizzo non viene corretto.";
+
+            return new Response(ResponseStatus.SUCCESSO, esito.ristorante(), messaggio);
 
         } catch (ValidationException e) {
             return new Response(ResponseStatus.ERRORE_VALIDAZIONE, null, e.getMessage());

@@ -1,6 +1,9 @@
 package theknife.server.service;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
@@ -38,6 +41,21 @@ public class UtenteService {
      * i due casi rivelerebbe quali username sono registrati.
      */
     private static final String CREDENZIALI_NON_VALIDE = "Username o password non validi.";
+
+    /** Lunghezza minima della password in registrazione (S50). */
+    private static final int LUNGHEZZA_MINIMA_PASSWORD = 8;
+
+    /** Eta' minima per registrarsi, in anni compiuti. */
+    private static final int ETA_MINIMA = 18;
+
+    /**
+     * Formato accettato per l'email (S51): stesso controllo minimo fatto dalla
+     * GUI - un solo {@code @}, nessuno spazio, un punto nel dominio. Non
+     * pretende di validare l'esistenza della casella, solo di scartare le
+     * stringhe che email non sono.
+     */
+    private static final Pattern FORMATO_EMAIL =
+        Pattern.compile("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$");
 
     /** Accesso alla tabella degli utenti. */
     private final UtenteDAO utenteDAO;
@@ -136,12 +154,14 @@ public class UtenteService {
     }
 
     /**
-     * Verifica che i campi obbligatori della registrazione siano presenti.
-     * E' il controllo che impedisce la creazione di un account con password
-     * vuota indipendentemente da cosa fa la GUI.
+     * Verifica che i campi obbligatori della registrazione siano presenti e
+     * conformi. E' il controllo che impedisce la creazione di un account con
+     * password vuota, password debole, email malformata o eta' insufficiente
+     * indipendentemente da cosa fa la GUI: i controlli lato client sono solo
+     * cosmetici, un client modificato non deve poterli aggirare.
      *
      * @param dati i dati da controllare
-     * @throws ValidationException se un campo obbligatorio manca
+     * @throws ValidationException se un campo obbligatorio manca o non e' valido
      */
     private void validaDatiRegistrazione (RegistrazioneDTO dati) throws ValidationException {
         if (dati == null) {
@@ -151,9 +171,45 @@ public class UtenteService {
         esigiTesto(dati.getCognome(), "il cognome");
         esigiTesto(dati.getUsername(), "lo username");
         esigiTesto(dati.getPassword(), "la password");
+        esigiTesto(dati.getEmail(), "l'email");
+
+        if (dati.getPassword().length() < LUNGHEZZA_MINIMA_PASSWORD) {
+            throw new ValidationException("La password deve avere almeno "
+                    + LUNGHEZZA_MINIMA_PASSWORD + " caratteri.");
+        }
+
+        if (!FORMATO_EMAIL.matcher(dati.getEmail()).matches()) {
+            throw new ValidationException("Indirizzo email non valido.");
+        }
+
+        validaEta(dati.getDataNascita());
 
         if (dati.getRuolo() == null) {
             throw new ValidationException("Campo obbligatorio mancante: il ruolo.");
+        }
+    }
+
+    /**
+     * Verifica che la data di nascita sia presente, non nel futuro e
+     * corrispondente ad almeno {@value #ETA_MINIMA} anni compiuti.
+     *
+     * @param dataNascita la data di nascita dichiarata in registrazione
+     * @throws ValidationException se la data manca, e' nel futuro o l'utente e' minorenne
+     */
+    private void validaEta (LocalDate dataNascita) throws ValidationException {
+        if (dataNascita == null) {
+            throw new ValidationException("Campo obbligatorio mancante: la data di nascita.");
+        }
+
+        LocalDate oggi = LocalDate.now();
+
+        if (dataNascita.isAfter(oggi)) {
+            throw new ValidationException("La data di nascita non puo' essere nel futuro.");
+        }
+
+        if (Period.between(dataNascita, oggi).getYears() < ETA_MINIMA) {
+            throw new ValidationException("Devi avere almeno " + ETA_MINIMA
+                    + " anni per registrarti.");
         }
     }
 

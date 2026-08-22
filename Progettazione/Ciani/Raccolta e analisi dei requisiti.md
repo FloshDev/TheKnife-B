@@ -50,7 +50,7 @@ L'utente autenticato come **Ristoratore** ha la possibilità di inserire nel sis
 
 | ID | DESCRIZIONE | CATEGORIA |
 |---|---|---|
-| RNF-01 | Le password degli utenti devono essere memorizzate in forma cifrata tramite hash SHA-256. | Sicurezza |
+| RNF-01 | Le password degli utenti devono essere memorizzate in forma cifrata tramite hash BCrypt (fattore di costo 12). | Sicurezza |
 | RNF-02 | Il sistema deve supportare connessioni concorrenti di più client simultaneamente. | Prestazioni |
 | RNF-03 | Il sistema deve essere multipiattaforma. | Portabilità |
 | RNF-04 | Il progetto deve essere sviluppato in Java 21 (Temurin). | Vincolo tecnologico |
@@ -58,5 +58,5 @@ L'utente autenticato come **Ristoratore** ha la possibilità di inserire nel sis
 | RNF-06 | Il progetto deve essere compilabile e gestibile tramite Maven. | Vincolo tecnologico |
 | RNF-07 | Il sistema deve essere distribuito come due JAR separati: serverTK e clientTK. | Vincolo tecnologico |
 | RNF-08 | Il codice sorgente deve essere documentato in formato JavaDoc. | Documentazione |
-| RNF-09 | Il sistema deve utilizzare un servizio di geocoding (OpenCage) per convertire indirizzi in coordinate geografiche. | Vincolo tecnologico |
+| RNF-09 | Il sistema deve utilizzare un servizio di geocoding (Nominatim/OpenStreetMap) per convertire indirizzi in coordinate geografiche, e ip-api.com per la stima della localita' iniziale da indirizzo IP. | Vincolo tecnologico |
 | RNF-10 | L'applicazione deve essere dotata di un'interfaccia grafica desktop realizzata con JavaFX. | Vincolo tecnologico |

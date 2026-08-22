@@ -178,15 +178,20 @@ public class RistoranteService {
      * (decisione 29), con ripiego sulla citta' e, se anche quello fallisce,
      * inserimento senza coordinate - il ristorante viene creato comunque e
      * semplicemente non comparira' nelle ricerche per vicinanza.
+     * <p>
+     * Quest'ultimo caso non resta piu' silenzioso (S46): l'esito del geocoding
+     * torna al chiamante dentro {@link EsitoAggiuntaRistorante}, perche' le
+     * coordinate assenti diventano 0.0/0.0 sul DTO e da sole non si
+     * distinguono da un indirizzo geocodificato davvero.
      *
      * @param dati      i dati del ristorante da inserire
      * @param idGestore l'identificativo del ristoratore che lo inserisce
-     * @return il ristorante appena creato, riletto dal database
+     * @return il ristorante appena creato, riletto dal database, e l'esito del geocoding
      * @throws ValidationException  se mancano i campi obbligatori
      * @throws ApplicationException se il ristorante non e' rileggibile dopo l'inserimento
      * @throws DataAccessException  se l'accesso al database fallisce
      */
-    public RistoranteDTO aggiungi (AggiungiRistoranteDTO dati, long idGestore)
+    public EsitoAggiuntaRistorante aggiungi (AggiungiRistoranteDTO dati, long idGestore)
             throws ValidationException, ApplicationException, DataAccessException {
 
         validaDatiRistorante(dati);
@@ -210,7 +215,7 @@ public class RistoranteService {
             throw new ApplicationException("Ristorante inserito ma non rileggibile.");
         }
 
-        return creato;
+        return new EsitoAggiuntaRistorante(creato, posizione != null);
     }
 
     /**
