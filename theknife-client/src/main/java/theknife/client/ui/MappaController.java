@@ -88,6 +88,7 @@ public class MappaController {
                 window = (JSObject) webEngine.executeScript("window");
                 bridge = new Bridge();
                 window.setMember("javaBridge", bridge);
+                window.call("flushDebug"); // DEBUG TEMPORANEO (S45)
                 pronta = true;
                 if (ristorantiInAttesa != null) {
                     disegnaRistoranti(ristorantiInAttesa);
@@ -212,6 +213,11 @@ public class MappaController {
                 long idRistorante = (long) id;
                 Platform.runLater(() -> onMarkerClick.accept(idRistorante));
             }
+        }
+
+        // DEBUG TEMPORANEO (S45) — da togliere una volta capita la causa dei tile grigi.
+        public void onDebug(String messaggio) {
+            System.out.println("[MAPPA-DEBUG] " + messaggio);
         }
     }
 }

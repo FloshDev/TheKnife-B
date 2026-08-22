@@ -64,7 +64,14 @@ public class LoginController {
             loginResult -> {
                 try{
                     if(loginResult.getUtente().getRuolo() == Ruolo.CLIENTE) {
-                        Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/home.fxml"));
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/home.fxml"));
+                        Parent root = loader.load();
+                        // Il login non passa da Splash (niente geolocalizzazione IP per chi è
+                        // già autenticato): precompilato con il domicilio, come già fa "Vicino
+                        // a me" (RF-07), così il campo città non parte vuoto solo per chi ha
+                        // fatto login rispetto a chi arriva da guest.
+                        HomeController controller = loader.getController();
+                        controller.impostaCitta(loginResult.getUtente().getDomicilio());
                         stage.getScene().setRoot(root);
                     }
                     else if (loginResult.getUtente().getRuolo() == Ruolo.RISTORATORE) {

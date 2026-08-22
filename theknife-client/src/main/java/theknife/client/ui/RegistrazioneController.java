@@ -1,6 +1,7 @@
 package theknife.client.ui;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
 import javafx.event.ActionEvent;
@@ -143,6 +144,14 @@ public class RegistrazioneController {
         }
         if(!email.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
             Toast.errore("Inserisci un indirizzo email valido");
+            return;
+        }
+        if(dataNascita == null || dataNascita.isAfter(LocalDate.now())) {
+            Toast.errore("Inserisci una data di nascita valida");
+            return;
+        }
+        if(Period.between(dataNascita, LocalDate.now()).getYears() < 18) {
+            Toast.errore("Devi avere almeno 18 anni per registrarti");
             return;
         }
 

@@ -33,7 +33,7 @@
         <TextField fx:id="modificaLocalitaField" promptText="Correggi la località, se serve" styleClass="campo-testo"/>
 
         <HBox spacing="16" alignment="CENTER">
-            <Button text="Conferma e continua →" onAction="#handleConferma" styleClass="bottone-primario" defaultButton="true"/>
+            <Button text="Conferma e continua come ospite" onAction="#handleConferma" styleClass="bottone-primario" defaultButton="true"/>
             <Hyperlink text="Accedi" onAction="#handleLogin" styleClass="link-primario"/>
         </HBox>
     </VBox>

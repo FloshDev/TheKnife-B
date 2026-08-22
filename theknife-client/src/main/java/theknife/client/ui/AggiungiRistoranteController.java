@@ -112,6 +112,12 @@ public class AggiungiRistoranteController {
         TaskRunner.run(
             () -> ristoranteService.aggiungiRistorante(ristoranteDTO),
             result -> {
+                // S46: lat/long a 0.0 è il segnale che il geocoding non ha trovato l'indirizzo
+                // (RistoranteDTO le porta come double primitivo, non Double, quindi "assente"
+                // non è un valore rappresentabile).
+                if (result.getLatitudine() == 0.0 && result.getLongitudine() == 0.0) {
+                    Toast.avviso("Ristorante salvato, ma l'indirizzo non è stato trovato sulla mappa: non comparirà nelle ricerche \"vicino a me\".");
+                }
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/dettaglio.fxml"));
                     Parent root = loader.load();

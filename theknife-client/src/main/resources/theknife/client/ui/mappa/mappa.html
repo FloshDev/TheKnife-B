@@ -80,14 +80,11 @@
 <body>
     <div id="map"></div>
     <script>
-        // Il WebView di JavaFX non ha l'accelerazione grafica di un browser vero: le
-        // animazioni di Leaflet (zoom, pan con inerzia) lo appesantiscono anche con pochi
-        // elementi. Disattivate: zoom/pan "a scatto" invece che fluidi, ma reattivi.
-        // clickTolerance alta: il WebView di JavaFX riporta la posizione del mouse in
-        // modo meno preciso di un browser vero, così Leaflet interpreta quasi ogni click
-        // come un micro-trascinamento e non genera l'evento "click" (il doppio click
-        // funzionava comunque, perché usa l'evento nativo del browser, non quello di
-        // Leaflet, che passa sempre da questo controllo).
+        // WebView JavaFX senza accelerazione grafica: animazioni disattivate (zoom/pan a
+        // scatto invece che fluidi). clickTolerance alta perché il WebView riporta la
+        // posizione del mouse meno precisa di un browser vero (altrimenti ogni click viene
+        // letto come micro-trascinamento). doubleClickZoom disattivato: un doppio click per
+        // riselezionare un marker altrimenti zooma e sposta tutti i marker sotto.
         var map = L.map('map', {
             zoomControl: true,
             zoomAnimation: false,
@@ -95,42 +92,85 @@
             markerZoomAnimation: false,
             inertia: false,
             clickTolerance: 15,
-            // Cliccare due volte lo stesso marker (per riselezionarlo) veniva interpretato
-            // come doppio click nativo, zoom improvviso non richiesto che spostava tutti i
-            // marker sotto ai click successivi.
             doubleClickZoom: false
         }).setView([42.5, 12.5], 5);
 
+        // keepBuffer al default di Leaflet (2, non 6): su schermi Retina il WebView deve
+        // già ridisegnare 4x i pixel fisici, tenere tile extra pronti aggrava il costo di
+        // disegno invece di ridurre il grigio (S45). updateWhenIdle: aggiorna i tile solo a
+        // trascinamento concluso, non continuamente durante il drag.
         var tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap',
             maxZoom: 19,
-            // Margine di tile pre-caricati oltre l'area visibile (default Leaflet: 2):
-            // più alto = meno grigio quando ti sposti, a costo di più dati scaricati
-            // all'inizio per l'area extra.
-            keepBuffer: 6,
-            // Per default Leaflet riposiziona/ridisegna i tile in continuazione MENTRE
-            // trascini, non solo alla fine: su un motore di rendering più lento del
-            // WebView questo probabilmente è la fonte del glitch anche su tile già in
-            // cache. Aggiorna solo a trascinamento finito, come le animazioni disattivate.
+            keepBuffer: 2,
             updateWhenIdle: true
         }).addTo(map);
 
-        // Rete di sicurezza: il WebView a volte non segnala bene la fine di un
-        // trascinamento/zoom (stessa imprecisione del mouse già vista coi click) e
-        // Leaflet lascia dei tile mai richiesti. redraw() è diretto: butta via tutti i
-        // tile del livello e li richiede di nuovo per la vista corrente, indipendentemente
-        // da cosa Leaflet pensa sia successo.
-        function forzaRicalcoloTile() {
-            setTimeout(function () {
-                tileLayer.redraw();
-            }, 100);
+        // DEBUG TEMPORANEO (S45) — da togliere una volta capita la causa dei tile grigi.
+        // 'tileerror' dice se il tile è stato richiesto ed è fallito (rete/HTTP), 'tileload'
+        // se è arrivato bene: la differenza tra i due conteggi dice se il buco è un errore di
+        // rete o un tile che Leaflet non ha mai nemmeno provato a richiedere.
+        //
+        // Bufferizzato: i primi tileload/tileerror possono scattare (tile veloci/da cache)
+        // prima che Java abbia iniettato window.javaBridge (succede solo dopo che questo
+        // script ha già finito di girare una volta) — senza buffer, quei primi messaggi si
+        // perdono in silenzio invece di arrivare in console.
+        var tileOk = 0, tileErrore = 0;
+        var debugBuffer = [];
+        function inviaDebug(messaggio) {
+            if (window.javaBridge && window.javaBridge.onDebug) {
+                window.javaBridge.onDebug(messaggio);
+            } else {
+                debugBuffer.push(messaggio);
+            }
         }
-        // 'moveend' copre sia il trascinamento dell'utente sia lo spostamento
-        // programmatico (panTo/setView/fitBounds, es. click su un marker/card che centra
-        // un ristorante lontano) — un mouseup grezzo sul container copriva solo il primo
-        // caso, lasciando buchi di tile dopo un pan da click (S45). La causa del blocco dei
-        // click dopo pochi utilizzi (S47) non era questo redraw, ma il bridge Java↔JS
-        // raccolto dal garbage collector — risolto altrove, il redraw può restare com'era.
+        function flushDebug() {
+            for (var i = 0; i < debugBuffer.length; i++) {
+                window.javaBridge.onDebug(debugBuffer[i]);
+            }
+            debugBuffer = [];
+        }
+        tileLayer.on('tileload', function () {
+            tileOk++;
+        });
+        tileLayer.on('tileerror', function (e) {
+            tileErrore++;
+            inviaDebug('tile fallito: ' + e.tile.src);
+        });
+
+        // Rete di sicurezza (S45): il WebView non sempre segnala con precisione la fine di
+        // un trascinamento/zoom, lasciando buchi di tile mai richiesti. Debounce (clearTimeout):
+        // adattaVista() con più marker genera 3 trigger in un colpo solo (fitBounds scatena sia
+        // 'moveend' sia 'zoomend', più la chiamata esplicita) — senza debounce, 3 correzioni in
+        // corsa che si intralciano a vicenda invece di aiutare.
+        //
+        // tileLayer._update() (interno, non redraw()): ricalcola i tile che servono per la
+        // vista corrente e carica solo quelli mancanti. redraw() pubblico fa anche
+        // _removeAllTiles() prima — distrugge e ricrea da zero anche i tile già a posto, più
+        // lavoro di disegno sullo stesso motore già lento (Retina) invece di limitarsi a
+        // colmare i buchi. _update() è il metodo che redraw() stesso chiama dopo la pulizia:
+        // usarlo da solo, senza pulizia, è meno distruttivo. Nome con underscore, non
+        // documentato pubblicamente, ma leaflet.js è un asset bundlato a versione fissa
+        // (1.1.1), non aggiornato da un CDN: non cambia sotto i piedi.
+        // Il debug (S45) ha escluso rete/logica: 0 tile falliti, tutti arrivati secondo
+        // Leaflet, eppure il grigio resta — non un tile mancante ma un problema di
+        // ripittura in WebKit. Tentato un forzaRepaint() con display:none/'' su <body>: ha
+        // rotto l'interazione con la mappa (probabile corruzione della cache dimensioni
+        // di Leaflet, figlio dello stesso <body> toccato). Ritirato, non riprovare la stessa
+        // via senza un modo di testare a schermo prima di consegnare il codice.
+
+        var timeoutRedraw = null;
+        function forzaRicalcoloTile() {
+            clearTimeout(timeoutRedraw);
+            timeoutRedraw = setTimeout(function () {
+                tileLayer._update();
+                // DEBUG TEMPORANEO (S45): conteggio al momento più affidabile di map.on('load')
+                // (one-shot, rischia di scattare subito su un viewport 1x1 prima del resize).
+                inviaDebug('tile ok=' + tileOk + ' errore=' + tileErrore);
+            }, 400);
+        }
+        // 'moveend' copre sia il trascinamento utente sia lo spostamento programmatico
+        // (panTo/setView/fitBounds).
         map.getContainer().addEventListener('mouseup', forzaRicalcoloTile);
         map.on('moveend', forzaRicalcoloTile);
         map.on('zoomend', forzaRicalcoloTile);
@@ -171,12 +211,9 @@
         }
 
         function invalidaDimensione() {
-            // invalidateSize() da solo ridisegna i tile mancanti solo se Leaflet decide
-            // internamente di generare 'moveend' (dipende dall'offset di ricentraggio
-            // calcolato, non garantito) — soprattutto al primo caricamento, quando il
-            // WebView è ancora ridotto a icona (1x1) prima che il vincolo di larghezza
-            // JavaFX si applichi. Non ci si affida a quel comportamento: redraw sempre
-            // esplicito, come per il resto della rete di sicurezza.
+            // invalidateSize() da solo genera 'moveend' (e quindi il redraw) solo a volte,
+            // non garantito — soprattutto al primo caricamento, quando il WebView è ancora
+            // 1x1 prima del vincolo di larghezza JavaFX. Redraw sempre esplicito.
             map.invalidateSize();
             forzaRicalcoloTile();
         }
@@ -186,11 +223,10 @@
             if (!m) {
                 return;
             }
-            // animate:false come le altre animazioni disattivate in cima al file: panTo di
-            // default anima il pan, e se si clicca un marker successivo mentre l'animazione
-            // sta ancora assestandosi il WebView (impreciso sul mouse) può interpretare il
-            // click come trascinamento — Leaflet lo scarta silenziosamente, click "morto"
-            // dal secondo marker in poi (S47).
+            // animate:false: con l'animazione di panTo attiva, un click su un marker
+            // successivo mentre la vista si sta ancora assestando veniva letto dal WebView
+            // come trascinamento e scartato da Leaflet — click "morto" dal secondo marker
+            // in poi (S47).
             map.panTo(m.getLatLng(), { animate: false });
             if (markerEvidenziato !== null && markerEvidenziato !== id && marker[markerEvidenziato]) {
                 var vecchioEl = marker[markerEvidenziato].getElement();
