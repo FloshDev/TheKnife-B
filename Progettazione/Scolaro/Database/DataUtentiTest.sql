@@ -6,11 +6,11 @@
 -- @author Scolaro Gabriele, 760123, VA
 -- ============================================================
 
-INSERT INTO Utenti (username, password, nome, cognome, email, ruolo) VALUES
-    ('cliente_test',  '$2a$12$LodzHvtBCDgAJmhfb6qg9e8RpVj9A0gqVQB2BUOSnegpBa4STsVGi', 'Mario',   'Rossi',   'cliente_test@theknife.it',  'CLIENTE'),
-    ('cliente_test2', '$2a$12$DFuILj7snFGmTWbdwGBJ2.w12U1uReXRn2G6YcYZ6rKygEud9pES.', 'Giulia',  'Verdi',   'cliente_test2@theknife.it', 'CLIENTE'),
-    ('gestore_test',  '$2a$12$7HRZ2Hh/RLl10qWm9e5c.umFR2BSW5JXFbp42wZt8hiwY4dwxuhAi', 'Luca',    'Bianchi', 'gestore_test@theknife.it',  'RISTORATORE'),
-    ('gestore_test2', '$2a$12$.Rg9hSTEHWr.PIbNM9Gzbe0AcJ7kxo/JhdAV7pEWxIb5cTlt.49MS', 'Anna',    'Neri',    'gestore_test2@theknife.it', 'RISTORATORE')
+INSERT INTO Utenti (username, password, nome, cognome, email, domicilio, ruolo) VALUES
+    ('cliente_test',  '$2a$12$LodzHvtBCDgAJmhfb6qg9e8RpVj9A0gqVQB2BUOSnegpBa4STsVGi', 'Mario',   'Rossi',   'cliente_test@theknife.it', 'Milano',  'CLIENTE'),
+    ('cliente_test2', '$2a$12$DFuILj7snFGmTWbdwGBJ2.w12U1uReXRn2G6YcYZ6rKygEud9pES.', 'Giulia',  'Verdi',   'cliente_test2@theknife.it', 'Milano', 'CLIENTE'),
+    ('gestore_test',  '$2a$12$7HRZ2Hh/RLl10qWm9e5c.umFR2BSW5JXFbp42wZt8hiwY4dwxuhAi', 'Luca',    'Bianchi', 'gestore_test@theknife.it', 'Milano',  'RISTORATORE'),
+    ('gestore_test2', '$2a$12$.Rg9hSTEHWr.PIbNM9Gzbe0AcJ7kxo/JhdAV7pEWxIb5cTlt.49MS', 'Anna',    'Neri',    'gestore_test2@theknife.it', 'Milano', 'RISTORATORE')
 ;
 
 -- La colonna password contiene l'hash BCrypt (costo 12) della
