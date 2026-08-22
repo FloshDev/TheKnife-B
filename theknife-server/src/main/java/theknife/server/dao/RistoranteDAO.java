@@ -73,10 +73,11 @@ public class RistoranteDAO {
      *
      * @param filtri i criteri di ricerca; quelli a <code>null</code>/vuoti
      *               vengono ignorati
+     * @param posizione la posizione geografica della citta' cercata, se disponibile
      * @return la lista dei ristoranti trovati, eventualmente vuota
      * @throws DataAccessException se l'accesso al database fallisce
      */
-    public List<RistoranteDTO> cerca (CercaRistorantiDTO filtri) throws DataAccessException {
+    public List<RistoranteDTO> cerca (CercaRistorantiDTO filtri, PosizioneDTO posizione) throws DataAccessException {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT r.id_ristorante, r.nome, r.nazione, r.citta, r.provincia, r.indirizzo, ")
            .append("r.latitudine, r.longitudine, r.fascia_prezzo, r.prenotazione_online, ")
@@ -93,7 +94,14 @@ public class RistoranteDAO {
             condizioni.add("r.nome ILIKE ?");
             parametri.add("%" + filtri.getNome() + "%");
         }
-        if (filtri.getCitta() != null && !filtri.getCitta().isBlank()) {
+        if (posizione != null) {
+            condizioni.add("r.latitudine IS NOT NULL AND r.longitudine IS NOT NULL");
+            condizioni.add("(6371 * acos(LEAST(1.0, cos(radians(?)) * cos(radians(r.latitudine)) * cos(radians(r.longitudine) - radians(?)) + sin(radians(?)) * sin(radians(r.latitudine))))) <= ?");
+            parametri.add(posizione.getLatitudine());
+            parametri.add(posizione.getLongitudine());
+            parametri.add(posizione.getLatitudine());
+            parametri.add(15.0); // raggio standard di 15 km per includere la città e i dintorni
+        } else if (filtri.getCitta() != null && !filtri.getCitta().isBlank()) {
             condizioni.add("r.citta ILIKE ?");
             parametri.add("%" + filtri.getCitta() + "%");
         }
