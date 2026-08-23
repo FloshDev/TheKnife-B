@@ -47,26 +47,32 @@ public class RistoranteService {
     /** Stima della posizione da indirizzo IP, per la localita' iniziale. */
     private final LocalizzazioneIpClient localizzazione;
 
+    /** Traduzione dei tipi di cucina tra italiano e inglese. */
+    private final CucinaTranslationService cucinaTranslation;
+
     /**
      * Costruisce il service sui tre DAO e sui due client esterni che gli
      * servono.
      *
-     * @param ristoranteDAO  accesso ai ristoranti
-     * @param preferitoDAO   accesso ai preferiti dei clienti
-     * @param servizioDAO    accesso ai servizi offerti dai ristoranti
-     * @param geocoding      traduzione indirizzo/coordinate (decisioni 17, 29)
-     * @param localizzazione stima della posizione da IP (decisione 18)
+     * @param ristoranteDAO     accesso ai ristoranti
+     * @param preferitoDAO      accesso ai preferiti dei clienti
+     * @param servizioDAO       accesso ai servizi offerti dai ristoranti
+     * @param geocoding         traduzione indirizzo/coordinate (decisioni 17, 29)
+     * @param localizzazione    stima della posizione da IP (decisione 18)
+     * @param cucinaTranslation traduzione tipi di cucina IT/EN (decisione 54)
      */
     public RistoranteService(RistoranteDAO ristoranteDAO,
                              PreferitoDAO preferitoDAO,
                              ServizioDAO servizioDAO,
                              GeocodingClient geocoding,
-                             LocalizzazioneIpClient localizzazione) {
+                             LocalizzazioneIpClient localizzazione,
+                             CucinaTranslationService cucinaTranslation) {
         this.ristoranteDAO = ristoranteDAO;
         this.preferitoDAO = preferitoDAO;
         this.servizioDAO = servizioDAO;
         this.geocoding = geocoding;
         this.localizzazione = localizzazione;
+        this.cucinaTranslation = cucinaTranslation;
     }
 
     /**
@@ -94,7 +100,25 @@ public class RistoranteService {
             }
         }
 
-        return ristoranteDAO.cerca(filtri, posizione);
+        // Traduce il tipo di cucina dall'italiano all'inglese per la ricerca nel DB
+        CercaRistorantiDTO filtriTradotti = filtri;
+        if (filtri.getTipoCucina() != null && !filtri.getTipoCucina().isBlank()) {
+            String cucinaTradotta = CucinaTranslationService.translateToEnglish(filtri.getTipoCucina());
+            if (!cucinaTradotta.equalsIgnoreCase(filtri.getTipoCucina())) {
+                // Crea una copia del DTO con il tipo di cucina tradotto
+                filtriTradotti = new CercaRistorantiDTO(
+                    filtri.getNome(),
+                    filtri.getCitta(),
+                    cucinaTradotta,
+                    filtri.isPrenotazioneOnline(),
+                    filtri.getFasciaPrezzo(),
+                    filtri.isConsegnaADomicilio(),
+                    filtri.getServizi()
+                );
+            }
+        }
+
+        return ristoranteDAO.cerca(filtriTradotti, posizione);
     }
 
     /**
