@@ -62,7 +62,7 @@ public class RecensioneDAO {
         String sql = "SELECT rec.id_recensione, rec.id_ristorante, rec.id_cliente, u.username, "
                    + "rec.titolo, rec.testo, rec.stelle, rec.data_pubblicazione, rec.risposta, rec.data_risposta "
                    + "FROM Recensioni rec "
-                   + "LEFT JOIN Utenti u ON rec.id_cliente = u.id "
+                   + "JOIN Utenti u ON rec.id_cliente = u.id "
                    + "WHERE rec.id_ristorante = ? "
                    + "ORDER BY rec.data_pubblicazione DESC";
         List<RecensioneDTO> recensioni = new ArrayList<>();
@@ -94,7 +94,7 @@ public class RecensioneDAO {
                    + "rec.titolo, rec.testo, rec.stelle, rec.data_pubblicazione, rec.risposta, rec.data_risposta "
                    + "FROM Recensioni rec "
                    + "JOIN RistorantiTheKnife r ON rec.id_ristorante = r.id_ristorante "
-                   + "LEFT JOIN Utenti u ON rec.id_cliente = u.id "
+                   + "JOIN Utenti u ON rec.id_cliente = u.id "
                    + "WHERE r.id_gestore = ? "
                    + "ORDER BY rec.data_pubblicazione DESC";
         List<RecensioneDTO> recensioni = new ArrayList<>();
@@ -124,7 +124,7 @@ public class RecensioneDAO {
         String sql = "SELECT rec.id_recensione, rec.id_ristorante, rec.id_cliente, u.username, "
                    + "rec.titolo, rec.testo, rec.stelle, rec.data_pubblicazione, rec.risposta, rec.data_risposta "
                    + "FROM Recensioni rec "
-                   + "LEFT JOIN Utenti u ON rec.id_cliente = u.id "
+                   + "JOIN Utenti u ON rec.id_cliente = u.id "
                    + "WHERE rec.id_recensione = ?";
         try (Connection conn = db.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
