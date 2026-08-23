@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Componente mappa riusabile (Leaflet dentro WebView, decisione 34). @author Barlera Marco, 760000, VA -->
-<?import javafx.scene.web.WebView?>
+<!-- Componente mappa riusabile, versione nativa JavaFX (pilota S45, solo Risultati). @author Barlera Marco, 760000, VA -->
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<WebView xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:id="webView" fx:controller="theknife.client.ui.MappaController"/>
+<StackPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:id="root" styleClass="mappa-riquadro" fx:controller="theknife.client.ui.MappaController">
+    <Pane fx:id="superficie"/>
+    <VBox fx:id="controlliZoom" spacing="2" StackPane.alignment="TOP_LEFT" style="-fx-padding: 10;">
+        <Button fx:id="zoomInBtn" text="+" onAction="#handleZoomIn" style="-fx-min-width: 26; -fx-font-weight: bold; -fx-text-fill: #FA812F; -fx-border-color: #f0d0a0; -fx-border-width: 2; -fx-background-color: white;"/>
+        <Button fx:id="zoomOutBtn" text="-" onAction="#handleZoomOut" style="-fx-min-width: 26; -fx-font-weight: bold; -fx-text-fill: #FA812F; -fx-border-color: #f0d0a0; -fx-border-width: 2; -fx-background-color: white;"/>
+    </VBox>
+    <Label fx:id="attribuzioneLabel" text="© OpenStreetMap" StackPane.alignment="BOTTOM_RIGHT" style="-fx-padding: 4 8; -fx-background-color: rgba(255,255,255,0.85); -fx-text-fill: #b07840; -fx-font-size: 10;"/>
+</StackPane>

@@ -15,10 +15,10 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
-import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import theknife.client.service.RistoranteService;
 import theknife.common.dto.IdRistoranteDTO;
@@ -43,7 +43,7 @@ public class PreferitiController {
     /** La riga con lista e mappa affiancate, per vincolarne la larghezza esattamente a metà ciascuna. */
     @FXML private HBox rigaContenuto;
     /** Il nodo radice del componente mappa incluso (fx:include), per agganciarne la larghezza. */
-    @FXML private WebView mappa;
+    @FXML private Region mappa;
     /** Controller del componente mappa incluso (fx:include, decisione 34). */
     @FXML private MappaController mappaController;
 
@@ -58,8 +58,7 @@ public class PreferitiController {
     @FXML private void initialize() {
         sidebarController.impostaAttivo(SidebarController.Voce.PREFERITI);
         // Vincolo esplicito a metà larghezza ciascuno, invece di affidarsi a hgrow +
-        // dimensioni preferite di ListView/WebView (che non coincidono mai da sole:
-        // WebView parte da un default enorme, ListView da uno piccolo).
+        // dimensioni preferite dei due nodi (che non coincidono mai da sole).
         DoubleBinding metaLarghezza = rigaContenuto.widthProperty().subtract(24).divide(2);
         preferitiListView.prefWidthProperty().bind(metaLarghezza);
         mappa.prefWidthProperty().bind(metaLarghezza);

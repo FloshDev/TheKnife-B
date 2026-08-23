@@ -18,10 +18,10 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
-import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import theknife.client.network.ServerConnection;
 import theknife.client.service.RecensioneService;
@@ -68,7 +68,7 @@ public class DettaglioController {
     /** Lista delle recensioni del ristorante. */
     @FXML private ListView<RecensioneDTO> recensioniListView;
     /** Il nodo radice del componente mappa incluso (fx:include), per impostarne l'altezza. */
-    @FXML private WebView mappa;
+    @FXML private Region mappa;
     /** Controller del componente mappa incluso (fx:include, decisione 34): un solo pin statico. */
     @FXML private MappaController mappaController;
 
@@ -119,9 +119,8 @@ public class DettaglioController {
     @FXML private void initialize() {
         Responsive.aggancia(card, 0.6, 480, 760);
         sidebarController.impostaAttivo(SidebarController.Voce.RICERCA);
-        // MappaController azzera l'altezza preferita del WebView (serve per la divisione a
-        // metà con una lista sulle altre schermate) — qui non c'è nessuna lista accanto,
-        // un pin singolo statico, gli si dà un'altezza fissa invece.
+        // Qui non c'è nessuna lista accanto da dividere a metà, un pin singolo statico:
+        // altezza fissa invece del vincolo di larghezza usato sulle altre schermate.
         mappa.setPrefHeight(240);
     }
 
