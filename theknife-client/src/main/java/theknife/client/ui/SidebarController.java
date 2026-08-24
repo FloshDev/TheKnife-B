@@ -29,7 +29,7 @@ import theknife.common.enums.Ruolo;
 public class SidebarController {
 
     /** Voce di navigazione, usata da {@link #impostaAttivo} per evidenziare la schermata corrente. */
-    public enum Voce { RICERCA, PREFERITI, DASHBOARD, GESTIONE_RECENSIONI, ASSOCIA, AGGIUNGI }
+    public enum Voce { RICERCA, PREFERITI, DASHBOARD, GESTIONE_RECENSIONI, ASSOCIA, AGGIUNGI, ABOUT }
 
     /** Link "Ricerca", porta a Home. */
     @FXML private Hyperlink ricercaItem;
@@ -43,6 +43,8 @@ public class SidebarController {
     @FXML private Hyperlink associaRistoranteItem;
     /** Link "Aggiungi ristorante", visibile solo da Ristoratore. */
     @FXML private Hyperlink aggiungiRistoranteItem;
+    /** Link "About", sempre visibile (nessun ruolo richiesto). */
+    @FXML private Hyperlink aboutItem;
 
     /** Blocco avatar/username/ruolo, visibile solo da utente autenticato. */
     @FXML private HBox userBlock;
@@ -111,6 +113,7 @@ public class SidebarController {
         gestisciRecensioniItem.getStyleClass().remove("attivo");
         associaRistoranteItem.getStyleClass().remove("attivo");
         aggiungiRistoranteItem.getStyleClass().remove("attivo");
+        aboutItem.getStyleClass().remove("attivo");
         switch (voce) {
             case RICERCA -> ricercaItem.getStyleClass().add("attivo");
             case PREFERITI -> preferitiItem.getStyleClass().add("attivo");
@@ -118,6 +121,7 @@ public class SidebarController {
             case GESTIONE_RECENSIONI -> gestisciRecensioniItem.getStyleClass().add("attivo");
             case ASSOCIA -> associaRistoranteItem.getStyleClass().add("attivo");
             case AGGIUNGI -> aggiungiRistoranteItem.getStyleClass().add("attivo");
+            case ABOUT -> aboutItem.getStyleClass().add("attivo");
         }
     }
 
@@ -179,6 +183,16 @@ public class SidebarController {
      */
     @FXML private void handleAggiungiRistorante(ActionEvent event) throws IOException {
         naviga(event, "/theknife/client/ui/aggiungiRistorante.fxml");
+    }
+
+    /**
+     * Naviga alla schermata About.
+     *
+     * @param event l'evento generato dal click sul link "About"
+     * @throws IOException se il caricamento della schermata fallisce
+     */
+    @FXML private void handleAbout(ActionEvent event) throws IOException {
+        naviga(event, "/theknife/client/ui/about.fxml");
     }
 
     /**

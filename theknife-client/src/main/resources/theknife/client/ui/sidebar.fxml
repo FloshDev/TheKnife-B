@@ -63,6 +63,16 @@
 
     <Region VBox.vgrow="ALWAYS"/>
 
+    <Hyperlink fx:id="aboutItem" text="About" onAction="#handleAbout" styleClass="sidebar-nav-item">
+        <graphic>
+            <Group scaleX="0.6" scaleY="0.6">
+                <Circle centerX="11" centerY="11" radius="9" fill="TRANSPARENT" stroke="#b07840" strokeWidth="2"/>
+                <Line startX="11" startY="10" endX="11" endY="16" stroke="#b07840" strokeWidth="2" strokeLineCap="ROUND"/>
+                <Circle centerX="11" centerY="6.5" radius="1.2" fill="#b07840"/>
+            </Group>
+        </graphic>
+    </Hyperlink>
+
     <Region styleClass="divisore"/>
 
     <HBox fx:id="userBlock" spacing="10" alignment="CENTER_LEFT">
