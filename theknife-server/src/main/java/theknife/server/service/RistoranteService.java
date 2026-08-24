@@ -9,6 +9,7 @@ import theknife.common.dto.IdRistoranteDTO;
 import theknife.common.dto.PosizioneDTO;
 import theknife.common.dto.RistoranteDTO;
 import theknife.common.dto.StatisticheRistoranteDTO;
+import theknife.common.util.CucinaTranslationService;
 import theknife.server.dao.PreferitoDAO;
 import theknife.server.dao.RistoranteDAO;
 import theknife.server.dao.ServizioDAO;
@@ -47,9 +48,6 @@ public class RistoranteService {
     /** Stima della posizione da indirizzo IP, per la localita' iniziale. */
     private final LocalizzazioneIpClient localizzazione;
 
-    /** Traduzione dei tipi di cucina tra italiano e inglese. */
-    private final CucinaTranslationService cucinaTranslation;
-
     /**
      * Costruisce il service sui tre DAO e sui due client esterni che gli
      * servono.
@@ -59,20 +57,17 @@ public class RistoranteService {
      * @param servizioDAO       accesso ai servizi offerti dai ristoranti
      * @param geocoding         traduzione indirizzo/coordinate (decisioni 17, 29)
      * @param localizzazione    stima della posizione da IP (decisione 18)
-     * @param cucinaTranslation traduzione tipi di cucina IT/EN (decisione 54)
      */
     public RistoranteService(RistoranteDAO ristoranteDAO,
                              PreferitoDAO preferitoDAO,
                              ServizioDAO servizioDAO,
                              GeocodingClient geocoding,
-                             LocalizzazioneIpClient localizzazione,
-                             CucinaTranslationService cucinaTranslation) {
+                             LocalizzazioneIpClient localizzazione) {
         this.ristoranteDAO = ristoranteDAO;
         this.preferitoDAO = preferitoDAO;
         this.servizioDAO = servizioDAO;
         this.geocoding = geocoding;
         this.localizzazione = localizzazione;
-        this.cucinaTranslation = cucinaTranslation;
     }
 
     /**

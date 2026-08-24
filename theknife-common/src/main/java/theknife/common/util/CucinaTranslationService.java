@@ -1,4 +1,4 @@
-package theknife.server.service;
+package theknife.common.util;
 
 import java.util.Collections;
 import java.util.HashMap;

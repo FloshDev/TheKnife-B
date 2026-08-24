@@ -19,7 +19,6 @@ import theknife.server.external.GeocodingClient;
 import theknife.server.external.LocalizzazioneIpClient;
 import theknife.server.handler.CommandDispatcher;
 import theknife.server.handler.CommandFactory;
-import theknife.server.service.CucinaTranslationService;
 import theknife.server.service.RecensioneService;
 import theknife.server.service.RistoranteService;
 import theknife.server.service.SessionManager;
@@ -113,12 +112,11 @@ public class Server {
 
         GeocodingClient geocoding = new GeocodingClient();
         LocalizzazioneIpClient localizzazione = new LocalizzazioneIpClient();
-        CucinaTranslationService cucinaTranslation = new CucinaTranslationService();
 
         SessionManager sessionManager = new SessionManager();
 
         RistoranteService ristoranteService = new RistoranteService(
-                ristoranteDAO, preferitoDAO, servizioDAO, geocoding, localizzazione, cucinaTranslation);
+                ristoranteDAO, preferitoDAO, servizioDAO, geocoding, localizzazione);
         RecensioneService recensioneService = new RecensioneService(recensioneDAO);
         UtenteService utenteService = new UtenteService(utenteDAO, sessionManager);
 
