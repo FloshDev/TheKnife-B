@@ -1322,7 +1322,7 @@
     </mxGraphModel>
   </diagram>
   <diagram name="CercaVicino" id="PHdvakZDUyddgKzc-OBb">
-    <mxGraphModel dx="686" dy="834" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1171" dy="1422" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="KnUpC5AWg8-cW47Foh3u-0" />
         <mxCell id="KnUpC5AWg8-cW47Foh3u-1" parent="KnUpC5AWg8-cW47Foh3u-0" />
@@ -1361,8 +1361,8 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="KnUpC5AWg8-cW47Foh3u-8" parent="KnUpC5AWg8-cW47Foh3u-1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};" value=":HomeController" vertex="1">
-          <mxGeometry height="1310" width="110" x="160" y="50" as="geometry" />
+        <mxCell id="KnUpC5AWg8-cW47Foh3u-8" parent="KnUpC5AWg8-cW47Foh3u-1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};" value=":VicinoAMeController" vertex="1">
+          <mxGeometry height="1310" width="140" x="160" y="50" as="geometry" />
         </mxCell>
         <mxCell id="KnUpC5AWg8-cW47Foh3u-9" edge="1" parent="KnUpC5AWg8-cW47Foh3u-1" source="KnUpC5AWg8-cW47Foh3u-11" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;curved=0;" target="KnUpC5AWg8-cW47Foh3u-16">
           <mxGeometry relative="1" as="geometry">
@@ -1864,7 +1864,7 @@
     </mxGraphModel>
   </diagram>
   <diagram name="RispondiRecensione" id="oExTaoTjmStuJyq6XkGh">
-    <mxGraphModel dx="889" dy="1422" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1421" dy="1727" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="ZGz_RzGgGO1LrcNu0mwm-0" />
         <mxCell id="ZGz_RzGgGO1LrcNu0mwm-1" parent="ZGz_RzGgGO1LrcNu0mwm-0" />
@@ -1906,7 +1906,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="NPI7mAYlUnkZ8fMZ-OF7-56" connectable="0" parent="NPI7mAYlUnkZ8fMZ-OF7-55" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="mostra Alert: risposta inviata / errore" vertex="1">
+        <mxCell id="NPI7mAYlUnkZ8fMZ-OF7-56" connectable="0" parent="NPI7mAYlUnkZ8fMZ-OF7-55" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="mostra Toast: risposta inviata / errore" vertex="1">
           <mxGeometry relative="1" x="0.4561" y="2" as="geometry">
             <mxPoint x="55" y="-12" as="offset" />
           </mxGeometry>
