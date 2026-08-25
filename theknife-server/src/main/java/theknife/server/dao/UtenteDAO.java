@@ -169,6 +169,28 @@ public class UtenteDAO {
     }
 
     /**
+     * Verifica se un'email e' gia' in uso.
+     *
+     * @param email l'email da controllare
+     * @return <code>true</code> se l'email esiste gia', altrimenti
+     *         <code>false</code>
+     * @throws DataAccessException se l'accesso al database fallisce
+     */
+    public boolean emailEsiste (String email) throws DataAccessException {
+        String sql = "SELECT 1 FROM Utenti WHERE email = ?";
+        try (Connection conn = db.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Errore nella verifica dell'email: "
+                + e.getMessage());
+        }
+    }
+
+    /**
      * Trasforma la riga corrente del result set in un {@link UtenteDTO}.
      *
      * @param rs il result set con la riga gia' posizionata
