@@ -54,6 +54,8 @@ public class DashboardController {
         mappa.prefWidthProperty().bind(metaLarghezza);
         Label nessunRistorante = new Label("Non gestisci ancora nessun ristorante.");
         nessunRistorante.getStyleClass().add("risultato-info");
+        nessunRistorante.setWrapText(true);
+        nessunRistorante.prefWidthProperty().bind(ristorantiGestiti.widthProperty().subtract(40));
         ristorantiGestiti.setPlaceholder(nessunRistorante);
         ristorantiGestiti.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
@@ -151,6 +153,7 @@ public class DashboardController {
             prezzoLabel.getStyleClass().add("badge-prezzo");
             infoLabel.getStyleClass().add("risultato-info");
             infoLabel.setWrapText(true);
+            infoLabel.prefWidthProperty().bind(ristorantiGestiti.widthProperty().subtract(60));
             ratingLabel.getStyleClass().add("badge-rating");
             azioniRow.setAlignment(Pos.CENTER_RIGHT);
 

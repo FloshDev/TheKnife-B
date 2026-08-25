@@ -29,12 +29,14 @@ import theknife.common.enums.Ruolo;
 public class SidebarController {
 
     /** Voce di navigazione, usata da {@link #impostaAttivo} per evidenziare la schermata corrente. */
-    public enum Voce { RICERCA, PREFERITI, DASHBOARD, GESTIONE_RECENSIONI, ASSOCIA, AGGIUNGI, ABOUT }
+    public enum Voce { RICERCA, PREFERITI, VICINO_A_ME, DASHBOARD, GESTIONE_RECENSIONI, ASSOCIA, AGGIUNGI, ABOUT }
 
     /** Link "Ricerca", porta a Home. */
     @FXML private Hyperlink ricercaItem;
     /** Link "Preferiti", visibile solo da Cliente. */
     @FXML private Hyperlink preferitiItem;
+    /** Link "Vicino a me", visibile solo da Cliente (RF-07: indirizzo registrato, guest non ce l'ha). */
+    @FXML private Hyperlink vicinoAMeItem;
     /** Link "Dashboard", visibile solo da Ristoratore. */
     @FXML private Hyperlink dashboardItem;
     /** Link "Gestisci recensioni", visibile solo da Ristoratore. */
@@ -63,6 +65,16 @@ public class SidebarController {
     private final AuthService authService = new AuthService();
 
     /**
+     * Sostituisce, se impostata, la navigazione standard del link "Ricerca"
+     * (va a Home vuota) — usata da Risultati per tornare indietro
+     * preservando i filtri dell'ultima ricerca invece di far ripartire il
+     * form vuoto.
+     */
+    private Runnable azioneRicerca;
+    /** Stesso scopo di {@link #azioneRicerca}, per il link "Vicino a me". */
+    private Runnable azioneVicinoAMe;
+
+    /**
      * Mostra solo le voci coerenti con ruolo/stato di autenticazione e
      * precompila avatar/username/ruolo se autenticato. "Ricerca" è nascosta
      * al Ristoratore (DIRETTIVE_PROGETTO.md assegna la ricerca ristoranti
@@ -78,6 +90,8 @@ public class SidebarController {
         ricercaItem.setManaged(!ristoratore);
         preferitiItem.setVisible(cliente);
         preferitiItem.setManaged(cliente);
+        vicinoAMeItem.setVisible(cliente);
+        vicinoAMeItem.setManaged(cliente);
         dashboardItem.setVisible(ristoratore);
         dashboardItem.setManaged(ristoratore);
         gestisciRecensioniItem.setVisible(ristoratore);
@@ -109,6 +123,7 @@ public class SidebarController {
     public void impostaAttivo(Voce voce) {
         ricercaItem.getStyleClass().remove("attivo");
         preferitiItem.getStyleClass().remove("attivo");
+        vicinoAMeItem.getStyleClass().remove("attivo");
         dashboardItem.getStyleClass().remove("attivo");
         gestisciRecensioniItem.getStyleClass().remove("attivo");
         associaRistoranteItem.getStyleClass().remove("attivo");
@@ -117,6 +132,7 @@ public class SidebarController {
         switch (voce) {
             case RICERCA -> ricercaItem.getStyleClass().add("attivo");
             case PREFERITI -> preferitiItem.getStyleClass().add("attivo");
+            case VICINO_A_ME -> vicinoAMeItem.getStyleClass().add("attivo");
             case DASHBOARD -> dashboardItem.getStyleClass().add("attivo");
             case GESTIONE_RECENSIONI -> gestisciRecensioniItem.getStyleClass().add("attivo");
             case ASSOCIA -> associaRistoranteItem.getStyleClass().add("attivo");
@@ -132,7 +148,21 @@ public class SidebarController {
      * @throws IOException se il caricamento della schermata fallisce
      */
     @FXML private void handleRicerca(ActionEvent event) throws IOException {
+        if (azioneRicerca != null) {
+            azioneRicerca.run();
+            return;
+        }
         naviga(event, "/theknife/client/ui/home.fxml");
+    }
+
+    /**
+     * Sostituisce l'azione standard del link "Ricerca" con una azione
+     * personalizzata, o la ripristina se {@code azione} è {@code null}.
+     *
+     * @param azione l'azione da eseguire al click, o {@code null} per il comportamento standard
+     */
+    public void impostaAzioneRicerca(Runnable azione) {
+        this.azioneRicerca = azione;
     }
 
     /**
@@ -143,6 +173,30 @@ public class SidebarController {
      */
     @FXML private void handlePreferiti(ActionEvent event) throws IOException {
         naviga(event, "/theknife/client/ui/preferiti.fxml");
+    }
+
+    /**
+     * Naviga alla schermata "Vicino a me".
+     *
+     * @param event l'evento generato dal click sul link "Vicino a me"
+     * @throws IOException se il caricamento della schermata fallisce
+     */
+    @FXML private void handleVicinoAMe(ActionEvent event) throws IOException {
+        if (azioneVicinoAMe != null) {
+            azioneVicinoAMe.run();
+            return;
+        }
+        naviga(event, "/theknife/client/ui/vicinoAme.fxml");
+    }
+
+    /**
+     * Sostituisce l'azione standard del link "Vicino a me" con una azione
+     * personalizzata, o la ripristina se {@code azione} è {@code null}.
+     *
+     * @param azione l'azione da eseguire al click, o {@code null} per il comportamento standard
+     */
+    public void impostaAzioneVicinoAMe(Runnable azione) {
+        this.azioneVicinoAMe = azione;
     }
 
     /**
@@ -206,7 +260,11 @@ public class SidebarController {
     }
 
     /**
-     * Invalida la sessione sul server e naviga alla schermata iniziale.
+     * Invalida la sessione sul server e naviga alla schermata iniziale. La
+     * sessione locale viene comunque azzerata (vedi {@code AuthService.logout})
+     * anche se il server non è raggiungibile, quindi si torna a Splash in
+     * entrambi i casi — altrimenti un server irraggiungibile lascerebbe
+     * l'utente bloccato, loggato localmente ma senza modo di uscire.
      *
      * @param event l'evento generato dal click sul link "Esci"
      */
@@ -216,15 +274,26 @@ public class SidebarController {
         () -> { authService.logout();
                 return null;
             },
-        _void -> {
-            try {
-                Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/splash.fxml"));
-                stage.getScene().setRoot(root);
-            } catch (IOException e) {
-                Toast.errore("Errore nel caricamento della schermata: " + e.getMessage());
-            }
+        _void -> vaiASplash(stage),
+        errore -> {
+            Toast.avviso("Sessione chiusa, ma il server non era raggiungibile.");
+            vaiASplash(stage);
         }
         );
+    }
+
+    /**
+     * Sostituisce la schermata corrente con Splash.
+     *
+     * @param stage la finestra su cui sostituire la schermata
+     */
+    private void vaiASplash(Stage stage) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/splash.fxml"));
+            stage.getScene().setRoot(root);
+        } catch (IOException e) {
+            Toast.errore("Errore nel caricamento della schermata: " + e.getMessage());
+        }
     }
 
     /**

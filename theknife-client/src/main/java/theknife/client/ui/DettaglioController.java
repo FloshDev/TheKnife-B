@@ -8,6 +8,7 @@ import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
@@ -16,8 +17,9 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -295,6 +297,8 @@ public class DettaglioController {
         this.idRistorante = idRistorante;
         Label nessunaRecensione = new Label("Nessuna recensione ancora. Scrivi la prima!");
         nessunaRecensione.getStyleClass().add("risultato-info");
+        nessunaRecensione.setWrapText(true);
+        nessunaRecensione.prefWidthProperty().bind(recensioniListView.widthProperty().subtract(40));
         recensioniListView.setPlaceholder(nessunaRecensione);
 
         UtenteDTO utenteCorrente = ServerConnection.getInstance().getUtenteCorrente();
@@ -308,7 +312,7 @@ public class DettaglioController {
             () -> ristoranteService.ottieniDettagli(new IdRistoranteDTO(idRistorante)),
             ristorante -> {
                 nomeLabel.setText(ristorante.getNome());
-                infoLabel.setText(ristorante.getTipoCucina() + " · " + "€".repeat(ristorante.getFasciaPrezzo()) + " · " + ristorante.getIndirizzo());
+                infoLabel.setText(CucinaFormatter.italiano(ristorante.getTipoCucina()) + " · " + "€".repeat(ristorante.getFasciaPrezzo()) + " · " + ristorante.getIndirizzo());
                 mediaStelleLabel.setText(String.format("★ %.1f · %d recensioni", ristorante.getMediaStelle(), ristorante.getNumeroRecensioni()));
                 prenotazioneTag.setVisible(ristorante.isPrenotazioneOnline());
                 prenotazioneTag.setManaged(ristorante.isPrenotazioneOnline());
@@ -375,17 +379,20 @@ public class DettaglioController {
         private final Label stelleLabel = new Label();
         private final Label testoLabel = new Label();
         private final Label rispostaLabel = new Label();
-        private final Button rispondiButton = new Button("Rispondi");
+        private final TextArea rispostaField = new TextArea();
+        private final Button inviaButton = new Button("Invia");
+        private final HBox invioRow = new HBox(inviaButton);
+        private final VBox rispondiRow = new VBox(6, rispostaField, invioRow);
         private final Button modificaButton = new Button("Modifica");
         private final Button eliminaButton = new Button("Elimina");
-        private final HBox azioniRow = new HBox(8, rispondiButton, modificaButton, eliminaButton);
-        private final VBox contenuto = new VBox(intestazione, titoloLabel, stelleLabel, testoLabel, rispostaLabel, azioniRow);
+        private final HBox azioniRow = new HBox(8, modificaButton, eliminaButton);
+        private final VBox contenuto = new VBox(intestazione, titoloLabel, stelleLabel, testoLabel, rispostaLabel, rispondiRow, azioniRow);
 
         {
             contenuto.getStyleClass().add("recensione-riga");
             usernameLabel.getStyleClass().add("risultato-nome");
             usernameLabel.setMaxWidth(Double.MAX_VALUE);
-            HBox.setHgrow(usernameLabel, javafx.scene.layout.Priority.ALWAYS);
+            HBox.setHgrow(usernameLabel, Priority.ALWAYS);
             dataLabel.getStyleClass().add("recensione-data");
             titoloLabel.getStyleClass().add("dettaglio-info");
             stelleLabel.getStyleClass().add("recensione-stelle");
@@ -393,11 +400,19 @@ public class DettaglioController {
             testoLabel.setWrapText(true);
             rispostaLabel.getStyleClass().add("recensione-risposta");
             rispostaLabel.setWrapText(true);
-            rispondiButton.getStyleClass().add("bottone-piccolo");
+            testoLabel.prefWidthProperty().bind(recensioniListView.widthProperty().subtract(60));
+            rispostaLabel.prefWidthProperty().bind(recensioniListView.widthProperty().subtract(60));
+            rispostaField.getStyleClass().add("area-risposta");
+            rispostaField.setPromptText("Scrivi una risposta…");
+            rispostaField.setWrapText(true);
+            rispostaField.setPrefRowCount(1);
+            Responsive.adattaAltezzaAlTesto(rispostaField);
+            invioRow.setAlignment(Pos.CENTER_RIGHT);
+            inviaButton.getStyleClass().add("bottone-piccolo");
             modificaButton.getStyleClass().add("bottone-piccolo");
             eliminaButton.getStyleClass().add("bottone-piccolo");
 
-            rispondiButton.setOnAction(e -> rispondi(getItem()));
+            inviaButton.setOnAction(e -> rispondi(getItem(), rispostaField.getText()));
             modificaButton.setOnAction(e -> modifica(getItem()));
             eliminaButton.setOnAction(e -> elimina(getItem()));
         }
@@ -424,14 +439,15 @@ public class DettaglioController {
                 UtenteDTO utente = ServerConnection.getInstance().getUtenteCorrente();
                 boolean isProprietario = utente != null && item.getIdUtente() == utente.getIdUtente();
                 boolean mostraRispondi = gestore && !haRisposta;
-                rispondiButton.setVisible(mostraRispondi);
-                rispondiButton.setManaged(mostraRispondi);
+                rispostaField.clear();
+                rispondiRow.setVisible(mostraRispondi);
+                rispondiRow.setManaged(mostraRispondi);
                 modificaButton.setVisible(isProprietario);
                 modificaButton.setManaged(isProprietario);
                 eliminaButton.setVisible(isProprietario);
                 eliminaButton.setManaged(isProprietario);
-                azioniRow.setVisible(mostraRispondi || isProprietario);
-                azioniRow.setManaged(mostraRispondi || isProprietario);
+                azioniRow.setVisible(isProprietario);
+                azioniRow.setManaged(isProprietario);
 
                 setGraphic(contenuto);
             }
@@ -439,22 +455,23 @@ public class DettaglioController {
     }
 
     /**
-     * Chiede il testo della risposta alla recensione indicata e la invia al
-     * server.
+     * Invia la risposta scritta a una recensione e ricarica l'elenco.
      *
      * @param recensione la recensione a cui rispondere
+     * @param risposta il testo della risposta
      */
-    private void rispondi(RecensioneDTO recensione) {
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setHeaderText("Scrivi la risposta");
-        Optional<String> risposta = dialog.showAndWait();
-        risposta.ifPresent(testo -> TaskRunner.run(
+    private void rispondi(RecensioneDTO recensione, String risposta) {
+        if (risposta == null || risposta.isBlank()) {
+            Toast.avviso("Scrivi una risposta prima di inviare.");
+            return;
+        }
+        TaskRunner.run(
             () -> {
-                recensioneService.rispondiRecensione(new RispondiRecensioneDTO(recensione.getIdRecensione(), testo));
+                recensioneService.rispondiRecensione(new RispondiRecensioneDTO(recensione.getIdRecensione(), risposta));
                 return null;
             },
             esito -> caricaRecensioni()
-        ));
+        );
     }
 
     /**

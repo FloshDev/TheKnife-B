@@ -26,7 +26,7 @@
             <StackPane>
                 <PasswordField fx:id="passwordField" promptText="••••••••" styleClass="campo-testo"/>
                 <TextField fx:id="passwordFieldVisibile" promptText="••••••••" styleClass="campo-testo" visible="false" managed="false"/>
-                <Button fx:id="passwordToggleButton" onAction="#handleTogglePassword" styleClass="toggle-password" StackPane.alignment="CENTER_RIGHT">
+                <Button fx:id="passwordToggleButton" onAction="#handleTogglePassword" styleClass="toggle-password" focusTraversable="false" StackPane.alignment="CENTER_RIGHT">
                     <graphic>
                         <StackPane>
                             <Ellipse radiusX="10" radiusY="6.5" fill="TRANSPARENT" stroke="#b07840" strokeWidth="1.8"/>

@@ -1,8 +1,6 @@
 package theknife.client.ui;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -53,10 +51,12 @@ public class AssociaRistoranteController {
     }
 
     /**
-     * Cerca i ristoranti per nome e mostra i risultati nella lista, esclusi
-     * quelli già gestiti da qualcuno (RF-17: ci si può associare solo a un
-     * ristorante senza gestore) — filtro cosmetico, il controllo vero resta
-     * lato server (`AssociaRistoranteCommand`), che rifiuta comunque se il
+     * Cerca i ristoranti per nome e mostra tutti i risultati, inclusi quelli
+     * già gestiti da qualcun altro (RF-17: ci si può associare solo a un
+     * ristorante senza gestore) — mostrati con un'etichetta invece del
+     * bottone "Associati", così è chiaro perché non sono selezionabili
+     * invece di farli sparire dalla lista. Il controllo vero resta lato
+     * server (`AssociaRistoranteCommand`), che rifiuta comunque se il
      * ristorante viene preso da un altro gestore nel frattempo. Solo il
      * nome è supportato: nessun comando del protocollo consente la ricerca
      * per indirizzo, benché fosse promessa dal placeholder originale del
@@ -68,13 +68,12 @@ public class AssociaRistoranteController {
         TaskRunner.run(
             () -> ristoranteService.cercaRistoranti(cercaRistoranteDTO),
             ristoranti -> {
-                Label nessunRisultato = new Label("Nessun ristorante libero trovato con questo nome.");
+                Label nessunRisultato = new Label("Nessun ristorante trovato con questo nome.");
                 nessunRisultato.getStyleClass().add("risultato-info");
+                nessunRisultato.setWrapText(true);
+                nessunRisultato.prefWidthProperty().bind(risultatiListView.widthProperty().subtract(40));
                 risultatiListView.setPlaceholder(nessunRisultato);
-                List<RistoranteDTO> liberi = ristoranti.stream()
-                    .filter(r -> r.getIdGestore() == null)
-                    .collect(Collectors.toList());
-                risultatiListView.getItems().setAll(liberi);
+                risultatiListView.getItems().setAll(ristoranti);
                 risultatiListView.setCellFactory(lv -> new RistoranteTrovatoCell());
             }
         );
@@ -118,14 +117,16 @@ public class AssociaRistoranteController {
 
     /**
      * Cella della lista risultati: card orizzontale con nome e città a
-     * sinistra, bottone "Associati" a destra.
+     * sinistra, bottone "Associati" a destra — sostituito da un'etichetta se
+     * il ristorante ha già un gestore.
      */
     private class RistoranteTrovatoCell extends ListCell<RistoranteDTO> {
         private final Label nomeLabel = new Label();
         private final Label infoLabel = new Label();
         private final VBox testi = new VBox(4, nomeLabel, infoLabel);
         private final Button associatiButton = new Button("Associati");
-        private final HBox contenuto = new HBox(12, testi, associatiButton);
+        private final Label giaGestitoLabel = new Label("Già gestito da un altro utente");
+        private final HBox contenuto = new HBox(12, testi, associatiButton, giaGestitoLabel);
 
         {
             contenuto.getStyleClass().add("risultato-card");
@@ -136,6 +137,7 @@ public class AssociaRistoranteController {
             infoLabel.setWrapText(true);
             associatiButton.getStyleClass().add("bottone-secondario");
             associatiButton.setOnAction(e -> associa(getItem()));
+            giaGestitoLabel.getStyleClass().add("tag-feature");
         }
 
         @Override
@@ -146,6 +148,13 @@ public class AssociaRistoranteController {
             } else {
                 nomeLabel.setText(item.getNome());
                 infoLabel.setText(item.getCitta());
+
+                boolean libero = item.getIdGestore() == null;
+                associatiButton.setVisible(libero);
+                associatiButton.setManaged(libero);
+                giaGestitoLabel.setVisible(!libero);
+                giaGestitoLabel.setManaged(!libero);
+
                 setGraphic(contenuto);
             }
         }

@@ -14,11 +14,8 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import theknife.client.network.ServerConnection;
 import theknife.client.service.RistoranteService;
 import theknife.common.dto.CercaRistorantiDTO;
-import theknife.common.dto.CercaVicinoDTO;
-import theknife.common.dto.UtenteDTO;
 
 /**
  * Controller della schermata Home (S04).
@@ -42,8 +39,6 @@ public class HomeController {
     @FXML private TextField tipoCucinaField;
     /** Bottoni della fascia di prezzo (1-4 simboli "€"), selezione singola opzionale. */
     @FXML private ToggleButton prezzo1Radio, prezzo2Radio, prezzo3Radio, prezzo4Radio;
-    /** Campo di testo per il raggio, in km, della ricerca "vicino a me". */
-    @FXML private TextField raggioKmField;
     /** Filtro per i ristoranti che offrono prenotazione online. */
     @FXML private CheckBox prenotazioneOnlineCheck;
     /** Filtro per i ristoranti che offrono consegna a domicilio. */
@@ -117,55 +112,6 @@ public class HomeController {
     }
 
     /**
-     * Cerca i ristoranti entro il raggio indicato dal luogo di riferimento
-     * (decisione 14): {@code cittaField} se compilato, altrimenti il
-     * domicilio dell'utente loggato. Se nessuno dei due è disponibile (guest
-     * senza aver scritto una città) mostra subito un avviso, invece di far
-     * arrivare l'errore dal server.
-     *
-     * @param event l'evento generato dal click sul bottone "Vicino a me"
-     */
-    @FXML private void handleVicinoAMe(ActionEvent event) {
-        double raggioKm;
-        try {
-            raggioKm = Double.parseDouble(raggioKmField.getText());
-        } catch (NumberFormatException e) {
-            Toast.errore("Raggio non valido, inserisci un numero valido");
-            return;
-        }
-
-        String luogo = cittaField.getText();
-        if (luogo == null || luogo.isBlank()) {
-            UtenteDTO utente = ServerConnection.getInstance().getUtenteCorrente();
-            luogo = utente != null ? utente.getDomicilio() : null;
-        }
-        if (luogo == null || luogo.isBlank()) {
-            Toast.errore("Inserisci una città o effettua il login");
-            return;
-        }
-
-        CercaVicinoDTO filtri = new CercaVicinoDTO(raggioKm, luogo);
-
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-        TaskRunner.run(
-        () -> ristoranteService.cercaVicino(filtri),
-        cercaResult -> {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/risultati.fxml"));
-                Parent root = loader.load();
-                RisultatiController controller = loader.getController();
-                controller.impostaRisultati(cercaResult);
-                controller.impostaFiltriVicino(filtri);
-                stage.getScene().setRoot(root);
-            } catch (IOException e) {
-                Toast.errore("Errore nel caricamento della schermata: " + e.getMessage());
-            }
-        }
-        );
-    }
-
-    /**
      * Pre-riempie il campo città con la località confermata (o rilevata)
      * nello Splash, così la ricerca parte già filtrata su quella zona invece
      * di richiedere di digitarla di nuovo.
@@ -198,20 +144,5 @@ public class HomeController {
         }
         prenotazioneOnlineCheck.setSelected(Boolean.TRUE.equals(filtri.isPrenotazioneOnline()));
         consegnaADomicilioCheck.setSelected(Boolean.TRUE.equals(filtri.isConsegnaADomicilio()));
-    }
-
-    /**
-     * Precompila città e raggio con i valori usati nell'ultima ricerca
-     * "Vicino a me", così tornando indietro da Risultati non si riparte da
-     * un form vuoto.
-     *
-     * @param filtri i filtri dell'ultima ricerca, o {@code null} (nessuna precompilazione)
-     */
-    public void precompilaVicino(CercaVicinoDTO filtri) {
-        if (filtri == null) {
-            return;
-        }
-        cittaField.setText(filtri.getLuogo());
-        raggioKmField.setText(String.valueOf(filtri.getRaggioKm()));
     }
 }

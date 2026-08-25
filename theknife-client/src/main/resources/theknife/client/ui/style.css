@@ -91,6 +91,50 @@
     -fx-border-color: #FAB12F;
 }
 
+.area-risposta {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-color: white;
+    -fx-background-radius: 0;
+    -fx-border-color: #f0d0a0;
+    -fx-border-radius: 0;
+    -fx-border-width: 2;
+}
+.area-risposta .content {
+    -fx-background-color: white;
+    -fx-background-radius: 0;
+    -fx-padding: 10 14 10 14;
+}
+.area-risposta .scroll-bar:vertical {
+    -fx-pref-width: 8;
+    -fx-background-color: transparent;
+}
+.area-risposta .scroll-bar:horizontal {
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
+    -fx-opacity: 0;
+}
+.area-risposta .scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+    -fx-opacity: 0;
+}
+.area-risposta .scroll-bar:vertical .thumb {
+    -fx-background-color: #f0d0a0;
+    -fx-background-radius: 6;
+}
+.area-risposta .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #FAB12F;
+}
+.area-risposta .scroll-bar:vertical .increment-button,
+.area-risposta .scroll-bar:vertical .decrement-button {
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
+    -fx-opacity: 0;
+}
+.area-risposta:focused {
+    -fx-border-color: #FAB12F;
+}
+
 .stella {
     -fx-font-size: 32px;
     -fx-text-fill: #f0d0a0;

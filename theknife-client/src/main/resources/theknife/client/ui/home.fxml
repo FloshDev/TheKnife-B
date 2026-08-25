@@ -13,7 +13,7 @@
 
     <VBox styleClass="main-content" HBox.hgrow="ALWAYS">
         <Label text="Cerca un ristorante" styleClass="page-title"/>
-        <Label text="Filtra per nome, città, cucina o cerca vicino a te." styleClass="page-subtitle"/>
+        <Label text="Filtra per nome, città, cucina o fascia di prezzo." styleClass="page-subtitle"/>
 
         <VBox styleClass="card, card-lista" fx:id="card">
 
@@ -52,18 +52,7 @@
                 <CheckBox fx:id="consegnaADomicilioCheck" text="Consegna a domicilio"/>
             </HBox>
 
-            <Region styleClass="divisore"/>
-
-            <Label text="&quot;Vicino a me&quot; usa solo città e raggio, ignora gli altri filtri qui sopra. &quot;Cerca&quot; usa i filtri sopra, ignora il raggio." styleClass="risultato-info" wrapText="true"/>
-
-            <HBox spacing="12" alignment="BOTTOM_LEFT">
-                <VBox spacing="6" HBox.hgrow="ALWAYS">
-                    <Label text="Raggio (km) — vicino a te" styleClass="campo-label"/>
-                    <TextField fx:id="raggioKmField" promptText="5" styleClass="campo-testo" maxWidth="Infinity"/>
-                </VBox>
-                <Button text="Vicino a me" onAction="#handleVicinoAMe" styleClass="bottone-secondario"/>
-                <Button text="Cerca →" onAction="#handleCerca" styleClass="bottone-primario" defaultButton="true"/>
-            </HBox>
+            <Button text="Cerca →" onAction="#handleCerca" styleClass="bottone-primario" defaultButton="true"/>
 
         </VBox>
     </VBox>

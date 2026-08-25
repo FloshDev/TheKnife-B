@@ -92,42 +92,70 @@ public class RisultatiController {
     }
 
     /**
-     * Naviga alla schermata Home.
+     * Naviga alla schermata da cui è arrivata la ricerca corrente — Home se
+     * da "Cerca", "Vicino a me" se da lì (schermate separate, S52).
      *
      * @param event l'evento generato dal click sul bottone "Torna indietro"
-     * @throws IOException se il caricamento della schermata fallisce
      */
-    @FXML private void handleTornaIndietro(ActionEvent event) throws IOException {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/home.fxml"));
-        Parent root = loader.load();
-        HomeController controller = loader.getController();
-        controller.precompilaFiltri(filtriRicerca);
-        controller.precompilaVicino(filtriVicino);
-        stage.getScene().setRoot(root);
+    @FXML private void handleTornaIndietro(ActionEvent event) {
+        tornaIndietro((Stage) ((Node) event.getSource()).getScene().getWindow());
+    }
+
+    /**
+     * Naviga alla schermata da cui è arrivata la ricerca corrente,
+     * ripassando i filtri usati così il form non riparte vuoto — stessa
+     * logica sia per il bottone dedicato che per i link "Ricerca"/"Vicino a
+     * me" della sidebar quando cliccati da qui (altrimenti resettavano i
+     * filtri, S62).
+     *
+     * @param stage la finestra su cui sostituire la schermata
+     */
+    private void tornaIndietro(Stage stage) {
+        try {
+            if (filtriVicino != null) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/vicinoAme.fxml"));
+                Parent root = loader.load();
+                VicinoAMeController controller = loader.getController();
+                controller.precompilaFiltri(filtriVicino);
+                stage.getScene().setRoot(root);
+            } else {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/home.fxml"));
+                Parent root = loader.load();
+                HomeController controller = loader.getController();
+                controller.precompilaFiltri(filtriRicerca);
+                stage.getScene().setRoot(root);
+            }
+        } catch (IOException e) {
+            Toast.errore("Errore nel caricamento della schermata: " + e.getMessage());
+        }
     }
 
     /**
      * Registra i filtri di "Cerca" usati per la lista corrente, per poterli
      * ripassare a Home se si torna indietro (invece di far ripartire il form
-     * vuoto).
+     * vuoto), ed evidenzia "Ricerca" nella sidebar.
      *
      * @param filtri i filtri usati, o {@code null}
      */
     public void impostaFiltriRicerca(CercaRistorantiDTO filtri) {
         this.filtriRicerca = filtri;
         this.filtriVicino = null;
+        sidebarController.impostaAttivo(SidebarController.Voce.RICERCA);
+        sidebarController.impostaAzioneRicerca(() -> tornaIndietro((Stage) risultatiListView.getScene().getWindow()));
     }
 
     /**
      * Registra i filtri di "Vicino a me" usati per la lista corrente, stesso
-     * scopo di {@link #impostaFiltriRicerca(CercaRistorantiDTO)}.
+     * scopo di {@link #impostaFiltriRicerca(CercaRistorantiDTO)}, ed
+     * evidenzia "Vicino a me" nella sidebar invece di "Ricerca".
      *
      * @param filtri i filtri usati, o {@code null}
      */
     public void impostaFiltriVicino(CercaVicinoDTO filtri) {
         this.filtriVicino = filtri;
         this.filtriRicerca = null;
+        sidebarController.impostaAttivo(SidebarController.Voce.VICINO_A_ME);
+        sidebarController.impostaAzioneVicinoAMe(() -> tornaIndietro((Stage) risultatiListView.getScene().getWindow()));
     }
 
     /**
@@ -144,6 +172,8 @@ public class RisultatiController {
     public void impostaRisultati(List<RistoranteDTO> risultati) {
         Label nessunRisultato = new Label("Nessun ristorante trovato con questi filtri.");
         nessunRisultato.getStyleClass().add("risultato-info");
+        nessunRisultato.setWrapText(true);
+        nessunRisultato.prefWidthProperty().bind(risultatiListView.widthProperty().subtract(40));
         risultatiListView.setPlaceholder(nessunRisultato);
 
         risultatiListView.getItems().setAll(risultati == null ? List.of() : risultati);
@@ -319,7 +349,7 @@ public class RisultatiController {
             } else {
                 nomeLabel.setText(item.getNome());
                 prezzoLabel.setText("€".repeat(item.getFasciaPrezzo()));
-                infoLabel.setText(item.getTipoCucina() + " · " + item.getCitta());
+                infoLabel.setText(CucinaFormatter.italiano(item.getTipoCucina()) + " · " + item.getCitta());
                 ratingLabel.setText(String.format("★%.1f · %d recensioni", item.getMediaStelle(), item.getNumeroRecensioni()));
 
                 prenotazioneTag.setVisible(item.isPrenotazioneOnline());

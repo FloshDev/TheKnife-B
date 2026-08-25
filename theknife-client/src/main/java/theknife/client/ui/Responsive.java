@@ -1,6 +1,7 @@
 package theknife.client.ui;
 
 import javafx.beans.binding.Bindings;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.Region;
 
 /**
@@ -34,6 +35,22 @@ public class Responsive {
                     Bindings.max(minimo, Bindings.min(massimo, nuova.widthProperty().multiply(frazione)))
                 );
             }
+        });
+    }
+
+    /**
+     * Aggancia il numero di righe visibili di un {@link TextArea} alla
+     * lunghezza del testo digitato, così il campo cresce in altezza invece
+     * di scorrere internamente su testi lunghi — stima approssimata (a capo
+     * espliciti + un rigo ogni ~50 caratteri), non un conteggio esatto delle
+     * righe effettivamente disegnate.
+     *
+     * @param area il campo la cui altezza va adattata al contenuto
+     */
+    public static void adattaAltezzaAlTesto(TextArea area) {
+        area.textProperty().addListener((obs, vecchio, nuovo) -> {
+            int righe = 1 + (int) nuovo.chars().filter(c -> c == '\n').count() + nuovo.length() / 50;
+            area.setPrefRowCount(Math.max(1, Math.min(6, righe)));
         });
     }
 }

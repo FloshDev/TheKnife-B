@@ -89,6 +89,8 @@ public class PreferitiController {
     private void caricaPreferiti() {
         Label nessunPreferito = new Label("Nessun preferito ancora. Vai alla ricerca e salva un ristorante che ti piace.");
         nessunPreferito.getStyleClass().add("risultato-info");
+        nessunPreferito.setWrapText(true);
+        nessunPreferito.prefWidthProperty().bind(preferitiListView.widthProperty().subtract(40));
         preferitiListView.setPlaceholder(nessunPreferito);
 
         TaskRunner.run(
@@ -241,7 +243,7 @@ public class PreferitiController {
             } else {
                 nomeLabel.setText(item.getNome());
                 prezzoLabel.setText("€".repeat(item.getFasciaPrezzo()));
-                infoLabel.setText(item.getTipoCucina() + " · " + item.getCitta());
+                infoLabel.setText(CucinaFormatter.italiano(item.getTipoCucina()) + " · " + item.getCitta());
                 ratingLabel.setText(String.format("★%.1f · %d recensioni", item.getMediaStelle(), item.getNumeroRecensioni()));
 
                 prenotazioneTag.setVisible(item.isPrenotazioneOnline());

@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -92,7 +93,14 @@ public class RegistrazioneController {
 
             @Override
             public LocalDate fromString(String testo) {
-                return (testo == null || testo.isBlank()) ? null : LocalDate.parse(testo, formato);
+                if (testo == null || testo.isBlank()) {
+                    return null;
+                }
+                try {
+                    return LocalDate.parse(testo, formato);
+                } catch (DateTimeParseException e) {
+                    return null;
+                }
             }
         });
         dataNascitaField.getEditor().setPromptText("gg/mm/aaaa");
@@ -169,6 +177,7 @@ public class RegistrazioneController {
                 try{
                     Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/login.fxml"));
                     stage.getScene().setRoot(root);
+                    Toast.successo("Account creato con successo, ora puoi accedere.");
                 }catch (IOException e) {
                     Toast.errore("Errore nel caricamento della schermata: " + e.getMessage());
                 }

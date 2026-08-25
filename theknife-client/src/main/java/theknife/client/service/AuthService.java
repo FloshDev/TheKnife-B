@@ -52,7 +52,10 @@ public class AuthService {
 
     public void logout() throws IOException, ClassNotFoundException {
         Request request = new Request(CommandType.ESCI, null, connection.getSessionToken());
-        connection.inviaRichiesta(request);
-        connection.clearSessionToken(); // Rimuove il token e l'utente loggato
+        try {
+            connection.inviaRichiesta(request);
+        } finally {
+            connection.clearSessionToken(); // Rimuove il token e l'utente loggato anche se il server non è raggiungibile
+        }
     }
 }

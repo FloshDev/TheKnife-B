@@ -8,11 +8,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -47,6 +48,8 @@ public class GestioneRecensioniController {
         sidebarController.impostaAttivo(SidebarController.Voce.GESTIONE_RECENSIONI);
         Label nessunaRecensione = new Label("Nessuna recensione da gestire per ora.");
         nessunaRecensione.getStyleClass().add("risultato-info");
+        nessunaRecensione.setWrapText(true);
+        nessunaRecensione.prefWidthProperty().bind(recensioniListView.widthProperty().subtract(40));
         recensioniListView.setPlaceholder(nessunaRecensione);
         caricaRecensioni();
     }
@@ -114,9 +117,10 @@ public class GestioneRecensioniController {
         private final Label stelleLabel = new Label();
         private final Label testoLabel = new Label();
         private final Label rispostaLabel = new Label();
-        private final TextField rispostaField = new TextField();
+        private final TextArea rispostaField = new TextArea();
         private final Button inviaButton = new Button("Invia");
-        private final HBox rispondiRow = new HBox(8, rispostaField, inviaButton);
+        private final HBox invioRow = new HBox(inviaButton);
+        private final VBox rispondiRow = new VBox(6, rispostaField, invioRow);
         private final VBox contenuto = new VBox(6,
             intestazione, ristoranteLabel, titoloLabel, stelleLabel, testoLabel, rispostaLabel, rispondiRow);
 
@@ -131,11 +135,16 @@ public class GestioneRecensioniController {
             stelleLabel.getStyleClass().add("recensione-stelle");
             testoLabel.getStyleClass().add("risultato-info");
             testoLabel.setWrapText(true);
+            testoLabel.prefWidthProperty().bind(recensioniListView.widthProperty().subtract(60));
             rispostaLabel.getStyleClass().add("recensione-risposta");
             rispostaLabel.setWrapText(true);
-            rispostaField.getStyleClass().add("campo-testo");
+            rispostaLabel.prefWidthProperty().bind(recensioniListView.widthProperty().subtract(60));
+            rispostaField.getStyleClass().add("area-risposta");
             rispostaField.setPromptText("Scrivi una risposta…");
-            HBox.setHgrow(rispostaField, Priority.ALWAYS);
+            rispostaField.setWrapText(true);
+            rispostaField.setPrefRowCount(1);
+            Responsive.adattaAltezzaAlTesto(rispostaField);
+            invioRow.setAlignment(Pos.CENTER_RIGHT);
             inviaButton.getStyleClass().add("bottone-piccolo");
             inviaButton.setOnAction(e -> rispondi(getItem(), rispostaField.getText()));
         }
