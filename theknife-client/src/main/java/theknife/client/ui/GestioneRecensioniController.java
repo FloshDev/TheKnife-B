@@ -157,7 +157,7 @@ public class GestioneRecensioniController {
             } else {
                 usernameLabel.setText(item.getUsername());
                 dataLabel.setText(item.getDataPubblicazione() == null ? "" : item.getDataPubblicazione().format(FORMATO_DATA));
-                ristoranteLabel.setText("Ristorante #" + item.getIdRistorante());
+                ristoranteLabel.setText(item.getNomeRistorante());
                 titoloLabel.setText(item.getTitolo());
                 stelleLabel.setText("★".repeat(item.getStelle()) + "☆".repeat(5 - item.getStelle()));
                 testoLabel.setText(item.getTesto());

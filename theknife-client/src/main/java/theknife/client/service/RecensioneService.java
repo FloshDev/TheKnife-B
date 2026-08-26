@@ -124,6 +124,27 @@ public class RecensioneService {
     }
 
     /**
+     * Recupera tutte le recensioni scritte dal Cliente autenticato, su
+     * qualsiasi ristorante.
+     *
+     * @return la lista delle recensioni
+     * @throws ErroreServerException se il server rifiuta la richiesta
+     * @throws IOException se la connessione al server fallisce
+     * @throws ClassNotFoundException se la deserializzazione della risposta fallisce
+     */
+    @SuppressWarnings("unchecked")
+    public List<RecensioneDTO> leggiRecensioniCliente() throws IOException, ClassNotFoundException {
+        Request request = new Request(CommandType.LEGGI_RECENSIONI_PERSONALI, null, connection.getSessionToken());
+        Response response = connection.inviaRichiesta(request);
+
+        if (response.getStatus() == ResponseStatus.SUCCESSO) {
+            return (List<RecensioneDTO>) response.getPayload();
+        } else {
+            throw new ErroreServerException(response.getMessaggio());
+        }
+    }
+
+    /**
      * Pubblica la risposta del Ristoratore autenticato a una recensione di un
      * proprio ristorante.
      *

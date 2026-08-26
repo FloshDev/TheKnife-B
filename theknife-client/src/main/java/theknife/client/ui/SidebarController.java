@@ -21,20 +21,23 @@ import theknife.common.enums.Ruolo;
  * schermata del client. Mostra solo le voci coerenti con ruolo e stato di
  * autenticazione (decisione 24: filtro cosmetico, non sostituisce il
  * controllo lato server) e centralizza la navigazione globale
- * (Ricerca/Preferiti/Dashboard/Gestisci recensioni/Associati/Aggiungi
- * ristorante/Accedi/Esci), prima duplicata in ogni controller di schermata.
+ * (Ricerca/Preferiti/Le mie recensioni/Dashboard/Gestisci recensioni/
+ * Associati/Aggiungi ristorante/Accedi/Esci), prima duplicata in ogni
+ * controller di schermata.
  *
  * @author Barlera Marco, 760000, VA
  */
 public class SidebarController {
 
     /** Voce di navigazione, usata da {@link #impostaAttivo} per evidenziare la schermata corrente. */
-    public enum Voce { RICERCA, PREFERITI, VICINO_A_ME, DASHBOARD, GESTIONE_RECENSIONI, ASSOCIA, AGGIUNGI, ABOUT }
+    public enum Voce { RICERCA, PREFERITI, VICINO_A_ME, MIE_RECENSIONI, DASHBOARD, GESTIONE_RECENSIONI, ASSOCIA, AGGIUNGI, ABOUT }
 
     /** Link "Ricerca", porta a Home. */
     @FXML private Hyperlink ricercaItem;
     /** Link "Preferiti", visibile solo da Cliente. */
     @FXML private Hyperlink preferitiItem;
+    /** Link "Le mie recensioni", visibile solo da Cliente. */
+    @FXML private Hyperlink mieRecensioniItem;
     /** Link "Vicino a me", visibile solo da Cliente (RF-07: indirizzo registrato, guest non ce l'ha). */
     @FXML private Hyperlink vicinoAMeItem;
     /** Link "Dashboard", visibile solo da Ristoratore. */
@@ -90,6 +93,8 @@ public class SidebarController {
         ricercaItem.setManaged(!ristoratore);
         preferitiItem.setVisible(cliente);
         preferitiItem.setManaged(cliente);
+        mieRecensioniItem.setVisible(cliente);
+        mieRecensioniItem.setManaged(cliente);
         vicinoAMeItem.setVisible(cliente);
         vicinoAMeItem.setManaged(cliente);
         dashboardItem.setVisible(ristoratore);
@@ -123,6 +128,7 @@ public class SidebarController {
     public void impostaAttivo(Voce voce) {
         ricercaItem.getStyleClass().remove("attivo");
         preferitiItem.getStyleClass().remove("attivo");
+        mieRecensioniItem.getStyleClass().remove("attivo");
         vicinoAMeItem.getStyleClass().remove("attivo");
         dashboardItem.getStyleClass().remove("attivo");
         gestisciRecensioniItem.getStyleClass().remove("attivo");
@@ -132,6 +138,7 @@ public class SidebarController {
         switch (voce) {
             case RICERCA -> ricercaItem.getStyleClass().add("attivo");
             case PREFERITI -> preferitiItem.getStyleClass().add("attivo");
+            case MIE_RECENSIONI -> mieRecensioniItem.getStyleClass().add("attivo");
             case VICINO_A_ME -> vicinoAMeItem.getStyleClass().add("attivo");
             case DASHBOARD -> dashboardItem.getStyleClass().add("attivo");
             case GESTIONE_RECENSIONI -> gestisciRecensioniItem.getStyleClass().add("attivo");
@@ -173,6 +180,16 @@ public class SidebarController {
      */
     @FXML private void handlePreferiti(ActionEvent event) throws IOException {
         naviga(event, "/theknife/client/ui/preferiti.fxml");
+    }
+
+    /**
+     * Naviga alla schermata delle recensioni scritte dall'utente.
+     *
+     * @param event l'evento generato dal click sul link "Le mie recensioni"
+     * @throws IOException se il caricamento della schermata fallisce
+     */
+    @FXML private void handleMieRecensioni(ActionEvent event) throws IOException {
+        naviga(event, "/theknife/client/ui/mieRecensioni.fxml");
     }
 
     /**

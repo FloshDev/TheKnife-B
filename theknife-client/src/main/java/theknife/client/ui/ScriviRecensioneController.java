@@ -60,7 +60,13 @@ public class ScriviRecensioneController {
      * {@code null} se si sta scrivendone una nuova.
      */
     private RecensioneDTO recensioneDaModificare;
-    
+    /**
+     * Se la schermata è stata aperta da "Le mie recensioni"
+     * ({@link #impostaProvenienzaMieRecensioni()}): al successo o
+     * all'annullamento si torna lì invece che al Dettaglio del ristorante.
+     */
+    private boolean daMieRecensioni = false;
+
     /**
      * Costruisce le 5 stelle cliccabili in {@code stelleBox}: ognuna, al
      * click, imposta {@link #stelleSelezionate} al proprio voto (1-5) e
@@ -84,7 +90,8 @@ public class ScriviRecensioneController {
     /**
      * Pubblica la recensione scritta nel form, o salva le modifiche se la
      * schermata è in modalità modifica ({@link #recensioneDaModificare}), e
-     * al successo torna al dettaglio del ristorante con i dati aggiornati.
+     * al successo torna alla schermata di provenienza (Dettaglio del
+     * ristorante, o "Le mie recensioni" se {@link #daMieRecensioni}).
      *
      * @param event l'evento generato dal click sul bottone "Pubblica"/"Salva modifiche"
      */
@@ -103,25 +110,25 @@ public class ScriviRecensioneController {
             ModificaRecensioneDTO modificaDTO = new ModificaRecensioneDTO(recensioneDaModificare.getIdRecensione(), titolo, testo, stelle);
             TaskRunner.run(
                 () -> { recensioneService.modificaRecensione(modificaDTO); return null; },
-                esito -> tornaAlDettaglio(stage)
+                esito -> tornaIndietro(stage)
             );
         } else {
             AggiungiRecensioneDTO recensioneDTO = new AggiungiRecensioneDTO(idRistorante, titolo, testo, stelle);
             TaskRunner.run(
                 () -> { recensioneService.aggiungiRecensione(recensioneDTO); return null; },
-                esito -> tornaAlDettaglio(stage)
+                esito -> tornaIndietro(stage)
             );
         }
     }
 
     /**
-     * Torna al dettaglio del ristorante senza salvare.
+     * Torna alla schermata di provenienza senza salvare.
      *
      * @param event l'evento generato dal click sul bottone "Annulla"
      */
     @FXML public void handleAnnulla(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        tornaAlDettaglio(stage);
+        tornaIndietro(stage);
     }
 
     /**
@@ -144,6 +151,17 @@ public class ScriviRecensioneController {
      */
     public void impostaRisultatiPrecedenti(List<RistoranteDTO> risultati) {
         this.risultatiPrecedenti = risultati;
+    }
+
+    /**
+     * Segnala che si arriva a questa schermata da "Le mie recensioni":
+     * {@link #tornaIndietro(Stage)} tornerà lì invece che al Dettaglio del
+     * ristorante. Da chiamare dopo {@link #impostaRistorante(long, String)},
+     * che resta invariato — id e nome del ristorante servono comunque per
+     * pubblicare/modificare la recensione.
+     */
+    public void impostaProvenienzaMieRecensioni() {
+        this.daMieRecensioni = true;
     }
 
     /**
@@ -180,21 +198,27 @@ public class ScriviRecensioneController {
     }
 
     /**
-     * Torna al dettaglio del ristorante corrente, con la lista di
-     * provenienza ripassata come sempre (S40) — usato sia da
-     * {@link #handlePubblica(ActionEvent)} al successo sia da
+     * Torna alla schermata di provenienza — "Le mie recensioni" se
+     * {@link #daMieRecensioni}, altrimenti il Dettaglio del ristorante
+     * corrente con la lista di provenienza ripassata come sempre (S40).
+     * Usato sia da {@link #handlePubblica(ActionEvent)} al successo sia da
      * {@link #handleAnnulla(ActionEvent)}.
      *
      * @param stage la finestra su cui sostituire la schermata
      */
-    private void tornaAlDettaglio(Stage stage) {
+    private void tornaIndietro(Stage stage) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/dettaglio.fxml"));
-            Parent root = loader.load();
-            DettaglioController controller = loader.getController();
-            controller.impostaRistorante(idRistorante);
-            controller.impostaRisultatiPrecedenti(risultatiPrecedenti);
-            stage.getScene().setRoot(root);
+            if (daMieRecensioni) {
+                Parent root = FXMLLoader.load(getClass().getResource("/theknife/client/ui/mieRecensioni.fxml"));
+                stage.getScene().setRoot(root);
+            } else {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/theknife/client/ui/dettaglio.fxml"));
+                Parent root = loader.load();
+                DettaglioController controller = loader.getController();
+                controller.impostaRistorante(idRistorante);
+                controller.impostaRisultatiPrecedenti(risultatiPrecedenti);
+                stage.getScene().setRoot(root);
+            }
         } catch (IOException e) {
             Toast.errore("Errore nel caricamento della schermata: " + e.getMessage());
         }
