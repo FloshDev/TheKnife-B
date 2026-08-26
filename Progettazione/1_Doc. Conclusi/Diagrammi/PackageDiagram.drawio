@@ -1,6 +1,6 @@
 <mxfile host="Electron">
   <diagram name="Pagina-1" id="79TgPv2xkoOMiRV84OeB">
-    <mxGraphModel dx="1301" dy="576" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2071" dy="1511" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -27,19 +27,19 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="THepSJo4S6g2k2SYHYS7-1" parent="1" style="shape=module;align=left;spacingLeft=20;align=center;verticalAlign=top;whiteSpace=wrap;html=1;" value="&lt;div style=&quot;line-height: 30%;&quot;&gt;&lt;p&gt;«module»&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;theknife-common&amp;nbsp;&amp;nbsp;&lt;/span&gt;&lt;/p&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="230" width="690" x="-30" y="20" as="geometry" />
+          <mxGeometry height="230" width="910" x="-140" y="20" as="geometry" />
         </mxCell>
         <mxCell id="THepSJo4S6g2k2SYHYS7-2" parent="1" style="shape=folder;fontStyle=1;spacingTop=10;tabWidth=40;tabHeight=14;tabPosition=left;html=1;whiteSpace=wrap;" value="&lt;p&gt;common.dto&amp;nbsp;&lt;/p&gt;&lt;p class=&quot;p1&quot; style=&quot;margin: 0px; font: 400 11px Menlo; text-align: start;&quot;&gt;&lt;span class=&quot;s1&quot; style=&quot;font-variant-ligatures: no-common-ligatures;&quot;&gt;LoginDTO&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;p1&quot; style=&quot;margin: 0px; font: 400 11px Menlo; text-align: start;&quot;&gt;&lt;span style=&quot;font-variant-ligatures: no-common-ligatures; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;CercaRistorantiDTO&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;p1&quot; style=&quot;margin: 0px; font: 400 11px Menlo; text-align: start;&quot;&gt;&lt;span class=&quot;s1&quot; style=&quot;font-variant-ligatures: no-common-ligatures;&quot;&gt;AggiungiRistoranteDTO&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;p1&quot; style=&quot;margin: 0px; font: 400 11px Menlo; text-align: start;&quot;&gt;&lt;span class=&quot;s1&quot; style=&quot;font-variant-ligatures: no-common-ligatures;&quot;&gt;UtenteDTO&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;p1&quot; style=&quot;margin: 0px; font: 400 11px Menlo; text-align: start;&quot;&gt;&lt;span class=&quot;s1&quot; style=&quot;font-variant-ligatures: no-common-ligatures;&quot;&gt;RistoranteDTO&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;p1&quot; style=&quot;margin: 0px; font: 400 11px Menlo; text-align: start;&quot;&gt;&lt;span class=&quot;s1&quot; style=&quot;font-variant-ligatures: no-common-ligatures;&quot;&gt;RecensioneDTO&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;p1&quot; style=&quot;margin: 0px; font: 400 11px Menlo; text-align: start;&quot;&gt;&lt;span class=&quot;s1&quot; style=&quot;font-variant-ligatures: no-common-ligatures;&quot;&gt;ServizioDTO&lt;/span&gt;&lt;/p&gt;" vertex="1">
-          <mxGeometry height="150" width="150" x="486.25" y="80" as="geometry" />
+          <mxGeometry height="150" width="150" x="578.75" y="85" as="geometry" />
         </mxCell>
         <mxCell id="THepSJo4S6g2k2SYHYS7-4" parent="1" style="shape=folder;fontStyle=1;spacingTop=10;tabWidth=40;tabHeight=14;tabPosition=left;html=1;whiteSpace=wrap;" value="&lt;p&gt;common.protocol&lt;/p&gt;&lt;p class=&quot;p1&quot; style=&quot;margin: 0px; font: 400 11px Menlo; text-align: start;&quot;&gt;&lt;span class=&quot;s1&quot; style=&quot;font-variant-ligatures: no-common-ligatures;&quot;&gt;Request&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;p1&quot; style=&quot;margin: 0px; font: 400 11px Menlo; text-align: start;&quot;&gt;&lt;span style=&quot;font-variant-ligatures: no-common-ligatures; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Response&lt;/span&gt;&lt;/p&gt;" vertex="1">
-          <mxGeometry height="100" width="130" x="167.5" y="85" as="geometry" />
+          <mxGeometry height="100" width="130" x="270" y="85" as="geometry" />
         </mxCell>
         <mxCell id="THepSJo4S6g2k2SYHYS7-5" parent="1" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
-          <mxGeometry height="8" width="115" x="175" y="133" as="geometry" />
+          <mxGeometry height="8" width="115" x="277.5" y="133" as="geometry" />
         </mxCell>
         <mxCell id="THepSJo4S6g2k2SYHYS7-8" parent="1" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
-          <mxGeometry height="8" width="137.5" x="492.5" y="120" as="geometry" />
+          <mxGeometry height="8" width="137.5" x="583.75" y="125" as="geometry" />
         </mxCell>
         <mxCell id="THepSJo4S6g2k2SYHYS7-20" parent="1" style="shape=module;align=center;spacingLeft=20;align=center;verticalAlign=top;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fontColor=default;fontStyle=0;" value="&lt;p class=&quot;p1&quot; style=&quot;margin: 0px; font-style: normal; font-variant: normal; font-size-adjust: none; font-language-override: normal; font-kerning: auto; font-optical-sizing: auto; font-feature-settings: normal; font-variation-settings: normal; font-stretch: normal; font-size: 11px; line-height: normal; font-family: Menlo;&quot;&gt;&lt;span class=&quot;s1&quot; style=&quot;font-variant-ligatures: no-common-ligatures;&quot;&gt;«module»&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;p1&quot; style=&quot;margin: 0px; font-style: normal; font-variant: normal; font-size-adjust: none; font-language-override: normal; font-kerning: auto; font-optical-sizing: auto; font-feature-settings: normal; font-variation-settings: normal; font-stretch: normal; font-size: 11px; line-height: normal; font-family: Menlo;&quot;&gt;&lt;span class=&quot;s1&quot; style=&quot;font-variant-ligatures: no-common-ligatures;&quot;&gt;theknife-client&lt;/span&gt;&lt;/p&gt;" vertex="1">
           <mxGeometry height="560" width="260" x="430" y="340" as="geometry" />
@@ -122,10 +122,10 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="uRileIr_-oVlo0DqdCoJ-1" parent="1" style="shape=folder;fontStyle=1;spacingTop=10;tabWidth=40;tabHeight=14;tabPosition=left;html=1;whiteSpace=wrap;" value="&lt;p&gt;common.enums&lt;/p&gt;&lt;p class=&quot;p1&quot; style=&quot;margin: 0px; font-style: normal; font-variant-caps: normal; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-alternates: normal; font-size-adjust: none; font-language-override: normal; font-kerning: auto; font-optical-sizing: auto; font-feature-settings: normal; font-variation-settings: normal; font-variant-position: normal; font-variant-emoji: normal; font-weight: 400; font-stretch: normal; font-size: 11px; line-height: normal; font-family: Menlo; text-align: start;&quot;&gt;&lt;span style=&quot;font-variant-ligatures: no-common-ligatures;&quot;&gt;Ruolo&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;p1&quot; style=&quot;margin: 0px; font: 400 11px Menlo; text-align: start;&quot;&gt;&lt;span style=&quot;font-variant-ligatures: no-common-ligatures; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;ResponseStatus&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;p1&quot; style=&quot;margin: 0px; font: 400 11px Menlo; text-align: start;&quot;&gt;&lt;span style=&quot;font-variant-ligatures: no-common-ligatures; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;CommandType&lt;/span&gt;&lt;/p&gt;" vertex="1">
-          <mxGeometry height="110" width="130" x="330" y="85" as="geometry" />
+          <mxGeometry height="110" width="130" x="422.5" y="85" as="geometry" />
         </mxCell>
         <mxCell id="uRileIr_-oVlo0DqdCoJ-2" parent="1" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
-          <mxGeometry height="8" width="115" x="337.5" y="133" as="geometry" />
+          <mxGeometry height="8" width="115" x="430" y="133" as="geometry" />
         </mxCell>
         <mxCell id="uRileIr_-oVlo0DqdCoJ-9" parent="1" style="shape=module;align=center;spacingLeft=20;align=center;verticalAlign=top;whiteSpace=wrap;html=1;" value="&lt;div&gt;&lt;p class=&quot;p1&quot; style=&quot;margin: 0px; font-style: normal; font-variant: normal; font-size-adjust: none; font-language-override: normal; font-kerning: auto; font-optical-sizing: auto; font-feature-settings: normal; font-variation-settings: normal; font-stretch: normal; font-family: Menlo;&quot;&gt;&lt;span class=&quot;s1&quot; style=&quot;font-variant-ligatures: no-common-ligatures;&quot;&gt;&lt;font&gt;«module»&lt;/font&gt;&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;p1&quot; style=&quot;margin: 0px; font-style: normal; font-variant: normal; font-size-adjust: none; font-language-override: normal; font-kerning: auto; font-optical-sizing: auto; font-feature-settings: normal; font-variation-settings: normal; font-stretch: normal; font-family: Menlo;&quot;&gt;&lt;span style=&quot;font-variant-ligatures: no-common-ligatures; background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;font&gt;theknife-server&lt;/font&gt;&lt;/span&gt;&lt;/p&gt;&lt;/div&gt;" vertex="1">
           <mxGeometry height="910" width="470" x="-120" y="340" as="geometry" />
@@ -285,10 +285,16 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="BahPimkRA3hv8ycfsDs_-1" parent="1" style="shape=folder;fontStyle=1;spacingTop=10;tabWidth=40;tabHeight=14;tabPosition=left;html=1;whiteSpace=wrap;" value="&lt;p&gt;common.config&lt;/p&gt;&lt;p class=&quot;p1&quot; style=&quot;margin: 0px; font-style: normal; font-variant-caps: normal; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-alternates: normal; font-size-adjust: none; font-language-override: normal; font-kerning: auto; font-optical-sizing: auto; font-feature-settings: normal; font-variation-settings: normal; font-variant-position: normal; font-variant-emoji: normal; font-weight: 400; font-stretch: normal; font-size: 11px; line-height: normal; font-family: Menlo; text-align: start;&quot;&gt;&lt;span style=&quot;font-variant-ligatures: no-common-ligatures;&quot;&gt;ConfigurazioneServer&lt;/span&gt;&lt;/p&gt;" vertex="1">
-          <mxGeometry height="100" width="150" x="-10" y="85" as="geometry" />
+          <mxGeometry height="100" width="150" x="-100" y="85" as="geometry" />
         </mxCell>
         <mxCell id="BahPimkRA3hv8ycfsDs_-2" parent="1" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
-          <mxGeometry height="8" width="115" x="7.5" y="141" as="geometry" />
+          <mxGeometry height="8" width="130" x="-90" y="141" as="geometry" />
+        </mxCell>
+        <mxCell id="AiVRmcjRis2YS3U5wqRD-1" parent="1" style="shape=folder;fontStyle=1;spacingTop=10;tabWidth=40;tabHeight=14;tabPosition=left;html=1;whiteSpace=wrap;" value="&lt;p&gt;common.util&lt;/p&gt;&lt;p class=&quot;p1&quot; style=&quot;margin: 0px; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-alternates: normal; font-size-adjust: none; font-language-override: normal; font-kerning: auto; font-optical-sizing: auto; font-feature-settings: normal; font-variation-settings: normal; font-variant-position: normal; font-variant-emoji: normal; font-stretch: normal; line-height: normal; text-align: start;&quot;&gt;&lt;font face=&quot;Menlo&quot;&gt;&lt;span style=&quot;font-size: 11px; font-variant-ligatures: no-common-ligatures; font-weight: 400;&quot;&gt;CucinaTranslationService&lt;/span&gt;&lt;/font&gt;&lt;/p&gt;" vertex="1">
+          <mxGeometry height="100" width="168" x="73.75" y="85" as="geometry" />
+        </mxCell>
+        <mxCell id="AiVRmcjRis2YS3U5wqRD-2" parent="1" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="130" x="88" y="141" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
