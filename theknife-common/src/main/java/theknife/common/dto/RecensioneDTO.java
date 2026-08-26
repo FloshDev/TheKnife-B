@@ -285,7 +285,7 @@ public class RecensioneDTO implements java.io.Serializable {
     @Override
     public String toString() {
         return "RecensioneDTO [idRecensione=" + idRecensione + ", idRistorante=" + idRistorante + 
-            " + nomeRistorante=" + nomeRistorante + ", titolo=" + titolo + ", testo=" + testo + 
+            ", nomeRistorante=" + nomeRistorante + ", titolo=" + titolo + ", testo=" + testo + 
             ", stelle=" + stelle + ", idUtente=" + idUtente + ", username=" + username + 
             ", dataPubblicazione=" + dataPubblicazione + 
             ", risposta=" + risposta + ", dataRisposta=" + dataRisposta + "]";
