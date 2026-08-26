@@ -1,6 +1,6 @@
 <mxfile host="Electron">
   <diagram name="Pagina-1" id="wZJmhYk8uLluMd4YErlL">
-    <mxGraphModel dx="756" dy="1209" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="995" dy="1209" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -66,16 +66,16 @@
           <mxGeometry height="12" width="200" y="348" as="geometry" />
         </mxCell>
         <mxCell id="utFUN8LKcKqXrLOXiglS-9" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="RecensioneDTO" vertex="1">
-          <mxGeometry height="224" width="230" x="15" y="140" as="geometry" />
+          <mxGeometry height="254" width="230" x="15" y="140" as="geometry" />
         </mxCell>
-        <mxCell id="utFUN8LKcKqXrLOXiglS-10" parent="utFUN8LKcKqXrLOXiglS-9" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- idRecensione: long&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- idUtente: long&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- username: String&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- idRistorante: long&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- titolo: String&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- stelle: int&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- testo: String&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- dataPubblicazione:&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; font-size: 13px;&quot;&gt;LocalDateTime&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- risposta: String&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- dataRisposta:&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; font-size: 13px;&quot;&gt;LocalDateTime&lt;/span&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="164" width="230" y="26" as="geometry" />
+        <mxCell id="utFUN8LKcKqXrLOXiglS-10" parent="utFUN8LKcKqXrLOXiglS-9" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- idRecensione: long&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- idUtente: long&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- username: String&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- idRistorante: long&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- nomeRistorante: String&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- titolo: String&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- stelle: int&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- testo: String&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- dataPubblicazione:&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; font-size: 13px;&quot;&gt;LocalDateTime&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- risposta: String&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;- dataRisposta:&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; font-size: 13px;&quot;&gt;LocalDateTime&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="194" width="230" y="26" as="geometry" />
         </mxCell>
         <mxCell id="utFUN8LKcKqXrLOXiglS-11" parent="utFUN8LKcKqXrLOXiglS-9" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
-          <mxGeometry height="8" width="230" y="190" as="geometry" />
+          <mxGeometry height="8" width="230" y="220" as="geometry" />
         </mxCell>
         <mxCell id="utFUN8LKcKqXrLOXiglS-12" parent="utFUN8LKcKqXrLOXiglS-9" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&amp;nbsp;&amp;nbsp;" vertex="1">
-          <mxGeometry height="26" width="230" y="198" as="geometry" />
+          <mxGeometry height="26" width="230" y="228" as="geometry" />
         </mxCell>
         <mxCell id="utFUN8LKcKqXrLOXiglS-13" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="ServizioDTO" vertex="1">
           <mxGeometry height="104" width="160" x="400" y="80" as="geometry" />
@@ -96,7 +96,9 @@
           <mxGeometry x="130" y="428" as="geometry" />
         </mxCell>
         <mxCell id="utFUN8LKcKqXrLOXiglS-26" connectable="0" parent="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;0..*&lt;/font&gt;" vertex="1">
-          <mxGeometry x="150" y="380" as="geometry" />
+          <mxGeometry x="150" y="394" as="geometry">
+            <mxPoint x="7" y="13" as="offset" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="utFUN8LKcKqXrLOXiglS-27" connectable="0" parent="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;1&lt;/font&gt;" vertex="1">
           <mxGeometry x="120" y="490" as="geometry">
