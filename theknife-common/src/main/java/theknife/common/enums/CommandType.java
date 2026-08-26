@@ -76,6 +76,11 @@ MODIFICA_RECENSIONE,
  */
 ELIMINA_RECENSIONE,
 
+/**
+ * Costante che rappresenta il comando corrispondente alla richiesta di lettura delle recensioni personali scritte.
+ */
+LEGGI_RECENSIONI_PERSONALI,
+
 // RISTORATORE 
 /**
  * Costante che rappresenta il comando corrispondente alla richiesta di aggiunta di un ristorante.

@@ -25,6 +25,11 @@ public class RecensioneDTO implements java.io.Serializable {
     private long idRistorante;
     
 /**
+ * Il nome del ristorante per cui è stata scritta la recensione.
+ */
+    private String nomeRistorante;
+
+/**
  * Il titolo della recensione.
  */
     private String titolo;
@@ -69,6 +74,7 @@ public class RecensioneDTO implements java.io.Serializable {
  * Crea il DTO per la recensione con i dati specificati.
  * @param idRecensione l'identificatore della recensione
  * @param idRistorante l'identificatore del ristorante
+ * @param nomeRistorante il nome del ristorante
  * @param titolo il titolo della recensione
  * @param testo il testo della recensione
  * @param stelle il numero di stelle della recensione
@@ -78,11 +84,12 @@ public class RecensioneDTO implements java.io.Serializable {
  * @param risposta la risposta alla recensione
  * @param dataRisposta la data e l'ora di pubblicazione della risposta alla recensione
  */
-    public RecensioneDTO(long idRecensione, long idRistorante, String titolo, String testo, 
-            int stelle, long idUtente, String username, LocalDateTime dataPubblicazione, String risposta, 
-            LocalDateTime dataRisposta) {
+    public RecensioneDTO(long idRecensione, long idRistorante, String nomeRistorante, String titolo, 
+            String testo, int stelle, long idUtente, String username, LocalDateTime dataPubblicazione, 
+            String risposta, LocalDateTime dataRisposta) {
         this.idRecensione = idRecensione;
         this.idRistorante = idRistorante;
+        this.nomeRistorante = nomeRistorante;
         this.titolo = titolo;
         this.testo = testo;
         this.stelle = stelle;
@@ -124,6 +131,22 @@ public class RecensioneDTO implements java.io.Serializable {
  */
     public void setIdRistorante(long idRistorante) {
         this.idRistorante = idRistorante;
+    }
+
+/**
+ * Restituisce il nome del ristorante per cui è stata scritta la recensione.
+ * @return il nome del ristorante
+ */
+    public String getNomeRistorante() {
+        return nomeRistorante;
+    }
+
+/**
+ * Imposta il nome del ristorante per cui è stata scritta la recensione.
+ * @param nomeRistorante il nome del ristorante
+ */
+    public void setNomeRistorante(String nomeRistorante) {
+        this.nomeRistorante = nomeRistorante;
     }
 
 /**
@@ -262,8 +285,8 @@ public class RecensioneDTO implements java.io.Serializable {
     @Override
     public String toString() {
         return "RecensioneDTO [idRecensione=" + idRecensione + ", idRistorante=" + idRistorante + 
-            ", titolo=" + titolo + ", testo=" + testo + ", stelle=" + stelle + 
-            ", idUtente=" + idUtente + ", username=" + username + 
+            " + nomeRistorante=" + nomeRistorante + ", titolo=" + titolo + ", testo=" + testo + 
+            ", stelle=" + stelle + ", idUtente=" + idUtente + ", username=" + username + 
             ", dataPubblicazione=" + dataPubblicazione + 
             ", risposta=" + risposta + ", dataRisposta=" + dataRisposta + "]";
     }
