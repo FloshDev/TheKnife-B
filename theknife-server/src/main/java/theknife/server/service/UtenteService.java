@@ -124,7 +124,7 @@ public class UtenteService {
      *
      * @param dati i dati anagrafici e le credenziali del nuovo utente
      * @throws ValidationException  se un campo obbligatorio manca
-     * @throws ApplicationException se lo username e' gia' in uso
+     * @throws ApplicationException se lo username o l'email sono gia' in uso
      * @throws DataAccessException  se l'accesso al database fallisce
      */
     public void registra (RegistrazioneDTO dati)
@@ -134,6 +134,10 @@ public class UtenteService {
 
         if (utenteDAO.usernameEsiste(dati.getUsername())) {
             throw new ApplicationException("Username gia' in uso.");
+        }
+
+        if (utenteDAO.emailEsiste(dati.getEmail())) {
+            throw new ApplicationException("Email gia' in uso.");
         }
 
         String hash = BCrypt.withDefaults()
