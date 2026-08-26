@@ -1,4 +1,6 @@
 package theknife.client.app;
+import java.awt.Taskbar;
+import java.awt.Toolkit;
 import java.io.IOException;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import theknife.client.network.ServerConnection;
 import theknife.client.ui.Toast;
@@ -64,7 +67,26 @@ public class ClientApplication extends Application {
         scene.getStylesheets().add(getClass().getResource("/theknife/client/ui/style.css").toExternalForm());
         stage.setScene(scene);
         stage.setTitle("TheKnife");
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/theknife/client/ui/logoIco.png")));
+        impostaIconaDock();
         stage.show();
+    }
+
+    /**
+     * Imposta l'icona nel Dock (macOS) o nella taskbar (Windows/Linux con
+     * supporto AWT). {@link Stage#getIcons()} imposta solo l'icona della
+     * finestra: su macOS l'icona del Dock è un concetto separato, gestito da
+     * AWT tramite {@link Taskbar}, non da JavaFX.
+     */
+    private void impostaIconaDock() {
+        if (Taskbar.isTaskbarSupported()) {
+            Taskbar taskbar = Taskbar.getTaskbar();
+            if (taskbar.isSupported(Taskbar.Feature.ICON_IMAGE)) {
+                java.awt.Image icona = Toolkit.getDefaultToolkit()
+                    .getImage(getClass().getResource("/theknife/client/ui/logoIco.png"));
+                taskbar.setIconImage(icona);
+            }
+        }
     }
 
     /**
