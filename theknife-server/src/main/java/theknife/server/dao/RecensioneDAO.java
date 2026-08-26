@@ -90,7 +90,7 @@ public class RecensioneDAO {
      * @throws DataAccessException se l'accesso al database fallisce
      */
     public List<RecensioneDTO> trovaPerGestore (long idGestore) throws DataAccessException {
-        String sql = "SELECT rec.id_recensione, rec.id_ristorante, rec.id_cliente, u.username, "
+        String sql = "SELECT rec.id_recensione, rec.id_ristorante, r.nome, rec.id_cliente, u.username, "
                    + "rec.titolo, rec.testo, rec.stelle, rec.data_pubblicazione, rec.risposta, rec.data_risposta "
                    + "FROM Recensioni rec "
                    + "JOIN RistorantiTheKnife r ON rec.id_ristorante = r.id_ristorante "
@@ -109,6 +109,39 @@ public class RecensioneDAO {
             return recensioni;
         } catch (SQLException e) {
             throw new DataAccessException("Errore nel recupero delle recensioni del gestore: "
+                + e.getMessage());
+        }
+    }
+
+    /**
+     * Recupera tutte le recensioni scritte da un cliente, su qualsiasi
+     * ristorante, dalla piu' recente. Alimenta la schermata
+     * "Le mie recensioni".
+     *
+     * @param idCliente l'identificativo del cliente autore delle recensioni
+     * @return la lista delle recensioni, eventualmente vuota
+     * @throws DataAccessException se l'accesso al database fallisce
+     */
+    public List<RecensioneDTO> trovaPerCliente (long idCliente) throws DataAccessException {
+        String sql = "SELECT rec.id_recensione, rec.id_ristorante, r.nome, rec.id_cliente, u.username, "
+                   + "rec.titolo, rec.testo, rec.stelle, rec.data_pubblicazione, rec.risposta, rec.data_risposta "
+                   + "FROM Recensioni rec "
+                   + "JOIN RistorantiTheKnife r ON rec.id_ristorante = r.id_ristorante "
+                   + "JOIN Utenti u ON rec.id_cliente = u.id "
+                   + "WHERE rec.id_cliente = ? "
+                   + "ORDER BY rec.data_pubblicazione DESC";
+        List<RecensioneDTO> recensioni = new ArrayList<>();
+        try (Connection conn = db.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, idCliente);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    recensioni.add(toDTO(rs));
+                }
+            }
+            return recensioni;
+        } catch (SQLException e) {
+            throw new DataAccessException("Errore nel recupero delle recensioni del cliente: "
                 + e.getMessage());
         }
     }
@@ -262,6 +295,7 @@ public class RecensioneDAO {
         return new RecensioneDTO(
             rs.getLong("id_recensione"),
             rs.getLong("id_ristorante"),
+            rs.getString("nome"),
             rs.getString("titolo"),
             rs.getString("testo"),
             rs.getInt("stelle"),
