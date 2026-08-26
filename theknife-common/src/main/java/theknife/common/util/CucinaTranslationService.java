@@ -116,6 +116,12 @@ public class CucinaTranslationService {
         itToEn.put("bielorussa", "belarusian");
         itToEn.put("birmana", "burmese");
         itToEn.put("boliviana", "bolivian");
+        itToEn.put("bosniaca", "bosnian");
+        itToEn.put("brasiliana", "brazilian");
+        itToEn.put("bretone", "breton");
+        itToEn.put("britannica", "british");
+        itToEn.put("bulgara", "bulgarian");
+        itToEn.put("cajun", "cajun");
         itToEn.put("cambogiana", "cambodian");
         itToEn.put("canadese", "canadian");
         itToEn.put("cantinese", "cantonese");
@@ -207,6 +213,8 @@ public class CucinaTranslationService {
         itToEn.put("maltese", "maltese");
         itToEn.put("marocchina", "moroccan");
         itToEn.put("messicana", "mexican");
+        itToEn.put("moldava", "moldovan");
+        itToEn.put("mongola", "mongolian");
         itToEn.put("mozambicana", "mozambican");
         itToEn.put("nepalese", "nepalese");
         itToEn.put("neozelandese", "new zealand");
