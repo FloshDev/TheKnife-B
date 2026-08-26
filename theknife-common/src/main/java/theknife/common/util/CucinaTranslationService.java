@@ -7,7 +7,7 @@ import java.util.Map;
 
 /**
  * Servizio per la traduzione dei tipi di cucina tra italiano e inglese.
- * Utilizza una mappa statica di 278 termini per la traduzione bidirezionale.
+ * Utilizza una mappa statica di 380 termini per la traduzione bidirezionale.
  * 
  * @author Scolaro Gabriele, 760123, VA
  */
