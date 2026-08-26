@@ -78,6 +78,20 @@ public class RecensioneService {
     }
 
     /**
+     * Restituisce tutte le recensioni scritte da un cliente, di qualsiasi
+     * ristorante. E' la lista dietro la schermata "Le mie recensioni".
+     *
+     * @param idCliente l'identificativo del cliente autore delle recensioni
+     * @return le recensioni trovate, eventualmente in lista vuota
+     * @throws DataAccessException se l'accesso al database fallisce
+     */
+    public List<RecensioneDTO> recensioniCliente (long idCliente)
+            throws DataAccessException {
+
+        return recensioneDAO.trovaPerCliente(idCliente);
+    }
+
+    /**
      * Rilegge una singola recensione. E' il metodo con cui i Command risalgono
      * all'autore di una recensione per verificarne la proprieta'.
      *

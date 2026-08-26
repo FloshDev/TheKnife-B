@@ -138,7 +138,8 @@ public class CommandDispatcher {
                  VEDI_PREFERITI,
                  AGGIUNGI_RECENSIONE,
                  MODIFICA_RECENSIONE,
-                 ELIMINA_RECENSIONE                  -> Requisito.CLIENTE;
+                 ELIMINA_RECENSIONE,
+                 LEGGI_RECENSIONI_PERSONALI          -> Requisito.CLIENTE;
 
             case AGGIUNGI_RISTORANTE,
                  ELIMINA_RISTORANTE,

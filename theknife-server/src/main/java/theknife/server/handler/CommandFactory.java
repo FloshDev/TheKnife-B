@@ -16,6 +16,7 @@ import theknife.server.command.EliminaRecensioneCommand;
 import theknife.server.command.EliminaRistoranteCommand;
 import theknife.server.command.EsciCommand;
 import theknife.server.command.LeggiRecensioniCommand;
+import theknife.server.command.LeggiRecensioniPersonaliCommand;
 import theknife.server.command.LeggiRecensioniRistorantiGestitiCommand;
 import theknife.server.command.ModificaRecensioneCommand;
 import theknife.server.command.OttieniDettagliRistoranteCommand;
@@ -93,6 +94,8 @@ public class CommandFactory {
                 new ModificaRecensioneCommand(recensioneService));
         comandi.put(CommandType.ELIMINA_RECENSIONE,
                 new EliminaRecensioneCommand(recensioneService));
+        comandi.put(CommandType.LEGGI_RECENSIONI_PERSONALI,
+                new LeggiRecensioniPersonaliCommand(recensioneService));
 
         // Riservati al Ristoratore
         comandi.put(CommandType.AGGIUNGI_RISTORANTE,
