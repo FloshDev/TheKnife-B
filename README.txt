@@ -30,18 +30,25 @@ strumento di build oltre a Maven.
 
 CREAZIONE DEL DATABASE
 
-Script SQL in Progettazione/1_Doc. Conclusi/Database/, da eseguire in quest'ordine
-su PostgreSQL con un utente amministrativo (es. postgres):
+Dalla radice del progetto, con Maven:
 
-    1. Role.sql     — crea il ruolo applicativo tk_app e il database dbTK
-    2. Schema.sql    — crea le tabelle
-    3. Data.sql      — popola RistorantiTheKnife con il dataset del docente
+    mvn initialize -Pdb-setup -Ddb.admin.user=<utente admin PostgreSQL> -Ddb.admin.password=<password>
 
-Esempio con psql:
+  Crea il ruolo applicativo tk_app, il database dbTK, le tabelle e carica il
+  dataset del docente (script Role.sql, Schema.sql, Data.sql in
+  Progettazione/Database/, eseguiti in quest'ordine).
+  L'utente admin deve poter creare ruoli e database (es. l'utente "postgres"
+  creato dall'installazione di PostgreSQL). Se PostgreSQL non è in ascolto su
+  localhost:5432, aggiungere -Ddb.host=<host> e/o -Ddb.port=<porta>.
 
-    psql -U postgres -f Role.sql
-    psql -U postgres -d dbTK -f Schema.sql
-    psql -U postgres -d dbTK -f Data.sql
+  In alternativa, gli stessi tre script sono eseguibili a mano con psql, nello
+  stesso ordine (Role.sql su un database di manutenzione come "postgres",
+  Schema.sql e Data.sql sul database dbTK appena creato).
+
+  Gli script facoltativi di dati di prova (DataUtentiTest.sql,
+  AbilitaServiziTest.sql, PopolaRecensioniTest.sql, sempre nella stessa
+  cartella) restano da eseguire a mano con psql, dopo Data.sql, nell'ordine
+  indicato nel Manuale Tecnico.
 
 
 ESECUZIONE

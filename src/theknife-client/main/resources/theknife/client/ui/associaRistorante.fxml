@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Layout della schermata associa ristorante (S11). @author Barlera Marco, 760000, VA -->
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<HBox styleClass="app-shell" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.AssociaRistoranteController">
+
+    <fx:include fx:id="sidebar" source="sidebar.fxml"/>
+
+    <VBox styleClass="main-content, main-content-riempi" HBox.hgrow="ALWAYS">
+        <HBox spacing="8" alignment="CENTER_LEFT">
+            <Button fx:id="annullaButton" onAction="#handleAnnulla" styleClass="bottone-icona">
+                <graphic>
+                    <SVGPath content="M15 18l-6-6 6-6" fill="TRANSPARENT" stroke="#FA812F" strokeWidth="2.5" strokeLineCap="ROUND" strokeLineJoin="ROUND"/>
+                </graphic>
+            </Button>
+            <Label text="Associati a un ristorante esistente" styleClass="page-title"/>
+        </HBox>
+        <Label text="Cerca per nome il ristorante di cui vuoi diventare gestore." styleClass="page-subtitle"/>
+
+        <HBox spacing="12" alignment="CENTER_LEFT">
+            <TextField fx:id="ricercaField" promptText="Cerca per nome…" styleClass="campo-testo" HBox.hgrow="ALWAYS"/>
+            <Button fx:id="cercaButton" text="Cerca" onAction="#handleCerca" styleClass="bottone-secondario" defaultButton="true"/>
+        </HBox>
+
+        <ListView fx:id="risultatiListView" styleClass="lista-risultati, lista-risultati-card" VBox.vgrow="ALWAYS"/>
+    </VBox>
+
+</HBox>

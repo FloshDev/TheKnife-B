@@ -23,4 +23,27 @@
         <module>theknife-client</module>
     </modules>
 
+    <build>
+        <plugins>
+            <!-- JavaDoc di tutti e 3 i moduli in un'unica documentazione HTML.
+                 Non è legata a nessuna phase (non gira automaticamente con
+                 "mvn package"): si genera esplicitamente con
+                     mvn javadoc:aggregate
+                 Output in target/site/apidocs, da qui copiato in doc/javadoc/
+                 per la consegna (DIRETTIVE_PROGETTO.md §4). -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.6.3</version>
+                <configuration>
+                    <show>private</show>
+                    <doclint>all</doclint>
+                    <windowtitle>TheKnife — JavaDoc</windowtitle>
+                    <doctitle>TheKnife — Documentazione JavaDoc</doctitle>
+                    <failOnError>true</failOnError>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>

@@ -23,8 +23,25 @@ Thumbs.db
 target/
 dependency-reduced-pom.xml
 
-# Guida personale server (Ciani)
-Progettazione/Ciani/GUIDA_SERVER.md
+# Note di lavoro personali dei membri del team e verbali di sessione:
+# materiale interno, non fa parte della consegna (doc/ contiene solo i
+# deliverable reali: manuali, diagrammi, script DB in "1_Doc. Conclusi")
+Progettazione/Barlera/
+Progettazione/Ciani/
+Progettazione/Gasparini/
+Progettazione/Scolaro/
+Sessioni/
+
+# Export PNG dei diagrammi: solo i PDF vanno in consegna (doc/), i PNG
+# restano in locale
+Progettazione/Diagrammi/PNG/
+
+# File di supporto allo sviluppo, non richiesti dalla consegna
+# (DIRETTIVE_PROGETTO.md §4: autori.txt, doc/, bin/, src/, lib/, pom.xml,
+# README.txt nella cartella radice — questi non ne fanno parte)
+README.md
+CLAUDE.md
+DIRETTIVE_PROGETTO.md
 
 # IDE
 .idea/

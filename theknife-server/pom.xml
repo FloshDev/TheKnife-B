@@ -72,4 +72,86 @@
         </plugins>
     </build>
 
+    <profiles>
+        <!-- Crea il database dbTK (ruolo tk_app, tabelle, dataset di prova).
+             Non gira sulla build normale (compile/package): si lancia a parte,
+             dalla radice del progetto, con
+                 mvn initialize -Pdb-setup -Ddb.admin.user=<utente admin Postgres> -Ddb.admin.password=<password>
+             Facoltativi: -Ddb.host (default localhost), -Ddb.port (default 5432).
+             L'utente admin deve poter creare ruoli e database (es. l'utente
+             "postgres" creato dall'installazione di PostgreSQL). Gli script
+             DataUtentiTest.sql/AbilitaServiziTest.sql/PopolaRecensioniTest.sql
+             (facoltativi, dati di prova) restano da eseguire a mano con psql,
+             come descritto nel Manuale Tecnico. -->
+        <profile>
+            <id>db-setup</id>
+            <properties>
+                <db.host>localhost</db.host>
+                <db.port>5432</db.port>
+                <db.sql.role>${project.basedir}/../Progettazione/Database/Role.sql</db.sql.role>
+                <db.sql.schema>${project.basedir}/../Progettazione/Database/Schema.sql</db.sql.schema>
+                <db.sql.data>${project.basedir}/../Progettazione/Database/Data.sql</db.sql.data>
+                <db.name>dbTK</db.name>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>sql-maven-plugin</artifactId>
+                        <version>1.5</version>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.postgresql</groupId>
+                                <artifactId>postgresql</artifactId>
+                                <version>42.7.3</version>
+                            </dependency>
+                        </dependencies>
+                        <configuration>
+                            <driver>org.postgresql.Driver</driver>
+                            <username>${db.admin.user}</username>
+                            <password>${db.admin.password}</password>
+                            <autocommit>true</autocommit>
+                        </configuration>
+                        <executions>
+                            <!-- Role.sql va eseguito connessi al database di
+                                 manutenzione "postgres": crea lui il ruolo
+                                 tk_app e il database dbTK, che a questo punto
+                                 non esistono ancora. -->
+                            <execution>
+                                <id>crea-ruolo-e-database</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <url>jdbc:postgresql://${db.host}:${db.port}/postgres</url>
+                                    <srcFiles>
+                                        <srcFile>${db.sql.role}</srcFile>
+                                    </srcFiles>
+                                </configuration>
+                            </execution>
+                            <!-- Schema.sql e Data.sql vanno eseguiti connessi
+                                 al database dbTK appena creato dall'execution
+                                 precedente. -->
+                            <execution>
+                                <id>crea-schema-e-dati</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <url>jdbc:postgresql://${db.host}:${db.port}/${db.name}</url>
+                                    <srcFiles>
+                                        <srcFile>${db.sql.schema}</srcFile>
+                                        <srcFile>${db.sql.data}</srcFile>
+                                    </srcFiles>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 </project>

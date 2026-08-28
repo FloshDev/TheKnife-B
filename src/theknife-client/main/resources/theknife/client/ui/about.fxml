@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Layout della schermata About, solo testo statico. @author Barlera Marco, 760000, VA -->
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+
+<HBox styleClass="app-shell" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.AboutController">
+
+    <fx:include fx:id="sidebar" source="sidebar.fxml"/>
+
+    <VBox styleClass="main-content" HBox.hgrow="ALWAYS">
+
+        <ImageView fitWidth="72" fitHeight="72" preserveRatio="true" smooth="true">
+            <image>
+                <Image url="@logoIco.png"/>
+            </image>
+        </ImageView>
+
+        <Label text="TheKnife" styleClass="page-title"/>
+        <Label text="Trova, scopri e recensisci i ristoranti vicino a te." styleClass="page-subtitle"/>
+
+        <VBox spacing="16" maxWidth="480" alignment="TOP_CENTER">
+            <Label text="Progetto realizzato per il corso di Laboratorio Interdisciplinare B, Università degli Studi dell'Insubria." styleClass="risultato-info" wrapText="true" textAlignment="CENTER"/>
+            <VBox spacing="4" alignment="CENTER">
+                <Label text="Team" styleClass="risultato-info"/>
+                <Label text="Barlera Marco" styleClass="risultato-info"/>
+                <Label text="Ciani Flavio Angelo" styleClass="risultato-info"/>
+                <Label text="Gasparini Lorenzo" styleClass="risultato-info"/>
+                <Label text="Scolaro Gabriele" styleClass="risultato-info"/>
+            </VBox>
+        </VBox>
+
+    </VBox>
+
+</HBox>

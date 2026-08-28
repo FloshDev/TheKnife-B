@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Layout della schermata dettaglio (S06). @author Barlera Marco, 760000, VA -->
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<HBox styleClass="app-shell" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.DettaglioController">
+
+    <fx:include fx:id="sidebar" source="sidebar.fxml"/>
+
+    <VBox styleClass="main-content, main-content-centrato" HBox.hgrow="ALWAYS">
+        <VBox styleClass="contenuto-dettaglio" fx:id="card" spacing="16">
+
+            <Button fx:id="tornaIndietroButton" onAction="#handleTornaIndietro" styleClass="bottone-icona">
+                <graphic>
+                    <SVGPath content="M15 18l-6-6 6-6" fill="TRANSPARENT" stroke="#FA812F" strokeWidth="2.5" strokeLineCap="ROUND" strokeLineJoin="ROUND"/>
+                </graphic>
+            </Button>
+
+            <HBox spacing="20" alignment="TOP_LEFT">
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <Label fx:id="nomeLabel" styleClass="page-title" wrapText="true"/>
+                    <Label fx:id="infoLabel" styleClass="page-subtitle" wrapText="true"/>
+                </VBox>
+                <HBox spacing="8">
+                    <Button fx:id="preferitiButton" onAction="#handlePreferiti" styleClass="bottone-icona-outline">
+                        <graphic>
+                            <SVGPath fx:id="cuoreIcon" content="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" fill="TRANSPARENT" stroke="#FA812F" strokeWidth="2" strokeLineCap="ROUND" strokeLineJoin="ROUND" scaleX="0.7" scaleY="0.7"/>
+                        </graphic>
+                    </Button>
+                    <Button fx:id="eliminaRistoranteButton" onAction="#handleEliminaRistorante" styleClass="bottone-icona-outline">
+                        <graphic>
+                            <SVGPath content="M3 6h18 M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2 M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" fill="TRANSPARENT" stroke="#FA812F" strokeWidth="2" strokeLineCap="ROUND" strokeLineJoin="ROUND" scaleX="0.7" scaleY="0.7"/>
+                        </graphic>
+                    </Button>
+                </HBox>
+            </HBox>
+
+            <HBox spacing="10">
+                <Label fx:id="mediaStelleLabel" styleClass="badge-rating"/>
+                <Label fx:id="prenotazioneTag" text="Prenotazione online" styleClass="tag-feature"/>
+                <Label fx:id="consegnaTag" text="Consegna a domicilio" styleClass="tag-feature"/>
+            </HBox>
+
+            <fx:include fx:id="mappa" source="mappa.fxml"/>
+
+            <Region styleClass="divisore"/>
+
+            <HBox alignment="CENTER_LEFT">
+                <Label text="Recensioni" styleClass="sezione-titolo" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                <Button fx:id="scriviRecensioneButton" text="Scrivi recensione" onAction="#handleScriviRecensione" styleClass="bottone-primario"/>
+            </HBox>
+
+            <ListView fx:id="recensioniListView" styleClass="lista-risultati, lista-risultati-card" VBox.vgrow="ALWAYS"/>
+
+        </VBox>
+    </VBox>
+
+</HBox>

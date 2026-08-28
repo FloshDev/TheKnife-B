@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Layout della schermata "Vicino a me" (S04b, RF-07). @author Barlera Marco, 760000, VA -->
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox styleClass="app-shell" fx:id="root" focusTraversable="true" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.VicinoAMeController">
+
+    <fx:include fx:id="sidebar" source="sidebar.fxml"/>
+
+    <VBox styleClass="main-content" HBox.hgrow="ALWAYS">
+        <Label text="Vicino a me" styleClass="page-title"/>
+        <Label text="Ristoranti entro un certo raggio dalla tua città." styleClass="page-subtitle"/>
+
+        <VBox styleClass="card, card-lista" fx:id="card">
+
+            <VBox spacing="6">
+                <Label text="Città" styleClass="campo-label"/>
+                <TextField fx:id="cittaField" promptText="Milano" styleClass="campo-testo" maxWidth="Infinity"/>
+            </VBox>
+
+            <VBox spacing="6">
+                <Label text="Raggio (km)" styleClass="campo-label"/>
+                <TextField fx:id="raggioKmField" promptText="5" styleClass="campo-testo" maxWidth="Infinity"/>
+            </VBox>
+
+            <Button text="Cerca →" onAction="#handleCerca" styleClass="bottone-primario" defaultButton="true"/>
+
+        </VBox>
+    </VBox>
+
+</HBox>

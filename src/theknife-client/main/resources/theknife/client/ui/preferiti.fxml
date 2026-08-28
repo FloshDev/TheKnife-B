@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Layout della schermata lista preferiti (S08). @author Barlera Marco, 760000, VA -->
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<HBox styleClass="app-shell" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.PreferitiController">
+
+    <fx:include fx:id="sidebar" source="sidebar.fxml"/>
+
+    <VBox styleClass="main-content, main-content-riempi" HBox.hgrow="ALWAYS">
+        <HBox spacing="8" alignment="CENTER_LEFT">
+            <Button fx:id="tornaIndietroButton" onAction="#handleTornaIndietro" styleClass="bottone-icona">
+                <graphic>
+                    <SVGPath content="M15 18l-6-6 6-6" fill="TRANSPARENT" stroke="#FA812F" strokeWidth="2.5" strokeLineCap="ROUND" strokeLineJoin="ROUND"/>
+                </graphic>
+            </Button>
+            <Label fx:id="preferitiLabel" styleClass="page-title"/>
+        </HBox>
+
+        <HBox fx:id="rigaContenuto" spacing="24" VBox.vgrow="ALWAYS">
+            <ListView fx:id="preferitiListView" styleClass="lista-risultati, lista-risultati-card"/>
+
+            <fx:include fx:id="mappa" source="mappa.fxml"/>
+        </HBox>
+    </VBox>
+
+</HBox>

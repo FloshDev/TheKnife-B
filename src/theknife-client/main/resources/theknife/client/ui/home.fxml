@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Layout della schermata Home (S04). @author Barlera Marco, 760000, VA -->
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox styleClass="app-shell" fx:id="root" focusTraversable="true" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="theknife.client.ui.HomeController">
+
+    <fx:define>
+        <ToggleGroup fx:id="prezzoGroup" />
+    </fx:define>
+
+    <fx:include fx:id="sidebar" source="sidebar.fxml"/>
+
+    <VBox styleClass="main-content" HBox.hgrow="ALWAYS">
+        <Label text="Cerca un ristorante" styleClass="page-title"/>
+        <Label text="Filtra per nome, città, cucina o fascia di prezzo." styleClass="page-subtitle"/>
+
+        <VBox styleClass="card, card-lista" fx:id="card">
+
+            <HBox spacing="16">
+                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                    <Label text="Nome ristorante" styleClass="campo-label"/>
+                    <TextField fx:id="nomeField" promptText="Osteria del Ponte" styleClass="campo-testo" maxWidth="Infinity"/>
+                </VBox>
+                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                    <Label text="Città" styleClass="campo-label"/>
+                    <TextField fx:id="cittaField" promptText="Milano" styleClass="campo-testo" maxWidth="Infinity"/>
+                </VBox>
+            </HBox>
+
+            <HBox spacing="16">
+                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                    <Label text="Tipo di cucina" styleClass="campo-label"/>
+                    <TextField fx:id="tipoCucinaField" promptText="Italiana, Giapponese…" styleClass="campo-testo" maxWidth="Infinity"/>
+                </VBox>
+                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                    <Label text="Fascia di prezzo" styleClass="campo-label"/>
+                    <HBox styleClass="selettore-ruolo" alignment="CENTER">
+                        <ToggleButton fx:id="prezzo1Radio" text="€" toggleGroup="$prezzoGroup" styleClass="opzione-ruolo" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                        <Region styleClass="divisore-ruolo"/>
+                        <ToggleButton fx:id="prezzo2Radio" text="€€" toggleGroup="$prezzoGroup" styleClass="opzione-ruolo" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                        <Region styleClass="divisore-ruolo"/>
+                        <ToggleButton fx:id="prezzo3Radio" text="€€€" toggleGroup="$prezzoGroup" styleClass="opzione-ruolo" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                        <Region styleClass="divisore-ruolo"/>
+                        <ToggleButton fx:id="prezzo4Radio" text="€€€€" toggleGroup="$prezzoGroup" styleClass="opzione-ruolo" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                    </HBox>
+                </VBox>
+            </HBox>
+
+            <HBox spacing="20">
+                <CheckBox fx:id="prenotazioneOnlineCheck" text="Prenotazione online"/>
+                <CheckBox fx:id="consegnaADomicilioCheck" text="Consegna a domicilio"/>
+            </HBox>
+
+            <Button text="Cerca →" onAction="#handleCerca" styleClass="bottone-primario" defaultButton="true"/>
+
+        </VBox>
+    </VBox>
+
+</HBox>
