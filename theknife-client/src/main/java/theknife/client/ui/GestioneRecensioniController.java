@@ -29,6 +29,13 @@ import theknife.common.dto.RispondiRecensioneDTO;
  */
 
 public class GestioneRecensioniController {
+    /**
+     * Costruttore vuoto: tutta l'inizializzazione avviene in {@code initialize()},
+     * chiamato da FXMLLoader dopo l'injection dei campi {@code @FXML}.
+     */
+    public GestioneRecensioniController() {
+    }
+
     /** Lista delle recensioni di tutti i ristoranti gestiti, con risposta inline per card. */
     @FXML private ListView<RecensioneDTO> recensioniListView;
     /** Bottone icona per tornare alla dashboard. */
@@ -109,18 +116,35 @@ public class GestioneRecensioniController {
      * mostrato solo se non c'è già una risposta.
      */
     private class RecensioneGestitaCell extends ListCell<RecensioneDTO> {
+        /** Costruttore vuoto: i nodi grafici della cella sono creati inline nei campi, la logica sta in {@code updateItem}. */
+        RecensioneGestitaCell() {
+        }
+
+        /** Autore della recensione. */
         private final Label usernameLabel = new Label();
+        /** Data della recensione. */
         private final Label dataLabel = new Label();
+        /** Riga con autore e data affiancati. */
         private final HBox intestazione = new HBox(usernameLabel, dataLabel);
+        /** Nome del ristorante a cui si riferisce la recensione. */
         private final Label ristoranteLabel = new Label();
+        /** Titolo della recensione. */
         private final Label titoloLabel = new Label();
+        /** Valutazione in stelle. */
         private final Label stelleLabel = new Label();
+        /** Testo della recensione. */
         private final Label testoLabel = new Label();
+        /** Risposta del gestore, se già data. */
         private final Label rispostaLabel = new Label();
+        /** Campo di testo per scrivere la risposta. */
         private final TextArea rispostaField = new TextArea();
+        /** Bottone "Invia" per confermare la risposta. */
         private final Button inviaButton = new Button("Invia");
+        /** Riga col solo bottone di invio. */
         private final HBox invioRow = new HBox(inviaButton);
+        /** Blocco campo risposta + invio, visibile solo se la recensione non ha ancora risposta. */
         private final VBox rispondiRow = new VBox(6, rispostaField, invioRow);
+        /** Contenitore radice della cella. */
         private final VBox contenuto = new VBox(6,
             intestazione, ristoranteLabel, titoloLabel, stelleLabel, testoLabel, rispostaLabel, rispondiRow);
 

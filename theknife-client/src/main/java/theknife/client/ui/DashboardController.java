@@ -27,6 +27,13 @@ import theknife.common.dto.RistoranteDTO;
  * @author Barlera Marco, 760000, VA
  */
 public class DashboardController {
+    /**
+     * Costruttore vuoto: tutta l'inizializzazione avviene in {@code initialize()},
+     * chiamato da FXMLLoader dopo l'injection dei campi {@code @FXML}.
+     */
+    public DashboardController() {
+    }
+
     /** Lista dei ristoranti gestiti dall'utente ristoratore, una card verticale per ristorante. */
     @FXML private ListView<RistoranteDTO> ristorantiGestiti;
     /** Controller della sidebar inclusa (fx:include), per evidenziare "Dashboard" come voce attiva. */
@@ -137,13 +144,25 @@ public class DashboardController {
      * (qui i ristoranti sono quelli gestiti, non salvabili come preferiti).
      */
     private class RistoranteGestitoCell extends ListCell<RistoranteDTO> {
+        /** Costruttore vuoto: i nodi grafici della cella sono creati inline nei campi, la logica sta in {@code updateItem}. */
+        RistoranteGestitoCell() {
+        }
+
+        /** Nome del ristorante. */
         private final Label nomeLabel = new Label();
+        /** Fascia di prezzo. */
         private final Label prezzoLabel = new Label();
+        /** Città e tipo di cucina. */
         private final Label infoLabel = new Label();
+        /** Valutazione media in stelle. */
         private final Label ratingLabel = new Label();
+        /** Icona a forma di freccia, apre il dettaglio. */
         private final SVGPath frecciaIcon = new SVGPath();
+        /** Bottone per aprire il dettaglio del ristorante. */
         private final Button frecciaButton = new Button();
+        /** Riga col solo bottone freccia. */
         private final HBox azioniRow = new HBox(frecciaButton);
+        /** Contenitore radice della cella. */
         private final VBox contenuto = new VBox(8,
             new HBox(8, nomeLabel, prezzoLabel), infoLabel, ratingLabel, azioniRow);
 

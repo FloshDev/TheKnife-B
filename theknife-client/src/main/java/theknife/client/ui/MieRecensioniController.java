@@ -36,6 +36,13 @@ import theknife.common.dto.RecensioneDTO;
  */
 
 public class MieRecensioniController {
+    /**
+     * Costruttore vuoto: tutta l'inizializzazione avviene in {@code initialize()},
+     * chiamato da FXMLLoader dopo l'injection dei campi {@code @FXML}.
+     */
+    public MieRecensioniController() {
+    }
+
     /** Lista delle recensioni scritte dall'utente, con azioni inline per card. */
     @FXML private ListView<RecensioneDTO> recensioniListView;
     /** Bottone icona per tornare alla Home. */
@@ -136,16 +143,31 @@ public class MieRecensioniController {
      * dell'utente corrente.
      */
     private class RecensioneScrittaCell extends ListCell<RecensioneDTO> {
+        /** Costruttore vuoto: i nodi grafici della cella sono creati inline nei campi, la logica sta in {@code updateItem}. */
+        RecensioneScrittaCell() {
+        }
+
+        /** Nome del ristorante recensito. */
         private final Label ristoranteLabel = new Label();
+        /** Data della recensione. */
         private final Label dataLabel = new Label();
+        /** Riga con ristorante e data affiancati. */
         private final HBox intestazione = new HBox(ristoranteLabel, dataLabel);
+        /** Titolo della recensione. */
         private final Label titoloLabel = new Label();
+        /** Valutazione in stelle. */
         private final Label stelleLabel = new Label();
+        /** Testo della recensione. */
         private final Label testoLabel = new Label();
+        /** Risposta del gestore, se presente. */
         private final Label rispostaLabel = new Label();
+        /** Bottone "Modifica" per aprire la recensione in modifica. */
         private final Button modificaButton = new Button("Modifica");
+        /** Bottone "Elimina" per rimuovere la recensione. */
         private final Button eliminaButton = new Button("Elimina");
+        /** Riga con i bottoni Modifica/Elimina. */
         private final HBox azioniRow = new HBox(8, modificaButton, eliminaButton);
+        /** Contenitore radice della cella. */
         private final VBox contenuto = new VBox(6,
             intestazione, titoloLabel, stelleLabel, testoLabel, rispostaLabel, azioniRow);
 

@@ -26,6 +26,10 @@ import theknife.common.protocol.Response;
 
 public class RistoranteService {
 
+    /** Costruttore vuoto: nessuno stato oltre alla connessione condivisa, valorizzata inline. */
+    public RistoranteService() {
+    }
+
     /** Connessione condivisa al server, unico canale su cui viaggiano le richieste. */
     private final ServerConnection connection = ServerConnection.getInstance();
 

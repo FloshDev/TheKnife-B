@@ -1,6 +1,6 @@
 <mxfile host="Electron" pages="10">
   <diagram name="Login" id="HkPrzA6IRMxzoJoaflg0">
-    <mxGraphModel dx="829" dy="1008" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="432" dy="691" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -319,6 +319,9 @@
             <mxPoint x="11" y="12" as="offset" />
           </mxGeometry>
         </mxCell>
+        <mxCell id="iCHDd6vDmCA11A2wlDR8-1" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;&lt;b style=&quot;&quot;&gt;Sequence Diagram — Login&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="30" width="280" x="150" y="10" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
@@ -435,11 +438,14 @@
         <mxCell id="RGmewMgwrFGzDBgnfn2U-4" parent="1" style="text;whiteSpace=wrap;" value="[password errata]" vertex="1">
           <mxGeometry height="40" width="130" x="100" y="404" as="geometry" />
         </mxCell>
+        <mxCell id="JMjF8nR_Rq0L0NUXMuxE-1" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;&lt;b style=&quot;&quot;&gt;Sequence Diagram — Login Astratto&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="30" width="350" x="40" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
   <diagram id="FsIqFVPhKM9Sox2CxNbl" name="Ricerca Ristoranti">
-    <mxGraphModel dx="1421" dy="1727" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="756" dy="1209" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -695,11 +701,14 @@
             <mxPoint x="-30" y="-13" as="offset" />
           </mxGeometry>
         </mxCell>
+        <mxCell id="jtUa8y6ZlrFe3l1koiqI-1" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;&lt;b style=&quot;&quot;&gt;Sequence Diagram — Ricerca Ristoranti&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="30" width="450" x="10" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
   <diagram id="KeDiGkAEDIIOrLzhFXy0" name="RicercaRistorantiAstratto">
-    <mxGraphModel dx="796" dy="1273" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="840" dy="2512" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -791,11 +800,14 @@
         <mxCell id="29MfZZ8Mem6IIOSb4lZy-3" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};" value=":Database" vertex="1">
           <mxGeometry height="390" width="110" x="700" y="50" as="geometry" />
         </mxCell>
+        <mxCell id="yM5uwtdS5NiPiZ5_vBuZ-1" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;&lt;b style=&quot;&quot;&gt;Sequence Diagram — Ricerca Ristoranti Astratto&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="30" width="490" x="30" y="-10" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
   <diagram id="eV5CIEeOi-ZXi1FHSwxv" name="Aggiungi Recensione">
-    <mxGraphModel dx="995" dy="1209" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1080" dy="2896" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -1169,11 +1181,14 @@
             <mxPoint x="-28" y="-14" as="offset" />
           </mxGeometry>
         </mxCell>
+        <mxCell id="99iGSWjUq9kT3HKALJs1-1" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;&lt;b style=&quot;&quot;&gt;Sequence Diagram — Aggiungi Recensione&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="30" width="450" x="5" y="-10" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
   <diagram id="gc7uuTGBXlDTSccfiUS9" name="AggiungiRecensioneAstratto">
-    <mxGraphModel dx="2701" dy="1273" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2734" dy="2896" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -1318,11 +1333,14 @@
             <mxPoint x="-122" y="-8" as="offset" />
           </mxGeometry>
         </mxCell>
+        <mxCell id="H6EcCfCf7u4YaYgD3kvS-1" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;&lt;b style=&quot;&quot;&gt;Sequence Diagram — Aggiungi Recensione Astratto&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="30" width="517" x="-827" y="-20" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
   <diagram name="CercaVicino" id="PHdvakZDUyddgKzc-OBb">
-    <mxGraphModel dx="1171" dy="1422" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1080" dy="2896" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="KnUpC5AWg8-cW47Foh3u-0" />
         <mxCell id="KnUpC5AWg8-cW47Foh3u-1" parent="KnUpC5AWg8-cW47Foh3u-0" />
@@ -1701,11 +1719,14 @@
             <mxPoint x="-122" y="-13" as="offset" />
           </mxGeometry>
         </mxCell>
+        <mxCell id="XGuzLmIiUE0vsSTk2jH5-0" parent="KnUpC5AWg8-cW47Foh3u-1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;&lt;b style=&quot;&quot;&gt;Sequence Diagram — Cerca Vicino&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="30" width="360" x="30" y="-20" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
   <diagram name="CercaVicinoAstratto" id="z_QLcNs9LB22u4I9Cfd8">
-    <mxGraphModel dx="1531" dy="1860" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1163" dy="3029" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="kMtdUURKRTSM1b4dpErd-0" />
         <mxCell id="kMtdUURKRTSM1b4dpErd-1" parent="kMtdUURKRTSM1b4dpErd-0" />
@@ -1860,11 +1881,14 @@
         <mxCell id="xXtUSzCgm4Oj1soGPw-O-8" parent="kMtdUURKRTSM1b4dpErd-1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="HTTP fallisce" vertex="1">
           <mxGeometry height="30" width="60" x="430" y="310" as="geometry" />
         </mxCell>
+        <mxCell id="1b7nY36c8jrojheT9VEY-0" parent="kMtdUURKRTSM1b4dpErd-1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;&lt;b style=&quot;&quot;&gt;Sequence Diagram — Cerca Vicino Astratto&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="30" width="420" x="20" y="-20" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
   <diagram name="RispondiRecensione" id="oExTaoTjmStuJyq6XkGh">
-    <mxGraphModel dx="1421" dy="1727" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="756" dy="2378" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="ZGz_RzGgGO1LrcNu0mwm-0" />
         <mxCell id="ZGz_RzGgGO1LrcNu0mwm-1" parent="ZGz_RzGgGO1LrcNu0mwm-0" />
@@ -2313,11 +2337,14 @@
             <mxPoint x="-52" y="-10" as="offset" />
           </mxGeometry>
         </mxCell>
+        <mxCell id="B9DbnWgXKmRYkXP3SBF7-0" parent="ZGz_RzGgGO1LrcNu0mwm-1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;&lt;b style=&quot;&quot;&gt;Sequence Diagram — Rispondi Recensione&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="30" width="440" y="-30" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
   <diagram name="RispondiRecensioneAstratto" id="bqNbsutD84AefES66deB">
-    <mxGraphModel dx="2734" dy="1727" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2734" dy="2896" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="4f9e3Ana-Bpsv0eDzw6X-0" />
         <mxCell id="4f9e3Ana-Bpsv0eDzw6X-1" parent="4f9e3Ana-Bpsv0eDzw6X-0" />
@@ -2450,6 +2477,9 @@
           <mxGeometry relative="1" x="-0.268" y="-2" as="geometry">
             <mxPoint x="-122" y="-8" as="offset" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="3t7oWqTVd7vDECzA5Fzh-0" parent="4f9e3Ana-Bpsv0eDzw6X-1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;&lt;b style=&quot;&quot;&gt;Sequence Diagram — Rispondi Recensione Astratto&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="30" width="510" x="-830" y="-20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

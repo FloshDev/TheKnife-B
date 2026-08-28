@@ -23,6 +23,13 @@ import theknife.common.dto.CercaRistorantiDTO;
  * @author Barlera Marco, 760000, VA
  */
 public class HomeController {
+    /**
+     * Costruttore vuoto: tutta l'inizializzazione avviene in {@code initialize()},
+     * chiamato da FXMLLoader dopo l'injection dei campi {@code @FXML}.
+     */
+    public HomeController() {
+    }
+
 
     /** Contenitore radice, usato solo per togliere il focus dal primo campo all'apertura. */
     @FXML private HBox root;

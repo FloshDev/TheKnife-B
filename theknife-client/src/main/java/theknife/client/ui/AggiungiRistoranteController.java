@@ -22,6 +22,13 @@ import theknife.common.dto.AggiungiRistoranteDTO;
  */
 
 public class AggiungiRistoranteController {
+    /**
+     * Costruttore vuoto: tutta l'inizializzazione avviene in {@code initialize()},
+     * chiamato da FXMLLoader dopo l'injection dei campi {@code @FXML}.
+     */
+    public AggiungiRistoranteController() {
+    }
+
 
     /** Il contenuto, la cui larghezza è agganciata alla finestra (grafica responsive). */
     @FXML private VBox card;

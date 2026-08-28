@@ -29,6 +29,13 @@ import theknife.common.dto.UtenteDTO;
  * @author Barlera Marco, 760000, VA
  */
 public class VicinoAMeController {
+    /**
+     * Costruttore vuoto: tutta l'inizializzazione avviene in {@code initialize()},
+     * chiamato da FXMLLoader dopo l'injection dei campi {@code @FXML}.
+     */
+    public VicinoAMeController() {
+    }
+
 
     /** Contenitore radice, usato solo per togliere il focus dal primo campo all'apertura. */
     @FXML private HBox root;

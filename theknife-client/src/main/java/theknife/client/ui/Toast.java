@@ -57,6 +57,7 @@ public class Toast {
      */
     private static final List<Popup> attivi = new ArrayList<>();
 
+    /** Costruttore privato: solo metodi statici, la classe non va istanziata. */
     private Toast() {}
 
     /**

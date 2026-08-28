@@ -21,6 +21,13 @@ import theknife.common.enums.Ruolo;
  * @author Barlera Marco, 760000, VA
  */
 public class LoginController {
+    /**
+     * Costruttore vuoto: tutta l'inizializzazione avviene in {@code initialize()},
+     * chiamato da FXMLLoader dopo l'injection dei campi {@code @FXML}.
+     */
+    public LoginController() {
+    }
+
     /** La card, la cui larghezza è agganciata alla finestra (grafica responsive). */
     @FXML private VBox card;
     /** Campo di testo per lo username. */

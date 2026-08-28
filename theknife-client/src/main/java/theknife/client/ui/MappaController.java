@@ -42,6 +42,13 @@ import theknife.common.dto.RistoranteDTO;
  */
 public class MappaController {
 
+    /**
+     * Costruttore vuoto: tutta l'inizializzazione avviene in {@code initialize()},
+     * chiamato da FXMLLoader dopo l'injection dei campi {@code @FXML}.
+     */
+    public MappaController() {
+    }
+
     /** Dimensione in pixel di un tile OpenStreetMap, fissa per lo schema XYZ. */
     private static final int TILE = 256;
     /** Zoom minimo selezionabile (mondo intero). */
@@ -366,6 +373,11 @@ public class MappaController {
      * Calcola quali tile servono per la vista corrente, aggiunge quelli
      * mancanti e rimuove quelli non più visibili — solo i tile mancanti
      * vengono richiesti, quelli già a posto restano dove sono.
+     *
+     * @param originX pixel-mondo dell'angolo sinistro della vista
+     * @param originY pixel-mondo dell'angolo superiore della vista
+     * @param larghezza larghezza della superficie visibile, in pixel
+     * @param altezza altezza della superficie visibile, in pixel
      */
     private void aggiornaTile(double originX, double originY, double larghezza, double altezza) {
         int n = (int) Math.pow(2, zoom);
@@ -409,6 +421,9 @@ public class MappaController {
      * OSM e lo assegna a {@code destinazione} al termine. Un tile fallito
      * (rete, 403, tile fuori mappa) resta vuoto — non blocca gli altri né
      * mostra un errore, non è un'operazione che l'utente ha chiesto.
+     *
+     * @param url indirizzo del tile da scaricare
+     * @param destinazione la ImageView a cui assegnare il tile scaricato
      */
     private void caricaTile(String url, ImageView destinazione) {
         TaskRunner.run(
@@ -431,6 +446,9 @@ public class MappaController {
      * risalire a {@link #handlePress} sulla superficie, altrimenti un
      * trascinamento iniziato su un marker userebbe coordinate di partenza
      * del gesto precedente.
+     *
+     * @param originX pixel-mondo dell'angolo sinistro della vista
+     * @param originY pixel-mondo dell'angolo superiore della vista
      */
     private void aggiornaMarker(double originX, double originY) {
         for (RistoranteDTO r : ristorantiCorrenti) {
@@ -468,6 +486,10 @@ public class MappaController {
      * Cambia colore e raggio del marker indicato e, se è quello evidenziato,
      * lo porta in primo piano (altrimenti può restare sotto ad altri marker
      * disegnati dopo di lui).
+     *
+     * @param id identificatore del ristorante il cui marker va aggiornato
+     * @param colore il nuovo colore del marker
+     * @param raggio il nuovo raggio del marker
      */
     private void aggiornaAspettoMarker(long id, Color colore, double raggio) {
         Circle c = markerVisualizzati.get(id);
@@ -480,12 +502,24 @@ public class MappaController {
         }
     }
 
-    /** Longitudine → coordinata X in pixel-mondo alla zoom indicata (proiezione Web Mercator). */
+    /**
+     * Longitudine → coordinata X in pixel-mondo alla zoom indicata (proiezione Web Mercator).
+     *
+     * @param lon longitudine, in gradi
+     * @param z livello di zoom
+     * @return la coordinata X in pixel-mondo
+     */
     private static double lonToWorldX(double lon, int z) {
         return (lon + 180.0) / 360.0 * Math.pow(2, z) * TILE;
     }
 
-    /** Latitudine → coordinata Y in pixel-mondo alla zoom indicata (proiezione Web Mercator). */
+    /**
+     * Latitudine → coordinata Y in pixel-mondo alla zoom indicata (proiezione Web Mercator).
+     *
+     * @param lat latitudine, in gradi
+     * @param z livello di zoom
+     * @return la coordinata Y in pixel-mondo
+     */
     private static double latToWorldY(double lat, int z) {
         double rad = Math.toRadians(lat);
         return (1 - Math.log(Math.tan(rad) + 1 / Math.cos(rad)) / Math.PI) / 2 * Math.pow(2, z) * TILE;

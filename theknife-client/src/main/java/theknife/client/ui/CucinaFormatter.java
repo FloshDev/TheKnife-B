@@ -17,6 +17,7 @@ import theknife.common.util.CucinaTranslationService;
  */
 public class CucinaFormatter {
 
+    /** Costruttore privato: solo metodi statici, la classe non va istanziata. */
     private CucinaFormatter() {
     }
 

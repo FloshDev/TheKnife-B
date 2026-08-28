@@ -28,6 +28,13 @@ import theknife.common.dto.RistoranteDTO;
  */
 
 public class ScriviRecensioneController {
+    /**
+     * Costruttore vuoto: tutta l'inizializzazione avviene in {@code initialize()},
+     * chiamato da FXMLLoader dopo l'injection dei campi {@code @FXML}.
+     */
+    public ScriviRecensioneController() {
+    }
+
 
     /** La card, la cui larghezza è agganciata alla finestra (grafica responsive). */
     @FXML private VBox card;

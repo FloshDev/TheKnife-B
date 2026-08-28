@@ -41,8 +41,8 @@ public class IdRecensioneDTO implements java.io.Serializable {
  * Imposta l'identificatore della recensione.
  * @param idRecensione l'identificatore della recensione
  */
-    public void setIdRecensione(long x) {
-        this.idRecensione = x;
+    public void setIdRecensione(long idRecensione) {
+        this.idRecensione = idRecensione;
     }
 
 //Metodo toString

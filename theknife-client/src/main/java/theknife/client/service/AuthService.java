@@ -21,6 +21,11 @@ import theknife.common.protocol.Response;
  */
 
 public class AuthService {
+
+    /** Costruttore vuoto: nessuno stato oltre alla connessione condivisa, valorizzata inline. */
+    public AuthService() {
+    }
+
     /** Connessione condivisa al server, unico canale su cui viaggiano le richieste. */
     private final ServerConnection connection = ServerConnection.getInstance();
 

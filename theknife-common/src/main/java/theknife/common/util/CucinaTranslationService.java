@@ -13,7 +13,9 @@ import java.util.Map;
  */
 public class CucinaTranslationService {
 
+    /** Mappa di traduzione italiano → inglese, chiavi normalizzate in minuscolo. */
     private static final Map<String, String> IT_TO_EN;
+    /** Mappa di traduzione inglese → italiano, inversa di {@link #IT_TO_EN}. */
     private static final Map<String, String> EN_TO_IT;
 
     static {
@@ -410,8 +412,8 @@ public class CucinaTranslationService {
         EN_TO_IT = Collections.unmodifiableMap(enToIt);
     }
 
+    /** Costruttore pubblico, la classe non espone stato di istanza (solo membri statici). */
     public CucinaTranslationService() {
-        // Public constructor for instantiation
     }
 
     /**

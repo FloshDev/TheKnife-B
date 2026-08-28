@@ -29,6 +29,13 @@ import theknife.common.config.ConfigurazioneServer;
 public class ClientApplication extends Application {
 
     /**
+     * Costruttore pubblico richiesto da JavaFX, che istanzia la sottoclasse
+     * di {@link Application} per reflection all'avvio di {@code launch()}.
+     */
+    public ClientApplication() {
+    }
+
+    /**
      * Apre automaticamente la connessione al server (decisione 22, nessun
      * dialog) e solo se riesce mostra lo splash. Host e porta vengono dagli
      * argomenti della riga di comando, con default in

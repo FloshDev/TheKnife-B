@@ -39,6 +39,13 @@ import theknife.common.enums.Ruolo;
  */
 
 public class RisultatiController {
+    /**
+     * Costruttore vuoto: tutta l'inizializzazione avviene in {@code initialize()},
+     * chiamato da FXMLLoader dopo l'injection dei campi {@code @FXML}.
+     */
+    public RisultatiController() {
+    }
+
     /** Titolo con il conteggio dei ristoranti trovati ("Risultati (N)"). */
     @FXML private Label risultatiLabel;
     /** Lista dei ristoranti trovati dalla ricerca, una card per risultato. */
@@ -291,18 +298,35 @@ public class RisultatiController {
      * cuore preferiti e freccia per il dettaglio).
      */
     private class RisultatoCell extends ListCell<RistoranteDTO> {
+        /** Costruttore vuoto: i nodi grafici della cella sono creati inline nei campi, la logica sta in {@code updateItem}. */
+        RisultatoCell() {
+        }
+
+        /** Nome del ristorante. */
         private final Label nomeLabel = new Label();
+        /** Fascia di prezzo. */
         private final Label prezzoLabel = new Label();
+        /** Città e tipo di cucina. */
         private final Label infoLabel = new Label();
+        /** Valutazione media in stelle. */
         private final Label ratingLabel = new Label();
+        /** Etichetta mostrata solo se il ristorante offre la prenotazione online. */
         private final Label prenotazioneTag = new Label("Prenotazione online");
+        /** Etichetta mostrata solo se il ristorante offre la consegna a domicilio. */
         private final Label consegnaTag = new Label("Consegna a domicilio");
+        /** Riga con le etichette dei servizi offerti. */
         private final HBox tagRow = new HBox(8, prenotazioneTag, consegnaTag);
+        /** Icona a forma di cuore, aggiunta/rimossa dai preferiti. */
         private final SVGPath cuoreIcon = new SVGPath();
+        /** Bottone per aggiungere/rimuovere il ristorante dai preferiti. */
         private final Button cuoreButton = new Button();
+        /** Icona a forma di freccia, apre il dettaglio. */
         private final SVGPath frecciaIcon = new SVGPath();
+        /** Bottone per aprire il dettaglio del ristorante. */
         private final Button frecciaButton = new Button();
+        /** Riga con i bottoni cuore e freccia. */
         private final HBox azioniRow = new HBox(8, cuoreButton, frecciaButton);
+        /** Contenitore radice della cella. */
         private final VBox contenuto = new VBox(8,
             new HBox(8, nomeLabel, prezzoLabel), infoLabel, ratingLabel, tagRow, azioniRow);
 

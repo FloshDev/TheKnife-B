@@ -28,9 +28,35 @@ import theknife.common.enums.Ruolo;
  * @author Barlera Marco, 760000, VA
  */
 public class SidebarController {
+    /**
+     * Costruttore vuoto: tutta l'inizializzazione avviene in {@code initialize()},
+     * chiamato da FXMLLoader dopo l'injection dei campi {@code @FXML}.
+     */
+    public SidebarController() {
+    }
+
 
     /** Voce di navigazione, usata da {@link #impostaAttivo} per evidenziare la schermata corrente. */
-    public enum Voce { RICERCA, PREFERITI, VICINO_A_ME, MIE_RECENSIONI, DASHBOARD, GESTIONE_RECENSIONI, ASSOCIA, AGGIUNGI, ABOUT }
+    public enum Voce {
+        /** Ricerca ristoranti (Home). */
+        RICERCA,
+        /** Preferiti, visibile solo da Cliente. */
+        PREFERITI,
+        /** Vicino a me, visibile a Ospite e Cliente. */
+        VICINO_A_ME,
+        /** Le mie recensioni, visibile solo da Cliente. */
+        MIE_RECENSIONI,
+        /** Dashboard, visibile solo da Ristoratore. */
+        DASHBOARD,
+        /** Gestisci recensioni, visibile solo da Ristoratore. */
+        GESTIONE_RECENSIONI,
+        /** Associati a un ristorante, visibile solo da Ristoratore. */
+        ASSOCIA,
+        /** Aggiungi ristorante, visibile solo da Ristoratore. */
+        AGGIUNGI,
+        /** About, sempre visibile. */
+        ABOUT
+    }
 
     /** Link "Ricerca", porta a Home. */
     @FXML private Hyperlink ricercaItem;

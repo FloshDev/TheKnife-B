@@ -20,6 +20,13 @@ import theknife.client.service.RistoranteService;
  * @author Barlera Marco, 760000, VA
  */
 public class SplashController {
+    /**
+     * Costruttore vuoto: tutta l'inizializzazione avviene in {@code initialize()},
+     * chiamato da FXMLLoader dopo l'injection dei campi {@code @FXML}.
+     */
+    public SplashController() {
+    }
+
     /** Contenitore radice, usato solo per togliere il focus dal campo di testo all'apertura. */
     @FXML private VBox root;
     /** La card, la cui larghezza è agganciata alla finestra (grafica responsive). */

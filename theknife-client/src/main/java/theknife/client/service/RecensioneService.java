@@ -25,7 +25,11 @@ import theknife.common.protocol.Response;
  */
 
 public class RecensioneService {
-    
+
+    /** Costruttore vuoto: nessuno stato oltre alla connessione condivisa, valorizzata inline. */
+    public RecensioneService() {
+    }
+
     /** Connessione condivisa al server, unico canale su cui viaggiano le richieste. */
     private final ServerConnection connection = ServerConnection.getInstance();
 

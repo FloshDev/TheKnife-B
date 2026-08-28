@@ -44,6 +44,7 @@ public class TaskRunner {
         return t;
     });
 
+    /** Costruttore privato: solo metodi statici, la classe non va istanziata. */
     private TaskRunner() {}
 
     /**

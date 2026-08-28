@@ -29,6 +29,13 @@ import theknife.common.dto.RistoranteDTO;
  */
 
 public class AssociaRistoranteController {
+    /**
+     * Costruttore vuoto: tutta l'inizializzazione avviene in {@code initialize()},
+     * chiamato da FXMLLoader dopo l'injection dei campi {@code @FXML}.
+     */
+    public AssociaRistoranteController() {
+    }
+
     /** Campo di testo per la ricerca del ristorante per nome. */
     @FXML private TextField ricercaField;
     /** Lista dei ristoranti trovati dalla ricerca, una card orizzontale per ristorante. */
@@ -121,11 +128,21 @@ public class AssociaRistoranteController {
      * il ristorante ha già un gestore.
      */
     private class RistoranteTrovatoCell extends ListCell<RistoranteDTO> {
+        /** Costruttore vuoto: i nodi grafici della cella sono creati inline nei campi, la logica sta in {@code updateItem}. */
+        RistoranteTrovatoCell() {
+        }
+
+        /** Nome del ristorante trovato. */
         private final Label nomeLabel = new Label();
+        /** Città e tipo di cucina. */
         private final Label infoLabel = new Label();
+        /** Colonna con nome e info affiancati verticalmente. */
         private final VBox testi = new VBox(4, nomeLabel, infoLabel);
+        /** Bottone per associare il ristorante al gestore corrente. */
         private final Button associatiButton = new Button("Associati");
+        /** Etichetta mostrata al posto del bottone se il ristorante ha già un gestore. */
         private final Label giaGestitoLabel = new Label("Già gestito da un altro utente");
+        /** Contenitore radice della cella. */
         private final HBox contenuto = new HBox(12, testi, associatiButton, giaGestitoLabel);
 
         {

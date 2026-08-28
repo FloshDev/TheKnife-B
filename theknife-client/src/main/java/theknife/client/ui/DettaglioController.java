@@ -43,6 +43,13 @@ import theknife.common.enums.Ruolo;
  */
 
 public class DettaglioController {
+    /**
+     * Costruttore vuoto: tutta l'inizializzazione avviene in {@code initialize()},
+     * chiamato da FXMLLoader dopo l'injection dei campi {@code @FXML}.
+     */
+    public DettaglioController() {
+    }
+
     /** Il contenuto, la cui larghezza è agganciata alla finestra (grafica responsive). */
     @FXML private VBox card;
     /** Controller della sidebar inclusa (fx:include), per evidenziare la voce attiva coerente con la provenienza. */
@@ -91,7 +98,14 @@ public class DettaglioController {
     private List<RistoranteDTO> risultatiPrecedenti;
 
     /** Le schermate da cui si può arrivare a questo dettaglio. */
-    private enum Provenienza { RISULTATI, DASHBOARD, PREFERITI }
+    private enum Provenienza {
+        /** Arrivo dalla lista dei risultati di ricerca. */
+        RISULTATI,
+        /** Arrivo dalla dashboard del Ristoratore. */
+        DASHBOARD,
+        /** Arrivo dalla lista dei preferiti. */
+        PREFERITI
+    }
 
     /**
      * Da dove si è arrivati a questa schermata, valorizzata da
@@ -372,20 +386,39 @@ public class DettaglioController {
      * selezione della lista.
      */
     private class RecensioneCell extends ListCell<RecensioneDTO> {
+        /** Costruttore vuoto: i nodi grafici della cella sono creati inline nei campi, la logica sta in {@code updateItem}. */
+        RecensioneCell() {
+        }
+
+        /** Autore della recensione. */
         private final Label usernameLabel = new Label();
+        /** Data della recensione. */
         private final Label dataLabel = new Label();
+        /** Riga con autore e data affiancati. */
         private final HBox intestazione = new HBox(usernameLabel, dataLabel);
+        /** Titolo della recensione. */
         private final Label titoloLabel = new Label();
+        /** Valutazione in stelle. */
         private final Label stelleLabel = new Label();
+        /** Testo della recensione. */
         private final Label testoLabel = new Label();
+        /** Risposta del gestore, se presente. */
         private final Label rispostaLabel = new Label();
+        /** Campo di testo per scrivere/modificare la risposta del gestore. */
         private final TextArea rispostaField = new TextArea();
+        /** Bottone "Invia" per confermare la risposta. */
         private final Button inviaButton = new Button("Invia");
+        /** Riga col solo bottone di invio. */
         private final HBox invioRow = new HBox(inviaButton);
+        /** Blocco campo risposta + invio, visibile solo al gestore che sta rispondendo. */
         private final VBox rispondiRow = new VBox(6, rispostaField, invioRow);
+        /** Bottone "Modifica", visibile solo all'autore della recensione. */
         private final Button modificaButton = new Button("Modifica");
+        /** Bottone "Elimina", visibile solo all'autore della recensione. */
         private final Button eliminaButton = new Button("Elimina");
+        /** Riga con i bottoni Modifica/Elimina. */
         private final HBox azioniRow = new HBox(8, modificaButton, eliminaButton);
+        /** Contenitore radice della cella. */
         private final VBox contenuto = new VBox(intestazione, titoloLabel, stelleLabel, testoLabel, rispostaLabel, rispondiRow, azioniRow);
 
         {

@@ -14,6 +14,7 @@ import javafx.scene.layout.Region;
  */
 public class Responsive {
 
+    /** Costruttore privato: solo metodi statici, la classe non va istanziata. */
     private Responsive() {}
 
     /**

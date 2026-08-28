@@ -8,6 +8,13 @@ import javafx.fxml.FXML;
  * @author Barlera Marco, 760000, VA
  */
 public class AboutController {
+    /**
+     * Costruttore vuoto: tutta l'inizializzazione avviene in {@code initialize()},
+     * chiamato da FXMLLoader dopo l'injection dei campi {@code @FXML}.
+     */
+    public AboutController() {
+    }
+
 
     /** Controller della sidebar inclusa (fx:include), per evidenziare "About" come voce attiva. */
     @FXML private SidebarController sidebarController;
