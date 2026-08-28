@@ -25,12 +25,29 @@ dependency-reduced-pom.xml
 
 # Note di lavoro personali dei membri del team e verbali di sessione:
 # materiale interno, non fa parte della consegna (doc/ contiene solo i
-# deliverable reali: manuali, diagrammi, script DB in "1_Doc. Conclusi")
+# deliverable reali: manuali, diagrammi, script DB)
 Progettazione/Barlera/
 Progettazione/Ciani/
 Progettazione/Gasparini/
 Progettazione/Scolaro/
 Sessioni/
+
+# Documenti di analisi/progettazione preliminare non richiesti dalla
+# consegna, o ridondanti col contenuto già presente nei manuali:
+# - Documento di Architettura del Sistema.md: materiale di lavoro non
+#   inerente al prodotto finale
+# - Progettazione concettuale della base di dati.md: ridondante col
+#   Manuale Tecnico §5.1 "Modello concettuale" (stesso schema ER), e
+#   contiene un'informazione errata (dice hash SHA-256, l'implementazione
+#   reale usa BCrypt)
+# - Schema ER v2.0.png: stessa immagine già incorporata nel Manuale
+#   Tecnico
+# Raccolta e analisi dei requisiti.md resta invece tracciato: è il
+# "documento di analisi dei requisiti ristrutturato" richiesto
+# esplicitamente da DIRETTIVE_PROGETTO.md §5, non duplicato nei manuali.
+Progettazione/Documento di Architettura del Sistema.md
+Progettazione/Progettazione concettuale della base di dati.md
+Progettazione/Schema ER v2.0.png
 
 # Export PNG dei diagrammi: solo i PDF vanno in consegna (doc/), i PNG
 # restano in locale
