@@ -38,7 +38,7 @@ public class SidebarController {
     @FXML private Hyperlink preferitiItem;
     /** Link "Le mie recensioni", visibile solo da Cliente. */
     @FXML private Hyperlink mieRecensioniItem;
-    /** Link "Vicino a me", visibile solo da Cliente (RF-07: indirizzo registrato, guest non ce l'ha). */
+    /** Link "Vicino a me", visibile a Ospite e Cliente (RF-03/RF-07), non a Ristoratore. */
     @FXML private Hyperlink vicinoAMeItem;
     /** Link "Dashboard", visibile solo da Ristoratore. */
     @FXML private Hyperlink dashboardItem;
@@ -95,8 +95,8 @@ public class SidebarController {
         preferitiItem.setManaged(cliente);
         mieRecensioniItem.setVisible(cliente);
         mieRecensioniItem.setManaged(cliente);
-        vicinoAMeItem.setVisible(cliente);
-        vicinoAMeItem.setManaged(cliente);
+        vicinoAMeItem.setVisible(!ristoratore);
+        vicinoAMeItem.setManaged(!ristoratore);
         dashboardItem.setVisible(ristoratore);
         dashboardItem.setManaged(ristoratore);
         gestisciRecensioniItem.setVisible(ristoratore);
