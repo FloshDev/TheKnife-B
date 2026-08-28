@@ -30,16 +30,21 @@ strumento di build oltre a Maven.
 
 CREAZIONE DEL DATABASE
 
-Dalla radice del progetto, con Maven:
+Dalla radice del progetto, con Maven (sostituire postgres e miapassword con
+utente e password di un amministratore PostgreSQL reali — NON copiare il
+comando così com'è, "<" e ">" sono caratteri speciali della shell e la
+fanno fallire):
 
-    mvn initialize -Pdb-setup -Ddb.admin.user=<utente admin PostgreSQL> -Ddb.admin.password=<password>
+    mvn initialize -Pdb-setup -Ddb.admin.user=postgres -Ddb.admin.password=miapassword
 
   Crea il ruolo applicativo tk_app, il database dbTK, le tabelle e carica il
   dataset del docente (script Role.sql, Schema.sql, Data.sql in
   Progettazione/Database/, eseguiti in quest'ordine).
   L'utente admin deve poter creare ruoli e database (es. l'utente "postgres"
   creato dall'installazione di PostgreSQL). Se PostgreSQL non è in ascolto su
-  localhost:5432, aggiungere -Ddb.host=<host> e/o -Ddb.port=<porta>.
+  localhost:5432, aggiungere al comando -Ddb.host=NOMEHOST e/o
+  -Ddb.port=NUMEROPORTA, con i valori reali al posto di NOMEHOST/NUMEROPORTA
+  (es. -Ddb.host=192.168.1.10 -Ddb.port=5433).
 
   In alternativa, gli stessi tre script sono eseguibili a mano con psql, nello
   stesso ordine (Role.sql su un database di manutenzione come "postgres",
@@ -50,20 +55,44 @@ Dalla radice del progetto, con Maven:
   cartella) restano da eseguire a mano con psql, dopo Data.sql, nell'ordine
   indicato nel Manuale Tecnico.
 
+  Possibili errori:
+  - "role X does not exist": il nome dell'utente admin varia a seconda
+    dell'installazione di PostgreSQL. Sugli installer ufficiali (Windows,
+    Linux, EDB per macOS) di solito si chiama "postgres"; con Homebrew su
+    macOS invece il ruolo superuser creato di default prende il nome utente
+    del sistema operativo, non "postgres". In caso di errore, verificare
+    quale sia il proprio utente amministratore (es. con "psql -l" o "psql -c
+    '\du'") e usare quel nome al posto di postgres nel comando.
+  - "role tk_app already exists" / "database dbTK already exists": il
+    comando è già stato eseguito in precedenza su questo PostgreSQL (ruolo
+    e database già creati). Non serve rieseguirlo.
+
 
 ESECUZIONE
 
+Dalla radice del progetto, usando i jar già pronti in bin/ (oppure, se si è
+appena compilato, gli equivalenti in theknife-server/target/ e
+theknife-client/target/):
+
 1) Avviare il server:
 
-    java -jar serverTK.jar [porta]
+    java -jar bin/serverTK.jar [porta]
 
-   Chiede da terminale host, utente e password del database. La porta di ascolto
-   è un argomento opzionale della riga di comando; se omessa vale il default
-   condiviso col client (9999).
+   Chiede da terminale host, utente e password del database (quelle
+   dell'utente applicativo tk_app creato in "CREAZIONE DEL DATABASE", non
+   quelle dell'admin PostgreSQL usate per crearlo):
+
+       Host:     localhost
+       Utente:   tk_app
+       Password: TheKnife-B
+
+   (host diverso da localhost solo se PostgreSQL non gira sulla stessa
+   macchina del server). La porta di ascolto è un argomento opzionale della
+   riga di comando; se omessa vale il default condiviso col client (9999).
 
 2) Avviare uno o più client, anche da macchine diverse sulla stessa rete:
 
-    java -jar clientTK.jar [host] [porta]
+    java -jar bin/clientTK.jar [host] [porta]
 
    Host e porta del server sono argomenti opzionali; se omessi il client prova
    a connettersi a localhost:9999. Il default è definito in un solo punto
