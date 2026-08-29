@@ -77,6 +77,25 @@ public class ClientApplication extends Application {
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/theknife/client/ui/logoIco.png")));
         impostaIconaDock();
         stage.show();
+        forzaRidisegnoDecorazioni(stage);
+    }
+
+    /**
+     * Forza il ridisegno della barra del titolo su Windows. Su alcune
+     * combinazioni di driver grafici il Desktop Window Manager non disegna
+     * la barra del titolo (chiudi/riduci a icona/espandi) alla prima
+     * apertura della finestra, finché questa non riceve un evento di resize
+     * o spostamento — bug JavaFX noto, non specifico di questa
+     * applicazione. Un micro-resize subito dopo {@link Stage#show()},
+     * impercettibile, forza quell'evento senza alterare le dimensioni
+     * finali della finestra.
+     *
+     * @param stage la finestra principale, già visibile
+     */
+    private void forzaRidisegnoDecorazioni(Stage stage) {
+        double larghezza = stage.getWidth();
+        stage.setWidth(larghezza + 1);
+        stage.setWidth(larghezza);
     }
 
     /**

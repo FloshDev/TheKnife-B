@@ -310,14 +310,23 @@ public class DettaglioController {
      */
     public void impostaRistorante(long idRistorante) {
         this.idRistorante = idRistorante;
-        Label nessunaRecensione = new Label("Nessuna recensione ancora. Scrivi la prima!");
+
+        UtenteDTO utenteCorrente = ServerConnection.getInstance().getUtenteCorrente();
+        cliente = utenteCorrente != null && utenteCorrente.getRuolo() == Ruolo.CLIENTE;
+
+        String messaggioPlaceholder;
+        if (cliente) {
+            messaggioPlaceholder = "Nessuna recensione ancora. Scrivi la prima!";
+        } else if (utenteCorrente == null) {
+            messaggioPlaceholder = "Nessuna recensione ancora. Crea un account e accedi per scriverne una.";
+        } else {
+            messaggioPlaceholder = "Nessuna recensione ancora.";
+        }
+        Label nessunaRecensione = new Label(messaggioPlaceholder);
         nessunaRecensione.getStyleClass().add("risultato-info");
         nessunaRecensione.setWrapText(true);
         nessunaRecensione.prefWidthProperty().bind(recensioniListView.widthProperty().subtract(40));
         recensioniListView.setPlaceholder(nessunaRecensione);
-
-        UtenteDTO utenteCorrente = ServerConnection.getInstance().getUtenteCorrente();
-        cliente = utenteCorrente != null && utenteCorrente.getRuolo() == Ruolo.CLIENTE;
         preferitiButton.setVisible(cliente);
         preferitiButton.setManaged(cliente);
         scriviRecensioneButton.setVisible(cliente);
