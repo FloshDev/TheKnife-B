@@ -22,6 +22,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import theknife.client.network.ServerConnection;
 import theknife.client.service.RistoranteService;
@@ -180,6 +181,8 @@ public class RisultatiController {
         Label nessunRisultato = new Label("Nessun ristorante trovato con questi filtri.");
         nessunRisultato.getStyleClass().add("risultato-info");
         nessunRisultato.setWrapText(true);
+        nessunRisultato.setAlignment(Pos.CENTER);
+        nessunRisultato.setTextAlignment(TextAlignment.CENTER);
         nessunRisultato.prefWidthProperty().bind(risultatiListView.widthProperty().subtract(40));
         risultatiListView.setPlaceholder(nessunRisultato);
 

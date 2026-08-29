@@ -25,6 +25,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import theknife.client.network.ServerConnection;
 import theknife.client.service.RecensioneService;
@@ -325,6 +326,8 @@ public class DettaglioController {
         Label nessunaRecensione = new Label(messaggioPlaceholder);
         nessunaRecensione.getStyleClass().add("risultato-info");
         nessunaRecensione.setWrapText(true);
+        nessunaRecensione.setAlignment(Pos.CENTER);
+        nessunaRecensione.setTextAlignment(TextAlignment.CENTER);
         nessunaRecensione.prefWidthProperty().bind(recensioniListView.widthProperty().subtract(40));
         recensioniListView.setPlaceholder(nessunaRecensione);
         preferitiButton.setVisible(cliente);

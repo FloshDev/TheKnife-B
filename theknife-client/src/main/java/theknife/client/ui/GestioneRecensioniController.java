@@ -18,6 +18,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import theknife.client.service.RecensioneService;
 import theknife.common.dto.RecensioneDTO;
@@ -57,6 +58,8 @@ public class GestioneRecensioniController {
         Label nessunaRecensione = new Label("Nessuna recensione da gestire per ora.");
         nessunaRecensione.getStyleClass().add("risultato-info");
         nessunaRecensione.setWrapText(true);
+        nessunaRecensione.setAlignment(Pos.CENTER);
+        nessunaRecensione.setTextAlignment(TextAlignment.CENTER);
         nessunaRecensione.prefWidthProperty().bind(recensioniListView.widthProperty().subtract(40));
         recensioniListView.setPlaceholder(nessunaRecensione);
         caricaRecensioni();
