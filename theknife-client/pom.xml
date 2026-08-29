@@ -21,16 +21,110 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
+        <!-- javafx-base, javafx-graphics, javafx-controls e javafx-fxml
+             sono dichiarate esplicitamente una volta per ciascuna
+             piattaforma target (win, mac-aarch64, linux), invece che
+             senza classifier: senza, Maven risolve in automatico solo le
+             native del sistema operativo di chi compila, e il jar shaded
+             risultante funziona solo su quell'OS (bug reale riscontrato:
+             clientTK.jar compilato su macOS non si avviava su Windows).
+             Le native vere e proprie (prism, glass, ...) stanno in
+             javafx-base/javafx-graphics, non in javafx-controls/-fxml
+             (che sono puro Java): dichiarare solo controls/fxml con
+             classifier non basta, perché le loro dipendenze transitive su
+             base/graphics restano senza classifier e si riauto-risolvono
+             di nuovo sulla piattaforma di chi compila. Con tutti e
+             quattro i moduli dichiarati esplicitamente per ogni
+             piattaforma, lo shade plugin impacchetta le native di tutti
+             gli OS nello stesso jar, rendendo clientTK.jar eseguibile
+             ovunque indipendentemente da dove è stato compilato.
+             Il classifier "mac" (Intel x86_64) è escluso di proposito:
+             a differenza di win/mac-aarch64/linux, che hanno estensioni
+             di file diverse e quindi convivono senza conflitti nello
+             stesso jar, "mac" e "mac-aarch64" impacchettano librerie
+             .dylib con lo STESSO nome allo stesso path — nello shade una
+             sovrascrive l'altra, e se rimane quella sbagliata l'app
+             crasha all'avvio con UnsatisfiedLinkError (verificato: su una
+             Mac Apple Silicon con classifier "mac" incluso, restava la
+             .dylib x86_64 e falliva). Non esiste un modo per far convivere
+             le due varianti macOS in un unico jar shaded. Si copre quindi
+             solo mac-aarch64 (Apple Silicon, standard su ogni Mac venduta
+             dal 2020 in poi); chi ha ancora un Mac Intel deve ricompilare
+             in locale con mvn clean package. -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>21.0.2</version>
+            <classifier>win</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>21.0.2</version>
+            <classifier>mac-aarch64</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>21.0.2</version>
+            <classifier>linux</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>21.0.2</version>
+            <classifier>win</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>21.0.2</version>
+            <classifier>mac-aarch64</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>21.0.2</version>
+            <classifier>linux</classifier>
+        </dependency>
+
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>21.0.2</version>
+            <classifier>win</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>21.0.2</version>
+            <classifier>mac-aarch64</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>21.0.2</version>
+            <classifier>linux</classifier>
         </dependency>
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>21.0.2</version>
+            <classifier>win</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>21.0.2</version>
+            <classifier>mac-aarch64</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>21.0.2</version>
+            <classifier>linux</classifier>
         </dependency>
 
     </dependencies>

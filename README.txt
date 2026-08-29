@@ -27,6 +27,14 @@ dipendenze):
 Solo il pom.xml del modulo padre e dei tre moduli è necessario: nessun altro
 strumento di build oltre a Maven.
 
+clientTK.jar include le librerie native JavaFX per Windows, macOS (Apple
+Silicon) e Linux, indipendentemente dal sistema operativo su cui viene
+compilato. Fa eccezione macOS con processore Intel (x86_64): le librerie
+native Intel e Apple Silicon condividono lo stesso nome file, quindi non
+possono coesistere nello stesso jar. Su un Mac Intel occorre ricompilare in
+locale con "mvn clean package": Maven risolve in automatico le librerie
+native della macchina di compilazione.
+
 
 CREAZIONE DEL DATABASE
 
