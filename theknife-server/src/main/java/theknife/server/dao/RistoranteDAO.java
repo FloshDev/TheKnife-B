@@ -24,8 +24,6 @@ import theknife.server.exception.DataAccessException;
  * dagli input ricevuti, legge righe e le impacchetta in
  * {@link RistoranteDTO}.
  * <p>
- * Note di implementazione concordate nel contratto:
- * <ul>
  * <li><code>mediaStelle</code> e <code>numeroRecensioni</code> non sono
  * colonne ma aggregati su <code>Recensioni</code>: vengono calcolati con
  * <code>AVG</code>/<code>COUNT</code> e <code>LEFT JOIN</code> (con
@@ -122,7 +120,7 @@ public class RistoranteDAO {
             parametri.add(filtri.isConsegnaADomicilio());
         }
         if (filtri.getServizi() != null && !filtri.getServizi().isEmpty()) {
-            // il ristorante offre almeno uno dei servizi richiesti (scelta "ANY")
+            // il ristorante offre almeno uno dei servizi richiesti
             condizioni.add("r.id_ristorante IN (SELECT rs.id_ristorante FROM RistoranteServizio rs "
                 + "WHERE rs.id_servizio IN (" + segnaposto(filtri.getServizi().size()) + "))");
             for (ServizioDTO s : filtri.getServizi()) {
@@ -364,7 +362,7 @@ public class RistoranteDAO {
      * Cerca i ristoranti entro un raggio in chilometri da una posizione
      * geografica. La distanza e' calcolata con la formula di Haversine
      * direttamente in SQL. Le coordinate arrivano gia' convertite dal livello
-     * service (decisione 14): il DAO applica soltanto il filtro geografico sul
+     * service: il DAO applica soltanto il filtro geografico sul
      * raggio, senza alcuna conversione nome-luogo.
      *
      * @param lat      la latitudine del punto di riferimento
@@ -489,9 +487,9 @@ public class RistoranteDAO {
      * Popola la lista <code>servizi</code> dei ristoranti indicati con una
      * singola query <code>IN</code> sulla tabella ponte, raggruppando i
      * risultati in Java. Evita il problema delle righe duplicate dei join N:N
-     * (trappola b del contratto) e il problema N+1.
+     * e il problema N+1.
      *
-     * @param ristoranti i ristoranti da arricchire
+     * @param ristoranti da arricchire
      * @throws DataAccessException se l'accesso al database fallisce
      */
      void popolaServizi (List<RistoranteDTO> ristoranti) throws DataAccessException {

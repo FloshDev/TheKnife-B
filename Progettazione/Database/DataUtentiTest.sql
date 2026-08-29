@@ -16,8 +16,3 @@ INSERT INTO Utenti (username, password, nome, cognome, email, domicilio, ruolo) 
 -- La colonna password contiene l'hash BCrypt (costo 12) della
 -- password "password", generato con at.favre.lib.crypto.bcrypt,
 -- la stessa libreria usata da UtenteService per il login.
-
--- Facoltativo, per testare la risposta a una recensione: i ristoranti
--- di Data.sql hanno id_gestore NULL. Assegnarne uno a un gestore:
--- UPDATE RistorantiTheKnife SET id_gestore = <id_di_gestore_test>
---   WHERE id_ristorante = <id_del_ristorante>;

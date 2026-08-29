@@ -8,7 +8,9 @@
 -- ============================================================
 
 
+
 -- 1. Inserisce la prima recensione (da parte di 'cliente_test') per 1 ristorante su 5 (id_ristorante % 5 = 0)
+
 INSERT INTO Recensioni (id_ristorante, id_cliente, titolo, testo, stelle, data_pubblicazione)
 SELECT 
     r.id_ristorante,
@@ -26,8 +28,12 @@ CROSS JOIN (SELECT id FROM Utenti WHERE username = 'cliente_test') u
 WHERE r.id_ristorante % 5 = 0
 ON CONFLICT (id_cliente, id_ristorante) DO NOTHING;
 
+
+
+
 -- 2. Inserisce la seconda recensione (da parte di 'cliente_test2') per un sottoinsieme di essi (id_ristorante % 10 = 0)
--- In questo modo molti ristoranti avranno 2 recensioni scritte da due utenti diversi!
+-- In questo modo molti ristoranti avranno 2 recensioni scritte da due utenti diversi
+
 INSERT INTO Recensioni (id_ristorante, id_cliente, titolo, testo, stelle, data_pubblicazione)
 SELECT 
     r.id_ristorante,
@@ -47,6 +53,7 @@ ON CONFLICT (id_cliente, id_ristorante) DO NOTHING;
 
 
 
+
 -- 3. Aggiunge una risposta del ristoratore per alcune delle recensioni (es. id_ristorante % 20 = 0)
 -- Questo consente di testare il corretto funzionamento della visualizzazione delle risposte nella UI
 
@@ -55,6 +62,7 @@ SET
     risposta = 'Grazie mille per la splendida recensione! Siamo davvero felici che abbia apprezzato la nostra accoglienza e la qualità dei nostri piatti. Speriamo di rivederla presto!',
     data_risposta = data_pubblicazione + INTERVAL '1 day'
 WHERE id_ristorante % 20 = 0;
+
 
 
 

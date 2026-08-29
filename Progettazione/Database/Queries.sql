@@ -75,7 +75,7 @@ WHERE r.prenotazione_online = TRUE;
 
 
 
--- cercaRistorantePerServizio(): ricerca per servizio offerto (es. 'Terrace')
+-- cercaRistorantePerServizio(): ricerca per servizio offerto
 
 SELECT r.id_ristorante, r.nome, r.nazione, r.citta, r.indirizzo, r.latitudine, r.longitudine,
        r.fascia_prezzo, r.prenotazione_online, r.consegna_a_domicilio, r.tipo_cucina,
@@ -103,7 +103,7 @@ ORDER BY media_stelle DESC;
 
 
 -- cercaRistoranteCombinata(): combinazione dei criteri di ricerca.
--- Le condizioni vengono concave dinamicamente in Java; la locazione e' sempre obbligatoria.
+-- Le condizioni vengono concatenate dinamicamente in Java; la locazione e' sempre obbligatoria.
 
 SELECT r.id_ristorante, r.nome, r.nazione, r.citta, r.indirizzo, r.fascia_prezzo,
        r.prenotazione_online, r.consegna_a_domicilio, r.tipo_cucina, r.premi,
@@ -154,6 +154,7 @@ ORDER BY t.distanza_km;
 -- ============================================================
 
 
+
 -- visualizzaRistorante(): dettagli di un singolo ristorante (con i suoi servizi)
 
 SELECT r.id_ristorante, r.nome, r.nazione, r.citta, r.provincia, r.indirizzo,
@@ -192,9 +193,11 @@ ORDER BY data_pubblicazione DESC;
 
 
 
+
 -- ============================================================
 -- 3. REGISTRAZIONE E AUTENTICAZIONE
 -- ============================================================
+
 
 
 -- checkUsernameEsistente(): verifica che lo username non sia gia' in uso
@@ -224,9 +227,11 @@ WHERE username = ?;
 
 
 
+
 -- ============================================================
 -- 4. PREFERITI (clienti registrati)
 -- ============================================================
+
 
 
 -- isPreferito(): verifica se il ristorante e' gia' nei preferiti del cliente
@@ -264,9 +269,11 @@ GROUP BY r.id_ristorante ORDER BY r.nome;
 
 
 
+
 -- ============================================================
 -- 5. RECENSIONI (clienti registrati)
 -- ============================================================
+
 
 
 -- verificaEsistenzaRecensione(): controlla se il cliente ha gia' recensito il ristorante
@@ -309,9 +316,11 @@ ORDER BY rec.data_pubblicazione DESC;
 
 
 
+
 -- ============================================================
 -- 6. GESTORI (RISTORATORI)
 -- ============================================================
+
 
 
 -- aggiungiRistorante(): inserimento di un nuovo ristorante da parte del gestore
@@ -335,7 +344,7 @@ WHERE id_ristorante = ? AND id_gestore = ?;
 
 
 -- eliminaRistorante(): cancellazione di un proprio ristorante
--- (recensioni e preferiti collegati vengono eliminati a cascata)
+-- (recensioni e preferiti collegati vengono eliminati in cascata)
 
 DELETE FROM RistorantiTheKnife
 WHERE id_ristorante = ? AND id_gestore = ?;
@@ -392,6 +401,8 @@ SET risposta = ?, data_risposta = CURRENT_TIMESTAMP
 WHERE id_recensione = ?
   AND id_ristorante IN (SELECT id_ristorante FROM RistorantiTheKnife WHERE id_gestore = ?)
   AND risposta IS NULL;
+
+
 
 
 
