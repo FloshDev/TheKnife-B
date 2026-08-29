@@ -2,6 +2,7 @@ package theknife.client.ui;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,7 +47,7 @@ public class GestioneRecensioniController {
     /** Invia al server i comandi sulle recensioni dei ristoranti gestiti. */
     private final RecensioneService recensioneService = new RecensioneService();
     /** Formato di visualizzazione della data delle recensioni (es. "12 ago 2026"). */
-    private static final DateTimeFormatter FORMATO_DATA = DateTimeFormatter.ofPattern("d MMM yyyy");
+    private static final DateTimeFormatter FORMATO_DATA = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ITALIAN);
 
     /**
      * Carica le recensioni all'apertura della schermata.
