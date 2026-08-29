@@ -23,7 +23,7 @@ import theknife.server.exception.DataAccessException;
  * ad essa collegate. Non contiene logica di dominio: costruisce il filtro di ricerca
  * dagli input ricevuti, legge righe e le impacchetta in
  * {@link RistoranteDTO}.
- * <p>
+ * <ul>
  * <li><code>mediaStelle</code> e <code>numeroRecensioni</code> non sono
  * colonne ma aggregati su <code>Recensioni</code>: vengono calcolati con
  * <code>AVG</code>/<code>COUNT</code> e <code>LEFT JOIN</code> (con

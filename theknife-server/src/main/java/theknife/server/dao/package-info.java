@@ -9,7 +9,6 @@
  * {@link theknife.server.exception.DataAccessException}. Nessun DAO contiene
  * logica di dominio: legge e scrive righe, impacchettandole nei DTO del
  * modulo <code>theknife-common</code>.
- * <p>
  *
  * @author Scolaro Gabriele, 760123, VA
  * @see theknife.server.dao.UtenteDAO
