@@ -39,7 +39,7 @@ SELECT
     r.id_ristorante,
     u.id,
     'Da provare assolutamente',
-    'Cucina di ottima qualità con ingredienti freschi. Qualche piccola attesa di troppo per il servizio, ma l'attesa è stata ampiamente ripagata dai sapori.',
+    'Cucina di ottima qualità con ingredienti freschi. Qualche piccola attesa di troppo per il servizio, ma l''attesa è stata ampiamente ripagata dai sapori.',
     CASE 
         WHEN r.id_ristorante % 3 = 0 THEN 4
         WHEN r.id_ristorante % 3 = 1 THEN 3

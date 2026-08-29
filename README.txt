@@ -50,10 +50,17 @@ fanno fallire):
   stesso ordine (Role.sql su un database di manutenzione come "postgres",
   Schema.sql e Data.sql sul database dbTK appena creato).
 
-  Gli script facoltativi di dati di prova (DataUtentiTest.sql,
-  AbilitaServiziTest.sql, PopolaRecensioniTest.sql, sempre nella stessa
-  cartella) restano da eseguire a mano con psql, dopo Data.sql, nell'ordine
-  indicato nel Manuale Tecnico.
+  Dati di prova (facoltativo): utenti, servizi e recensioni fittizie per
+  provare subito l'applicazione senza registrarsi né inserire dati a mano
+  (script DataUtentiTest.sql, AbilitaServiziTest.sql, PopolaRecensioniTest.sql
+  nella stessa cartella). Vanno eseguiti DOPO db-setup, quando dbTK esiste
+  già:
+
+    mvn initialize -Pdb-test-data
+
+  Non richiede argomenti: si connette con l'utente applicativo tk_app, già
+  creato dal comando precedente. In alternativa, gli stessi tre script sono
+  eseguibili a mano con psql, nello stesso ordine, sul database dbTK.
 
   Possibili errori:
   - "role X does not exist": il nome dell'utente admin varia a seconda
