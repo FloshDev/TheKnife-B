@@ -84,18 +84,28 @@ public class ClientApplication extends Application {
      * Forza il ridisegno della barra del titolo su Windows. Su alcune
      * combinazioni di driver grafici il Desktop Window Manager non disegna
      * la barra del titolo (chiudi/riduci a icona/espandi) alla prima
-     * apertura della finestra, finché questa non riceve un evento di resize
-     * o spostamento — bug JavaFX noto, non specifico di questa
-     * applicazione. Un micro-resize subito dopo {@link Stage#show()},
-     * impercettibile, forza quell'evento senza alterare le dimensioni
-     * finali della finestra.
+     * apertura della finestra, finché questa non riceve un evento che la
+     * costringa a ricreare la finestra nativa — bug JavaFX noto, non
+     * specifico di questa applicazione. Un primo tentativo con un
+     * micro-resize differito (Platform.runLater) non ha risolto in pratica
+     * (verificato da un componente del team su Windows): il resize non
+     * basta sempre a far ricalcolare a Windows l'area non client. Un ciclo
+     * {@link Stage#hide()}/{@link Stage#show()} è il workaround più
+     * riportato come risolutivo per questo bug, perché ricrea da zero la
+     * finestra nativa invece di limitarsi a un evento di resize. Applicato
+     * solo su Windows: su macOS/Linux il bug non si presenta e il ciclo
+     * hide/show introdurrebbe solo uno sfarfallio inutile.
      *
      * @param stage la finestra principale, già visibile
      */
     private void forzaRidisegnoDecorazioni(Stage stage) {
-        double larghezza = stage.getWidth();
-        stage.setWidth(larghezza + 1);
-        stage.setWidth(larghezza);
+        if (!System.getProperty("os.name", "").toLowerCase().contains("win")) {
+            return;
+        }
+        Platform.runLater(() -> {
+            stage.hide();
+            stage.show();
+        });
     }
 
     /**
