@@ -76,8 +76,8 @@ public class ClientApplication extends Application {
         stage.setTitle("TheKnife");
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/theknife/client/ui/logoIco.png")));
         impostaIconaDock();
-        stage.show();
         forzaRidisegnoDecorazioni(stage);
+        stage.show();
     }
 
     /**
