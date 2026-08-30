@@ -76,15 +76,10 @@ public class ClientApplication extends Application {
         stage.setTitle("TheKnife");
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/theknife/client/ui/logoIco.png")));
         impostaIconaDock();
-// Posiziona la finestra in alto a sinistra per aiutare Windows/DWM a
-        // inizializzare correttamente la non-client area (barra titolo + bottoni)
         stage.setX(0);
         stage.setY(0);
         stage.show();
-        if (System.getProperty("os.name", "").toLowerCase().contains("win")) {
-            stage.hide();
-            stage.show();
-        }
+        forzaRidisegnoDecorazioni(stage);
     }
 
     /**
@@ -96,8 +91,10 @@ public class ClientApplication extends Application {
      * specifico di questa applicazione. Un primo tentativo con un
      * micro-resize differito (Platform.runLater) non ha risolto in pratica
      * (verificato da un componente del team su Windows): il resize non
-     * basta sempre a far ricalcolare a Windows l'area non client. Un ciclo
-     * {@link Stage#hide()}/{@link Stage#show()} è il workaround più
+     * basta sempre a far ricalcolare a Windows l'area non client. La
+     * finestra viene quindi posizionata esplicitamente in alto a sinistra
+     * (0,0) in {@link #start(Stage)} prima di mostrarla, e qui subisce un
+     * ciclo {@link Stage#hide()}/{@link Stage#show()} — il workaround più
      * riportato come risolutivo per questo bug, perché ricrea da zero la
      * finestra nativa invece di limitarsi a un evento di resize. Applicato
      * solo su Windows: su macOS/Linux il bug non si presenta e il ciclo
