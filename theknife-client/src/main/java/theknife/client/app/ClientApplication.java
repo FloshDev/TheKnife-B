@@ -76,6 +76,10 @@ public class ClientApplication extends Application {
         stage.setTitle("TheKnife");
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/theknife/client/ui/logoIco.png")));
         impostaIconaDock();
+// Posiziona la finestra in alto a sinistra per aiutare Windows/DWM a
+        // inizializzare correttamente la non-client area (barra titolo + bottoni)
+        stage.setX(0);
+        stage.setY(0);
         stage.show();
         if (System.getProperty("os.name", "").toLowerCase().contains("win")) {
             stage.hide();
