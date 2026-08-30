@@ -106,8 +106,8 @@ public class SidebarController {
     /**
      * Mostra solo le voci coerenti con ruolo/stato di autenticazione e
      * precompila avatar/username/ruolo se autenticato. "Ricerca" è nascosta
-     * al Ristoratore (DIRETTIVE_PROGETTO.md assegna la ricerca ristoranti
-     * solo ai Clienti), non a guest e Cliente.
+     * al Ristoratore (la ricerca ristoranti è una funzionalità riservata
+     * ai Clienti), non a guest e Cliente.
      */
     @FXML private void initialize() {
         UtenteDTO utente = ServerConnection.getInstance().getUtenteCorrente();

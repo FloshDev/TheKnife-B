@@ -44,7 +44,7 @@ Sessioni/
 #   Tecnico
 # Raccolta e analisi dei requisiti.md resta invece tracciato: è il
 # "documento di analisi dei requisiti ristrutturato" richiesto
-# esplicitamente da DIRETTIVE_PROGETTO.md §5, non duplicato nei manuali.
+# esplicitamente dalle specifiche di progetto, non duplicato nei manuali.
 Progettazione/Documento di Architettura del Sistema.md
 Progettazione/Progettazione concettuale della base di dati.md
 Progettazione/Schema ER v2.0.png
@@ -54,7 +54,7 @@ Progettazione/Schema ER v2.0.png
 Progettazione/Diagrammi/PNG/
 
 # File di supporto allo sviluppo, non richiesti dalla consegna
-# (DIRETTIVE_PROGETTO.md §4: autori.txt, doc/, bin/, src/, lib/, pom.xml,
+# (la consegna richiede autori.txt, doc/, bin/, src/, lib/, pom.xml,
 # README.txt nella cartella radice — questi non ne fanno parte)
 README.md
 CLAUDE.md

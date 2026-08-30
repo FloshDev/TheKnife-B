@@ -23,8 +23,8 @@ import theknife.common.dto.UtenteDTO;
  * ignoravano a vicenda in silenzio), raggiungibile da Ospite e Cliente
  * (non da Ristoratore). Per il Cliente autenticato la città è precompilata
  * col domicilio registrato (RF-07); per l'Ospite il campo resta vuoto e va
- * digitato a mano (RF-03, DIRETTIVE_PROGETTO.md: schermata minima richiesta
- * "ristoranti vicini al luogo indicato dall'utente guest").
+ * digitato a mano (RF-03: tra le schermate minime richieste dal progetto
+ * c'è l'elenco dei ristoranti vicini al luogo indicato dall'utente guest).
  *
  * @author Barlera Marco, 760000, VA
  */

@@ -25,12 +25,82 @@
 
     <build>
         <plugins>
+            <!-- Sincronizza automaticamente src/ (bundle di consegna in
+                 radice, richiesto dalla consegna) con i sorgenti reali dei
+                 tre moduli, a ogni build ("mvn clean package" o qualunque
+                 altro comando Maven, essendo legata alla phase initialize,
+                 tra le primissime del lifecycle). Evita che src/ resti
+                 disallineato dal codice effettivo se qualcuno dimentica di
+                 aggiornarlo a mano — src/ non è mai la fonte reale del
+                 codice (quella resta in theknife-common/, theknife-server/,
+                 theknife-client/, dove Maven compila davvero): è solo lo
+                 specchio che la consegna richiede nella cartella radice. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>sincronizza-src-common</id>
+                        <phase>initialize</phase>
+                        <goals><goal>copy-resources</goal></goals>
+                        <configuration>
+                            <outputDirectory>${project.basedir}/src/theknife-common/main/java</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/theknife-common/src/main/java</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>sincronizza-src-server</id>
+                        <phase>initialize</phase>
+                        <goals><goal>copy-resources</goal></goals>
+                        <configuration>
+                            <outputDirectory>${project.basedir}/src/theknife-server/main/java</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/theknife-server/src/main/java</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>sincronizza-src-client-java</id>
+                        <phase>initialize</phase>
+                        <goals><goal>copy-resources</goal></goals>
+                        <configuration>
+                            <outputDirectory>${project.basedir}/src/theknife-client/main/java</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/theknife-client/src/main/java</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>sincronizza-src-client-resources</id>
+                        <phase>initialize</phase>
+                        <goals><goal>copy-resources</goal></goals>
+                        <configuration>
+                            <outputDirectory>${project.basedir}/src/theknife-client/main/resources</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/theknife-client/src/main/resources</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- JavaDoc di tutti e 3 i moduli in un'unica documentazione HTML.
                  Non è legata a nessuna phase (non gira automaticamente con
                  "mvn package"): si genera esplicitamente con
                      mvn javadoc:aggregate
                  Output in target/site/apidocs, da qui copiato in doc/javadoc/
-                 per la consegna (DIRETTIVE_PROGETTO.md §4). -->
+                 per la consegna. -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
