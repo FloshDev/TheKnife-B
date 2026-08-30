@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -97,6 +98,8 @@ public class PreferitiController {
         Label nessunPreferito = new Label("Nessun preferito ancora. Vai alla ricerca e salva un ristorante che ti piace.");
         nessunPreferito.getStyleClass().add("risultato-info");
         nessunPreferito.setWrapText(true);
+        nessunPreferito.setAlignment(Pos.CENTER);
+        nessunPreferito.setTextAlignment(TextAlignment.CENTER);
         nessunPreferito.prefWidthProperty().bind(preferitiListView.widthProperty().subtract(40));
         preferitiListView.setPlaceholder(nessunPreferito);
 

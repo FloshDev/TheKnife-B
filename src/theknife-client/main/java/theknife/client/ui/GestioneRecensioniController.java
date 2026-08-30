@@ -2,6 +2,7 @@ package theknife.client.ui;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,6 +18,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import theknife.client.service.RecensioneService;
 import theknife.common.dto.RecensioneDTO;
@@ -46,7 +48,7 @@ public class GestioneRecensioniController {
     /** Invia al server i comandi sulle recensioni dei ristoranti gestiti. */
     private final RecensioneService recensioneService = new RecensioneService();
     /** Formato di visualizzazione della data delle recensioni (es. "12 ago 2026"). */
-    private static final DateTimeFormatter FORMATO_DATA = DateTimeFormatter.ofPattern("d MMM yyyy");
+    private static final DateTimeFormatter FORMATO_DATA = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ITALIAN);
 
     /**
      * Carica le recensioni all'apertura della schermata.
@@ -56,6 +58,8 @@ public class GestioneRecensioniController {
         Label nessunaRecensione = new Label("Nessuna recensione da gestire per ora.");
         nessunaRecensione.getStyleClass().add("risultato-info");
         nessunaRecensione.setWrapText(true);
+        nessunaRecensione.setAlignment(Pos.CENTER);
+        nessunaRecensione.setTextAlignment(TextAlignment.CENTER);
         nessunaRecensione.prefWidthProperty().bind(recensioniListView.widthProperty().subtract(40));
         recensioniListView.setPlaceholder(nessunaRecensione);
         caricaRecensioni();

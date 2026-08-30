@@ -76,7 +76,40 @@ public class ClientApplication extends Application {
         stage.setTitle("TheKnife");
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/theknife/client/ui/logoIco.png")));
         impostaIconaDock();
+        stage.setX(0);
+        stage.setY(0);
         stage.show();
+        forzaRidisegnoDecorazioni(stage);
+    }
+
+    /**
+     * Forza il ridisegno della barra del titolo su Windows. Su alcune
+     * combinazioni di driver grafici il Desktop Window Manager non disegna
+     * la barra del titolo (chiudi/riduci a icona/espandi) alla prima
+     * apertura della finestra, finché questa non riceve un evento che la
+     * costringa a ricreare la finestra nativa — bug JavaFX noto, non
+     * specifico di questa applicazione. Un primo tentativo con un
+     * micro-resize differito (Platform.runLater) non ha risolto in pratica
+     * (verificato da un componente del team su Windows): il resize non
+     * basta sempre a far ricalcolare a Windows l'area non client. La
+     * finestra viene quindi posizionata esplicitamente in alto a sinistra
+     * (0,0) in {@link #start(Stage)} prima di mostrarla, e qui subisce un
+     * ciclo {@link Stage#hide()}/{@link Stage#show()} — il workaround più
+     * riportato come risolutivo per questo bug, perché ricrea da zero la
+     * finestra nativa invece di limitarsi a un evento di resize. Applicato
+     * solo su Windows: su macOS/Linux il bug non si presenta e il ciclo
+     * hide/show introdurrebbe solo uno sfarfallio inutile.
+     *
+     * @param stage la finestra principale, già visibile
+     */
+    private void forzaRidisegnoDecorazioni(Stage stage) {
+        if (!System.getProperty("os.name", "").toLowerCase().contains("win")) {
+            return;
+        }
+        Platform.runLater(() -> {
+            stage.hide();
+            stage.show();
+        });
     }
 
     /**

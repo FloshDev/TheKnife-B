@@ -59,9 +59,10 @@ public class RecensioneDAO {
      * @throws DataAccessException se l'accesso al database fallisce
      */
     public List<RecensioneDTO> trovaPerRistorante (long idRistorante) throws DataAccessException {
-        String sql = "SELECT rec.id_recensione, rec.id_ristorante, rec.id_cliente, u.username, "
+        String sql = "SELECT rec.id_recensione, rec.id_ristorante, r.nome, rec.id_cliente, u.username, "
                    + "rec.titolo, rec.testo, rec.stelle, rec.data_pubblicazione, rec.risposta, rec.data_risposta "
                    + "FROM Recensioni rec "
+                   + "JOIN RistorantiTheKnife r ON rec.id_ristorante = r.id_ristorante "
                    + "JOIN Utenti u ON rec.id_cliente = u.id "
                    + "WHERE rec.id_ristorante = ? "
                    + "ORDER BY rec.data_pubblicazione DESC";

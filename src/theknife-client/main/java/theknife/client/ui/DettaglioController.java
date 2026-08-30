@@ -3,6 +3,7 @@ package theknife.client.ui;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import javafx.event.ActionEvent;
@@ -24,6 +25,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import theknife.client.network.ServerConnection;
 import theknife.client.service.RecensioneService;
@@ -86,7 +88,7 @@ public class DettaglioController {
     /** Invia al server i comandi sulle recensioni del ristorante mostrato. */
     private final RecensioneService recensioneService = new RecensioneService();
     /** Formato di visualizzazione della data delle recensioni (es. "12 ago 2026"). */
-    private static final DateTimeFormatter FORMATO_DATA = DateTimeFormatter.ofPattern("d MMM yyyy");
+    private static final DateTimeFormatter FORMATO_DATA = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ITALIAN);
     /** Identificativo del ristorante mostrato, valorizzato da {@link #impostaRistorante(long)}. */
     private long idRistorante;
     /**
@@ -309,14 +311,25 @@ public class DettaglioController {
      */
     public void impostaRistorante(long idRistorante) {
         this.idRistorante = idRistorante;
-        Label nessunaRecensione = new Label("Nessuna recensione ancora. Scrivi la prima!");
-        nessunaRecensione.getStyleClass().add("risultato-info");
-        nessunaRecensione.setWrapText(true);
-        nessunaRecensione.prefWidthProperty().bind(recensioniListView.widthProperty().subtract(40));
-        recensioniListView.setPlaceholder(nessunaRecensione);
 
         UtenteDTO utenteCorrente = ServerConnection.getInstance().getUtenteCorrente();
         cliente = utenteCorrente != null && utenteCorrente.getRuolo() == Ruolo.CLIENTE;
+
+        String messaggioPlaceholder;
+        if (cliente) {
+            messaggioPlaceholder = "Nessuna recensione ancora. Scrivi la prima!";
+        } else if (utenteCorrente == null) {
+            messaggioPlaceholder = "Nessuna recensione ancora. Crea un account e accedi per scriverne una.";
+        } else {
+            messaggioPlaceholder = "Nessuna recensione ancora.";
+        }
+        Label nessunaRecensione = new Label(messaggioPlaceholder);
+        nessunaRecensione.getStyleClass().add("risultato-info");
+        nessunaRecensione.setWrapText(true);
+        nessunaRecensione.setAlignment(Pos.CENTER);
+        nessunaRecensione.setTextAlignment(TextAlignment.CENTER);
+        nessunaRecensione.prefWidthProperty().bind(recensioniListView.widthProperty().subtract(40));
+        recensioniListView.setPlaceholder(nessunaRecensione);
         preferitiButton.setVisible(cliente);
         preferitiButton.setManaged(cliente);
         scriviRecensioneButton.setVisible(cliente);

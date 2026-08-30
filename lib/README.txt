@@ -19,8 +19,10 @@ Solo lato client (theknife-client):
   21.0.2 — GUI, non incluse nel JDK a partire da Java 11
 
 I quattro jar di JavaFX qui presenti sono la build nativa per macOS Apple
-Silicon (classifier mac-aarch64), la piattaforma della macchina usata per lo
-sviluppo. JavaFX distribuisce artefatti nativi separati per piattaforma
-(Windows, Linux, macOS Intel/ARM): quando si compila con Maven su un'altra
-piattaforma, viene scaricato automaticamente il jar nativo corretto per quella
-piattaforma, non serve intervenire a mano su questa cartella.
+Silicon (classifier mac-aarch64), a scopo di ispezione. JavaFX distribuisce
+artefatti nativi separati per piattaforma (Windows, Linux, macOS Intel/ARM):
+il pom di theknife-client dichiara esplicitamente i classifier win,
+mac-aarch64 e linux per ciascuno dei quattro moduli JavaFX, cosicché Maven li
+scarichi e li impacchetti tutti nello stesso clientTK.jar (self-contained su
+ognuna di queste piattaforme, indipendentemente da quella usata per
+compilare) — non serve intervenire a mano su questa cartella.

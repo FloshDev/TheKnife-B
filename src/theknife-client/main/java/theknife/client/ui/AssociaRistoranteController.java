@@ -16,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import theknife.client.service.RistoranteService;
 import theknife.common.dto.CercaRistorantiDTO;
@@ -78,6 +79,8 @@ public class AssociaRistoranteController {
                 Label nessunRisultato = new Label("Nessun ristorante trovato con questo nome.");
                 nessunRisultato.getStyleClass().add("risultato-info");
                 nessunRisultato.setWrapText(true);
+                nessunRisultato.setAlignment(Pos.CENTER);
+                nessunRisultato.setTextAlignment(TextAlignment.CENTER);
                 nessunRisultato.prefWidthProperty().bind(risultatiListView.widthProperty().subtract(40));
                 risultatiListView.setPlaceholder(nessunRisultato);
                 risultatiListView.getItems().setAll(ristoranti);

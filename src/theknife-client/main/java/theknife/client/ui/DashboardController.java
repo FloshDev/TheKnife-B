@@ -17,6 +17,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import theknife.client.service.RistoranteService;
 import theknife.common.dto.RistoranteDTO;
@@ -62,6 +63,8 @@ public class DashboardController {
         Label nessunRistorante = new Label("Non gestisci ancora nessun ristorante.");
         nessunRistorante.getStyleClass().add("risultato-info");
         nessunRistorante.setWrapText(true);
+        nessunRistorante.setAlignment(Pos.CENTER);
+        nessunRistorante.setTextAlignment(TextAlignment.CENTER);
         nessunRistorante.prefWidthProperty().bind(ristorantiGestiti.widthProperty().subtract(40));
         ristorantiGestiti.setPlaceholder(nessunRistorante);
         ristorantiGestiti.setOnMouseClicked(event -> {
